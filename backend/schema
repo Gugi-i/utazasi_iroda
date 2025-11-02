@@ -1,0 +1,41 @@
+User:
+- holds user information
+(id, name, email, password_hash, phone_number, date_of_birth, address, created_at, updated_at, personal_id, passport_number)
+
+Car:
+- holds available cars for rent
+(id, make, model, year, space, city, price_per_day, status)
+
+Car_rented:
+(id, car_id, user_id, rent_start_date, rent_end_date, total_price, booking_date, status)
+
+PlaneTickets:
+- holds available plane tickets for booking
+(id, flight_number, airline, departure_city, arrival_city, departure_date, arrival_date, duration, price, seats_available, total_seats, class, status)
+
+PlaneTickets_booked:
+(id, ticket_id, user_id, booking_date, seat_number, total_price, status)
+
+Accommodation:
+- holds available accommodations for booking
+(id, name, location, type, description, room, capacity, price_per_night, status)
+
+Accommodation_booked:
+(id, accommodation_id, user_id, check_in_date, check_out_date, total_price, booking_date, status)
+
+Journey:
+- holds all booked journeys for each user
+- references Car_rented, PlaneTickets_booked, Accommodation_booked, User
+(id, user_id, total_price, booking_date, start_date, end_date, number_of_people, status)
+
+Journey_PlaneTickets:
+- junction table to link journeys and plane tickets
+(id, journey_id, plane_ticket_booked_id)
+
+Journey_Cars:
+- junction table to link journeys and rented cars
+(id, journey_id, car_rented_id)
+
+Journey_Accommodation:
+- junction table to link journeys and booked accommodations
+(id, journey_id, accommodation_booked_id)
