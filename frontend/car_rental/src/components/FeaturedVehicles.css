@@ -1,0 +1,70 @@
+/* src/components/FeaturedVehicles.css */
+
+.featured-vehicles-section {
+    padding: 120px 0 60px 0; /* Extra top padding to clear the search bar */
+    background-color: var(--light-bg);
+}
+
+.featured-vehicles-section h2 {
+    margin-bottom: 30px;
+}
+
+.car-list {
+    display: grid;
+    /* Creates a responsive grid:
+       - Fills columns that are at least 300px wide
+       - 1fr makes them share space equally
+    */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+/* Individual Car Card */
+.car-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden; /* Ensures image corners are rounded */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.car-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Prevents image stretching */
+}
+
+.car-card h3 {
+    padding: 15px 20px 0 20px;
+}
+
+.car-price {
+    padding: 0 20px 15px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.book-now-btn {
+    display: block;
+    width: calc(100% - 40px); /* Full width minus padding */
+    margin: 0 20px 20px 20px;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.book-now-btn:hover {
+    background-color: var(--primary-hover);
+}

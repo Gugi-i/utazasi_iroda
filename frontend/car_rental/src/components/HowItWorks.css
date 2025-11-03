@@ -1,0 +1,48 @@
+/* src/components/HowItWorks.css */
+
+.how-it-works-section {
+    padding: 60px 0;
+    background: var(--white);
+}
+
+.how-it-works-section h2 {
+    margin-bottom: 40px;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    gap: 30px;
+}
+
+.step {
+    max-width: 300px;
+}
+
+.step img {
+    /* This is a placeholder for your icon */
+    height: 80px;
+    width: 80px;
+    margin: 0 auto 15px auto;
+
+    /* If you don't have images, you can style a number: */
+    /*
+    background: var(--primary-color);
+    color: var(--white);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+    font-weight: 700;
+    */
+}
+
+.step h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.step p {
+    color: var(--secondary-color);
+}
