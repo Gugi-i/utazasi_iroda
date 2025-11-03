@@ -17,8 +17,14 @@ pip-wheel-metadata/
 *.manifest
 *.spec
 venv/
+.env/
+.venv/
 env/
 ENV/
+**/venv/
+**/.venv/
+**/env/
+**/ENV/
 .venv/
 .idea/
 .vscode/
