@@ -25,6 +25,7 @@ ENV/
 **/.venv/
 **/env/
 **/ENV/
+backend/venv
 .venv/
 .idea/
 .vscode/
