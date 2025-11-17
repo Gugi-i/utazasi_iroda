@@ -16,7 +16,7 @@ class CarCreate(CarBase):
 class CarResponse(CarBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class RentCreate(BaseModel):
@@ -32,4 +32,4 @@ class RentResponse(BaseModel):
     total_price: float
     status: str
     class Config:
-        orm_mode = True
+        from_attributes = True

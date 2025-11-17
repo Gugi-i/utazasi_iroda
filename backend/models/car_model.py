@@ -1,15 +1,18 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, Numeric, TIMESTAMP
 from sqlalchemy.orm import relationship
-from database import Base
+from backend.database import Base
 
 class User(Base):
     __tablename__ = "User"
+
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(100), unique=True, nullable=False)
     password = Column(String(200), nullable=False)
 
+
 class Car(Base):
     __tablename__ = "Car"
+
     id = Column(Integer, primary_key=True)
     make = Column(String(100), nullable=False)
     model = Column(String(100), nullable=False)
@@ -21,11 +24,13 @@ class Car(Base):
 
     rentals = relationship("CarRented", back_populates="car")
 
+
 class CarRented(Base):
     __tablename__ = "Car_rented"
+
     id = Column(Integer, primary_key=True)
-    car_id = Column(Integer, ForeignKey("Car.id", ondelete="CASCADE"), nullable=False)
-    user_id = Column(Integer, ForeignKey("User.id", ondelete="CASCADE"), nullable=False)
+    car_id = Column(Integer, ForeignKey("Car.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("User.id"), nullable=False)
     rent_start_date = Column(Date, nullable=False)
     rent_end_date = Column(Date, nullable=False)
     total_price = Column(Numeric(10, 2))
