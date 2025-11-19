@@ -6,3 +6,4 @@ pydantic==2.12.3
 fastapi==0.121.0
 python-dotenv==1.2.1
 uvicorn==0.38.0
+dotenv==0.9.9
