@@ -82,11 +82,11 @@ def insert_sample_data(conn):
     # -------------------------
     # USER SAMPLE
     # -------------------------
-    user = ("admin", "admin@example.com", "admin123", "admin")
+    user = ("admin", "admin@example.com", "admin123")
 
     cur.execute("""
-        INSERT INTO "User" (username, email, password, role)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO "User" (name, email, password_hash)
+        VALUES (%s, %s, %s)
     """, user)
 
     # -------------------------

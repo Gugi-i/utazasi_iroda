@@ -23,7 +23,7 @@ def create_database_if_not_exists():
         conn.close()
     except:
         conn = psycopg2.connect(
-            database=DB_NAME,
+            database="postgres",
             user=DB_USER,
             password=DB_PASS,
             host=DB_HOST
