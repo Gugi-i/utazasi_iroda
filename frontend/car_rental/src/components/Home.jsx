@@ -5,10 +5,10 @@ import FeaturedVehicles from "./FeaturedVehicles.jsx";
 import HowItWorks from "./HowItWorks.jsx";
 import Footer from "./Footer.jsx";
 
-function Home({ username }) {
+function Home() {
     return (
         <div className="car-rental-app">
-            <Header username={username}/>
+            <Header/>
 
             <main className="main-content">
                 <HeroSection/>

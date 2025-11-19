@@ -1,7 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import './Login.css';
+import React, {useState} from "react";
 
-function Login({ onLoginSuccess }) {
+function Login({ onLoginSuccess, onClose }) {
     const navigate = useNavigate();
 
     const confirmLogin = (event) => {
@@ -9,7 +10,7 @@ function Login({ onLoginSuccess }) {
         // API call to authenticate user would go here
         let successfulLogin = true; // Simulating a successful login response
         if (successfulLogin) {
-            navigate('/', { replace: true });
+            // navigate('/', { replace: true });
             onLoginSuccess(document.getElementById("email").value);
         }
     };
@@ -19,8 +20,8 @@ function Login({ onLoginSuccess }) {
     }
 
     return (
-        <div className="login-page-wrapper">
-            <div className="login-container">
+        <div className="modal-overlay">
+            <div className="modal-panel">
                 <h2>Login to Speedy Rentals</h2>
                 <form className="login-form" onSubmit={confirmLogin}>
                     <div className="form-group">
@@ -30,10 +31,25 @@ function Login({ onLoginSuccess }) {
 
                     <div className="form-group">
                         <label htmlFor="password">Password:</label>
-                        <input type="password" id="password" name="password" required />
+                        <input type="password" id="password" name="password" required/>
                     </div>
 
-                    <button type="submit" className="login-btn">Login</button>
+                    <div className="button-row">
+                        <button
+                            className="primary-btn"
+                        >
+                            Login
+                        </button>
+
+                        <button
+                            className="close-btn"
+                            onClick={() => {
+                                onClose();
+                            }}
+                        >
+                            Close
+                        </button>
+                    </div>
                 </form>
                 <div className="login-help">
                     <a href="#forgot-password">Forgot Password?</a>
