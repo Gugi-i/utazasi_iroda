@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException
+from datetime import date
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.schemas.car_schema import CarResponse, CarCreate, RentCreate, RentResponse
@@ -14,14 +15,19 @@ def list_cars(
     min_price: float | None = None,
     max_price: float | None = None,
     min_space: int | None = None,
+    start_date: date | None = Query(None, description="Keresett intervallum kezdete"),
+    end_date: date | None = Query(None, description="Keresett intervallum vége"),
     db: Session = Depends(get_db)
 ):
     filters = {
         "city": city,
         "min_price": min_price,
         "max_price": max_price,
-        "min_space": min_space
+        "min_space": min_space,
+        "start_date": start_date,
+        "end_date": end_date
     }
+
     return car_crud.get_all_cars(db, filters)
 
 

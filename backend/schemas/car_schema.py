@@ -13,11 +13,24 @@ class CarBase(BaseModel):
 class CarCreate(CarBase):
     pass
 
-class CarResponse(CarBase):
+class RentResponse(BaseModel):
     id: int
+    car_id: int
+    rent_start_date: date
+    rent_end_date: date
+    total_price: float | None = None
+    booking_date: date | None = None
+    status: str
+
     class Config:
         from_attributes = True
+        
+class CarResponse(CarBase):
+    id: int
+    rentals: list[RentResponse] = []
 
+    class Config:
+        from_attributes = True
 
 class RentCreate(BaseModel):
     car_id: int
