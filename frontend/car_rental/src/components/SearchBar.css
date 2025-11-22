@@ -41,11 +41,15 @@
     width: 100%; /* Make inputs fill their grid column */
 }
 
-/* Give the button the same height as the inputs + labels space */
-.search-button {
-    /* The 'btn-primary' class from App.css should handle most of the styling */
-    /* You just need to ensure its height matches the inputs for visual alignment */
-    height: 48px; /* Assuming 12px padding top/bottom + 1px border = 24px + line-height (approx 24px) */
-    align-self: flex-end; /* Ensures button aligns to the bottom of its grid cell */
-    margin-top: 10px; /* To account for the label's height and margin if align-items isn't perfect */
+.search-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* spacing between buttons */
+  margin-top: 10px;
+}
+
+.advanced-options {
+  display: flex;
+  gap: 10px; /* spacing between optional fields */
+  margin-top: 10px;
 }
