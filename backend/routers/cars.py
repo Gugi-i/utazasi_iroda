@@ -40,12 +40,19 @@ def create_car(data: CarCreate, db: Session = Depends(get_db)):
 # ---- RENT CAR ------------------------------------------------------
 @router.post("/rent", response_model=RentResponse)
 def rent_car(data: RentCreate, db: Session = Depends(get_db)):
-    user_id = 1  # később JWT-ből jön
-    
-    rental = car_crud.rent_car(db, data, user_id)
+    rental = car_crud.rent_car(db, data)
     if not rental:
         raise HTTPException(status_code=400, detail="Car not available")
     return rental
+
+@router.get("/rent", response_model=list[RentResponse])
+def list_rentals(db: Session = Depends(get_db)):
+    return car_crud.get_all_rentals(db)
+
+@router.get("/user/{user_id}/rentals")
+def list_user_rentals(user_id: int, db: Session = Depends(get_db)):
+    rentals = car_crud.get_user_rentals(db, user_id)
+    return rentals
 
 
 # ---- CANCEL RENT ---------------------------------------------------
@@ -55,3 +62,5 @@ def cancel_rent(rent_id: int, db: Session = Depends(get_db)):
     if not success:
         raise HTTPException(status_code=404, detail="Rental not found")
     return {"message": "Rental cancelled"}
+
+

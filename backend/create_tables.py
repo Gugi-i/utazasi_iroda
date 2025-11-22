@@ -21,14 +21,7 @@ def create_all_tables():
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        phone_number VARCHAR(20),
-        date_of_birth DATE,
-        address TEXT,
-        created_at TIMESTAMP DEFAULT NOW(),
-        updated_at TIMESTAMP DEFAULT NOW(),
-        personal_id VARCHAR(50),
-        passport_number VARCHAR(50)
+        password_hash VARCHAR(255) UNIQUE NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS "Car" (

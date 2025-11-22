@@ -75,30 +75,41 @@ def create_car(db: Session, data: CarCreate):
     return new_car
 
 
-def rent_car(db: Session, data: RentCreate, user_id: int):
+def rent_car(db: Session, data: RentCreate):
     car = db.query(Car).filter(Car.id == data.car_id).first()
-
     if not car or car.status != "available":
+        return None
+
+    overlap = db.query(CarRented).filter(
+        CarRented.car_id == data.car_id,
+        or_(
+            and_(CarRented.rent_start_date <= data.rent_start_date,
+                 CarRented.rent_end_date >= data.rent_start_date),
+            and_(CarRented.rent_start_date <= data.rent_end_date,
+                 CarRented.rent_end_date >= data.rent_end_date),
+            and_(CarRented.rent_start_date >= data.rent_start_date,
+                 CarRented.rent_end_date <= data.rent_end_date)
+        )
+    ).first()
+
+    if overlap:
         return None
 
     rental_days = (data.rent_end_date - data.rent_start_date).days
     total_price = rental_days * float(car.price_per_day)
 
     rental = CarRented(
-        car_id=car.id,
-        user_id=user_id,
+        car_id=data.car_id,
+        user_id=data.user_id,
         rent_start_date=data.rent_start_date,
         rent_end_date=data.rent_end_date,
         total_price=total_price,
-        booking_date=datetime.now()
+        status="booked"
     )
-
-    car.status = "rented"
 
     db.add(rental)
     db.commit()
     db.refresh(rental)
-
     return rental
 
 
@@ -115,3 +126,25 @@ def cancel_rent(db: Session, rent_id: int):
     db.commit()
 
     return True
+
+def get_all_rentals(db: Session):
+    return db.query(CarRented).all()
+
+def get_user_rentals(db: Session, user_id: int):
+    rentals = db.query(CarRented).filter(CarRented.user_id == user_id).all()
+
+    result = []
+    for r in rentals:
+        car = db.query(Car).filter(Car.id == r.car_id).first()
+        result.append({
+            "rental_id": r.id,
+            "car_id": car.id,
+            "make": car.make,
+            "model": car.model,
+            "year": car.year,
+            "city": car.city,
+            "rent_start_date": r.rent_start_date,
+            "rent_end_date": r.rent_end_date,
+            "total_price": float(r.total_price)
+        })
+    return result

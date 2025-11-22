@@ -79,17 +79,5 @@ def insert_sample_data(conn):
             VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
         """, acc)
 
-    # -------------------------
-    # USER SAMPLE
-    # -------------------------
-    user = ("admin", "admin@example.com", "admin123")
-
-    cur.execute("""
-        INSERT INTO "User" (name, email, password_hash)
-        VALUES (%s, %s, %s)
-    """, user)
-
-    # -------------------------
-
     conn.commit()
     cur.close()
