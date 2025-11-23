@@ -6,15 +6,16 @@ import Login from "../authentication/login/Login.jsx";
 import MyRentalsPage from "./MyRentalsPage.jsx";
 import MuiAlert from '@mui/material/Alert';
 
-function checkLoggedInUsername() {
+/*function checkLoggedInUsername() {
     const storedUsername = localStorage.getItem("username");
     return storedUsername ? storedUsername : "";
-}
+} */
 
-function Header() {
-    const [username, setUsername] = useState(checkLoggedInUsername());
-    const [showLogin, setShowLogin] = React.useState(false);
-    const [open, setOpen] = useState(false);
+function Header({ username, setUsername, showLogin, setShowLogin }) {
+    //const [username, setUsername] = useState(checkLoggedInUsername());
+    //const [showLogin, setShowLogin] = React.useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    //const [open, setOpen] = useState(false);
     const [showMyRentals, setShowMyRentals] = useState(false);
 
     const handleLogin = (loggedInUsername) => {
@@ -22,7 +23,14 @@ function Header() {
         setUsername(loggedInUsername);
         localStorage.setItem("username", loggedInUsername);
         setShowLogin(false);
-        setOpen(true);
+        //setOpen(true);
+        setOpenSnackbar(true);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("username");
+        setUsername("");
+        window.location.reload();
     };
 
     const showLoginPage = () => {
@@ -88,19 +96,19 @@ function Header() {
                 }
             </div>
             <Snackbar
-                open={open}
+                open={openSnackbar}
                 autoHideDuration={3000}
-                onClose={() => setOpen(false)}
+                onClose={() => setOpenSnackbar(false)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                >
-            <MuiAlert
-                elevation={6}
-                variant="filled"
-                severity="success" // gives green color
-                onClose={() => setOpen(false)}
             >
-                Successful login! Welcome, {username}!
-            </MuiAlert>
+                <MuiAlert
+                    elevation={6}
+                    variant="filled"
+                    severity="success"
+                    onClose={() => setOpenSnackbar(false)}
+                >
+                    Successful login! Welcome, {username}!
+                </MuiAlert>
             </Snackbar>
             </>
     );
