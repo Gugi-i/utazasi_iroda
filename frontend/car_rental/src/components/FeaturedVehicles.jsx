@@ -2,18 +2,9 @@
 import React, { useState } from 'react';
 import './FeaturedVehicles.css'; // CSS for featured vehicles
 import { checkCarAvailability, bookCar } from "../services/bookingService";
+import CarCard from "./CarCard.jsx";
+import '../App.css';
 
-// A simple CarCard component to render individual cars
-const CarCard = ({ car, onBook }) => {
-    return (
-        <div className="car-card">
-            <img src={car.imageUrl} alt={car.name} />
-            <h3>{car.name}</h3>
-            <p className="car-price">${car.pricePerDay}/day</p>
-            <button className="book-now-btn" onClick={() => onBook(car)}>Book Now</button>
-        </div>
-    );
-};
 
 function FeaturedVehicles({ searchResults, searchError }) {
 
@@ -100,7 +91,7 @@ function FeaturedVehicles({ searchResults, searchError }) {
                 </div>
                  {selectedCar && (
                     <div className="modal-overlay">
-                        <div className="booking-panel">
+                        <div className="modal-panel">
                         <h2>Booking: {selectedCar.name}</h2>
 
                         

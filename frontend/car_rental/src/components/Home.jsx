@@ -4,11 +4,10 @@ import SearchBar from "./SearchBar.jsx";
 import FeaturedVehicles from "./FeaturedVehicles.jsx";
 import HowItWorks from "./HowItWorks.jsx";
 import Footer from "./Footer.jsx";
-
 import { searchCars } from "../services/searchService.js";
 import { useState } from "react";
 
-function Home({ username }) {
+function Home() {
 
     const [searchResults, setSearchResults] = useState([]);
     const [searchError, setSearchError] = useState(null);
@@ -39,7 +38,7 @@ function Home({ username }) {
 
     return (
         <div className="car-rental-app">
-            <Header username={username}/>
+            <Header/>
 
             <main className="main-content">
                 <HeroSection/>

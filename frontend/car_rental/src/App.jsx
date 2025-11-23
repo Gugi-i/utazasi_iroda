@@ -7,23 +7,16 @@ import Signup from "./authentication/signup/Signup.jsx";
 import {useState} from "react";
 
 function App() {
-    const [username, setUsername] = useState("");
-
-    const handleLogin = (loggedInUsername) => {
-        console.log("App received logged in username:", loggedInUsername);
-        setUsername(loggedInUsername);
-    };
-
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home username={username} />} />
-                <Route
-                    path="/login"
-                    element={<Login onLoginSuccess={handleLogin} />}
-                />
-                <Route path="/login" element={<Login />} />
-                <Route path="/sign-up" element={<Signup />} />
+                <Route path="/" element={<Home  />} />
+                {/*<Route*/}
+                {/*    path="/login"*/}
+                {/*    element={<Login onLoginSuccess={handleLogin} />}*/}
+                {/*/>*/}
+                {/*<Route path="/login" element={<Login />} />*/}
+                {/*<Route path="/sign-up" element={<Signup />} />*/}
             </Routes>
         </BrowserRouter>
     );

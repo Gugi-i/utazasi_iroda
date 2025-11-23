@@ -1,16 +1,48 @@
 // components/Header.js
-import React from 'react';
+import React, {useState} from 'react';
 import './Header.css';
-import { useNavigate } from "react-router-dom"
+import Snackbar from '@mui/material/Snackbar';
+import Login from "../authentication/login/Login.jsx";
+import MyRentalsPage from "./MyRentalsPage.jsx";
+import MuiAlert from '@mui/material/Alert';
 
-function Header({ username }) {
-    const navigate = useNavigate();
+function checkLoggedInUsername() {
+    const storedUsername = localStorage.getItem("username");
+    return storedUsername ? storedUsername : "";
+}
 
-    const navigateToLogin = () => {
-        navigate('/login');
+function Header() {
+    const [username, setUsername] = useState(checkLoggedInUsername());
+    const [showLogin, setShowLogin] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [showMyRentals, setShowMyRentals] = useState(false);
+
+    const handleLogin = (loggedInUsername) => {
+        console.log("App received logged in username:", loggedInUsername);
+        setUsername(loggedInUsername);
+        localStorage.setItem("username", loggedInUsername);
+        setShowLogin(false);
+        setOpen(true);
     };
 
+    const showLoginPage = () => {
+        setShowLogin(true);
+    };
+
+    const closeLoginPage = () => {
+        setShowLogin(false);
+    }
+
+    const showRentalsPage = () => {
+        setShowMyRentals(true);
+    }
+
+    const closeRentalsPage = () => {
+        setShowMyRentals(false);
+    }
+
     return (
+        <>
         <header className="header">
             <div className="container">
                 <div className="logo">
@@ -24,17 +56,20 @@ function Header({ username }) {
                         <li><a href="#how-it-works">How It Works</a></li>
                         {username === "" ? (
                             <li>
-                                <button className="sign-up-btn" id="login" onClick={navigateToLogin}>Login</button>
+                                <button className="sign-up-btn" id="login" onClick={showLoginPage}>Login</button>
                             </li>
                         ) : (
                             <li>
-                                <a href="#welcome">Welcome, {username}!</a>
+                                <a onClick={showRentalsPage} style={{cursor: "pointer"}}>My rentals</a>
                             </li>
                         )}
                         {username !== "" ?
                             (
                                 <li>
-                                    <button className="sign-up-btn" id="logout" onClick={() => window.location.reload()}>Logout</button>
+                                    <button className="sign-up-btn" id="logout" onClick={() => {
+                                        window.location.reload()
+                                        localStorage.removeItem("username");
+                                    }}>Logout</button>
                                 </li>
                             ) : null
                         }
@@ -42,9 +77,34 @@ function Header({ username }) {
                 </nav>
             </div>
         </header>
+            <div>
+                {
+                    showLogin && <Login onLoginSuccess={handleLogin} onClose={closeLoginPage}/>
+                }
+            </div>
+            <div>
+                {
+                    showMyRentals && <MyRentalsPage username={username} onClose={closeRentalsPage} />
+                }
+            </div>
+            <Snackbar
+                open={open}
+                autoHideDuration={3000}
+                onClose={() => setOpen(false)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                >
+            <MuiAlert
+                elevation={6}
+                variant="filled"
+                severity="success" // gives green color
+                onClose={() => setOpen(false)}
+            >
+                Successful login! Welcome, {username}!
+            </MuiAlert>
+            </Snackbar>
+            </>
     );
 }
-
 
 
 export default Header;
