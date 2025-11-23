@@ -57,19 +57,15 @@ def create_all_tables():
         duration INTERVAL,
         price NUMERIC(10,2) NOT NULL,
         seats_available INT NOT NULL,
-        total_seats INT NOT NULL,
-        class VARCHAR(50),
-        status VARCHAR(50) DEFAULT 'available'
+        total_seats INT NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS "PlaneTickets_booked" (
         id SERIAL PRIMARY KEY,
         ticket_id INT NOT NULL REFERENCES "PlaneTickets"(id) ON DELETE CASCADE,
         user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
-        booking_date TIMESTAMP DEFAULT NOW(),
         seat_number VARCHAR(10),
-        total_price NUMERIC(10,2),
-        status VARCHAR(50) DEFAULT 'booked'
+        total_price NUMERIC(10,2)
     );
 
     CREATE TABLE IF NOT EXISTS "Accommodation" (

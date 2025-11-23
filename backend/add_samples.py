@@ -48,8 +48,8 @@ def insert_sample_data(conn):
             INSERT INTO "PlaneTickets"
             (flight_number, airline, departure_city, arrival_city,
             departure_date, arrival_date, duration, price,
-            seats_available, total_seats, class, status)
-            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+            seats_available, total_seats)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
         """, flight)
 
     # -------------------------

@@ -11,3 +11,4 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     
     rentals = relationship("CarRented", back_populates="user")
+    plane_bookings = relationship("PlaneTicketBooked", back_populates="user")
