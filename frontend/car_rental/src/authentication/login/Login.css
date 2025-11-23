@@ -83,26 +83,20 @@
 }
 
 .login-help {
-    margin-top: 1.5rem;
-    font-size: 0.875rem; /* 14px */
-    color: #777;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
 }
 
-.login-help a {
+.link-text {
     color: #007bff;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.login-help a:hover {
-    text-decoration: underline;
-}
-
-.login-help .sign-up-link {
+    font-weight: 600;
     cursor: pointer;
+    margin-left: 5px;
 }
 
-.login-help .separator {
-    color: #ccc;
-    margin: 0 0.5rem;
+.link-text:hover {
+    text-decoration: underline;
 }

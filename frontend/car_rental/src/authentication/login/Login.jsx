@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import './Login.css';
 import React, {useState} from "react";
 
-function Login({ onLoginSuccess, onClose }) {
+function Login({ onLoginSuccess, onClose, onShowSignUp }) {
     const navigate = useNavigate();
 
     const confirmLogin = (event) => {
@@ -14,10 +14,6 @@ function Login({ onLoginSuccess, onClose }) {
             onLoginSuccess(document.getElementById("email").value);
         }
     };
-
-    const navigateToSignUp = () => {
-        navigate('/sign-up');
-    }
 
     return (
         <div className="modal-overlay">
@@ -35,26 +31,15 @@ function Login({ onLoginSuccess, onClose }) {
                     </div>
 
                     <div className="button-row">
-                        <button
-                            className="primary-btn"
-                        >
-                            Login
-                        </button>
-
-                        <button
-                            className="close-btn"
-                            onClick={() => {
-                                onClose();
-                            }}
-                        >
-                            Close
+                        <button className="primary-btn">Login</button>
+                        <button className="close-btn" onClick={() => {
+                            onClose();
+                        }}>Close
                         </button>
                     </div>
                 </form>
-                <div className="login-help">
-                    <a href="#forgot-password">Forgot Password?</a>
-                    <span className="separator">|</span>
-                    <a onClick={navigateToSignUp} className="sign-up-link">Sign Up</a>
+                <div className="sign-up-help">
+                    <p>Don't have an account? <span onClick={onShowSignUp} className="link-text">Sign Up</span></p>
                 </div>
             </div>
         </div>
