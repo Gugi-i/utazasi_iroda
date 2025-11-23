@@ -6,7 +6,7 @@ import CarCard from "./CarCard.jsx";
 import '../App.css';
 
 
-function FeaturedVehicles() {
+function FeaturedVehicles({ searchResults, searchError }) {
 
     const [selectedCar, setSelectedCar] = useState(null);
     const [pickupDate, setPickupDate] = useState("");
@@ -66,7 +66,7 @@ function FeaturedVehicles() {
     };
 
     // Dummy data for featured cars
-    const cars = [
+    const cars = searchResults || []; /*[
         { id: 1, name: 'Nissan Altima', pricePerDay: 50.00, imageUrl: 'src/assets/car2.jpg' },
         { id: 2, name: 'Toyota RAV4', pricePerDay: 65.00, imageUrl: 'src/assets/car3.jpg' },
         { id: 3, name: 'Fiat 500', pricePerDay: 40.00, imageUrl: 'src/assets/car1.jpg' },
@@ -74,12 +74,16 @@ function FeaturedVehicles() {
         { id: 5, name: 'Ford Mustang', pricePerDay: 80.00, imageUrl: 'src/assets/car5.jpg' },
         { id: 6, name: 'Chevrolet Malibu', pricePerDay: 60.00, imageUrl: 'src/assets/car6.jpg' },
         // Add more cars as needed
-    ];
+    ];*/
 
     return (
         <section id="browse" className="featured-vehicles-section">
             <div className="container">
                 <h2>Featured Vehicles</h2>
+                {searchError && (
+                    <p className="error-message">{searchError}</p>
+                )}
+
                 <div className="car-list">
                     {cars.map(car => (
                         <CarCard key={car.id} car={car}  onBook={setSelectedCar} />
