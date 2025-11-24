@@ -1,0 +1,52 @@
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.logo span {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0077ff;
+}
+
+.nav-menu ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.nav-menu ul li a,
+.nav-menu ul li button {
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    color: #333;
+    transition: 0.2s;
+}
+
+.nav-menu ul li a:hover {
+    color: #0077ff;
+}
+
+.sign-up-btn {
+    background: #0077ff;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+}
+
+.sign-up-btn:hover {
+    background: #005fcc;
+}
