@@ -72,22 +72,27 @@ def create_all_tables():
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         location VARCHAR(255) NOT NULL,
-        type VARCHAR(50),
-        description TEXT,
-        room INT,
-        capacity INT,
-        price_per_night NUMERIC(10,2),
-        status VARCHAR(50) DEFAULT 'available'
+        type VARCHAR(50) NOT NULL,     
+        description TEXT
     );
-
-    CREATE TABLE IF NOT EXISTS "Accommodation_booked" (
+    
+    CREATE TABLE IF NOT EXISTS "AccommodationRoomType" (
         id SERIAL PRIMARY KEY,
         accommodation_id INT NOT NULL REFERENCES "Accommodation"(id) ON DELETE CASCADE,
+        room_capacity INT NOT NULL,        
+        total_rooms INT NOT NULL,          
+        price_per_night NUMERIC(10,2) NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS "AccommodationBooking" (
+        id SERIAL PRIMARY KEY,
+        accommodation_id INT NOT NULL REFERENCES "Accommodation"(id) ON DELETE CASCADE,
+        room_type_id INT NOT NULL REFERENCES "AccommodationRoomType"(id) ON DELETE CASCADE,
         user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        rooms_booked INT NOT NULL,               
         check_in_date DATE NOT NULL,
         check_out_date DATE NOT NULL,
         total_price NUMERIC(10,2),
-        booking_date TIMESTAMP DEFAULT NOW(),
         status VARCHAR(50) DEFAULT 'booked'
     );
 
@@ -117,7 +122,7 @@ def create_all_tables():
     CREATE TABLE IF NOT EXISTS "Journey_Accommodation" (
         id SERIAL PRIMARY KEY,
         journey_id INT NOT NULL REFERENCES "Journey"(id) ON DELETE CASCADE,
-        accommodation_booked_id INT NOT NULL REFERENCES "Accommodation_booked"(id) ON DELETE CASCADE
+        accommodation_booked_id INT NOT NULL REFERENCES "AccommodationBooking"(id) ON DELETE CASCADE
     );
     """
 
