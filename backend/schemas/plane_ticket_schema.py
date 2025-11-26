@@ -25,14 +25,14 @@ class PlaneTicketResponse(PlaneTicketBase):
 
 
 class PlaneTicketBookingCreate(BaseModel):
-    ticket_id: int
+    flight_id: int
     user_id: int
     quantity: int
 
 
 class PlaneTicketBookingResponse(BaseModel):
     id: int
-    ticket_id: int
+    flight_id: int
     user_id: int
     seat_number: str
     total_price: float

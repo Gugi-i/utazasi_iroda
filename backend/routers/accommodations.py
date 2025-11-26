@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from backend.database import get_db
@@ -17,8 +18,8 @@ def create_accommodation(data: AccommodationCreate, db: Session = Depends(get_db
     return accommodation_crud.create_accommodation(db, data)
 
 @router.get("/", response_model=list[AccommodationResponse])
-def list_accommodations(db: Session = Depends(get_db)):
-    return accommodation_crud.get_all_accommodations(db)
+def list_accommodations(location: str | None = None, max_price: float | None = None, check_in: date | None = None, check_out: date | None = None, db: Session = Depends(get_db)):
+    return accommodation_crud.get_all_accommodations(db=db, location=location, max_price=max_price, check_in=check_in, check_out=check_out)
 
 
 # --- RoomType Endpoints ---
@@ -54,9 +55,3 @@ def all_bookings(db: Session = Depends(get_db)):
 @router.get("/bookings/user/{user_id}", response_model=list[BookingResponse])
 def user_bookings(user_id: int, db: Session = Depends(get_db)):
     return accommodation_crud.list_user_bookings(db, user_id)
-
-
-@router.get("/{acc_id}", response_model=AccommodationResponse)
-def get_accommodation(acc_id: int, db: Session = Depends(get_db)):
-    return accommodation_crud.get_accommodation_by_id(db, acc_id)
-

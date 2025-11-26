@@ -3,7 +3,9 @@ from fastapi import HTTPException
 from backend.models.plane_ticket_model import PlaneTicket, PlaneTicketBooked
 from backend.schemas.plane_ticket_schema import PlaneTicketBookingCreate
 
-def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_price=None):
+from datetime import date
+
+def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_price=None, departure_date: date | None = None, arrival_date: date | None = None):
     query = db.query(PlaneTicket)
 
     if departure_city:
@@ -15,12 +17,17 @@ def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_pri
     if max_price:
         query = query.filter(PlaneTicket.price <= max_price)
 
+    if departure_date:
+        query = query.filter(PlaneTicket.departure_date == departure_date)
+
+    if arrival_date:
+        query = query.filter(PlaneTicket.arrival_date == arrival_date)
+
     return query.all()
 
 
-
 def book_ticket(db: Session, data):
-    ticket = db.query(PlaneTicket).filter(PlaneTicket.id == data.ticket_id).first()
+    ticket = db.query(PlaneTicket).filter(PlaneTicket.id == data.flight_id).first()
     if not ticket:
         raise HTTPException(status_code=404, detail="Ticket not found")
 
@@ -29,7 +36,7 @@ def book_ticket(db: Session, data):
 
     existing_seats = (
         db.query(PlaneTicketBooked.seat_number)
-        .filter(PlaneTicketBooked.ticket_id == data.ticket_id)
+        .filter(PlaneTicketBooked.flight_id == data.flight_id)
         .all()
     )
 
@@ -47,7 +54,7 @@ def book_ticket(db: Session, data):
 
     for seat in assigned:
         b = PlaneTicketBooked(
-            ticket_id=data.ticket_id,
+            flight_id=data.flight_id,
             user_id=data.user_id,
             seat_number=str(seat),
             total_price=float(ticket.price)

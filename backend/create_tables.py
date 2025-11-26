@@ -62,7 +62,7 @@ def create_all_tables():
 
     CREATE TABLE IF NOT EXISTS "PlaneTickets_booked" (
         id SERIAL PRIMARY KEY,
-        ticket_id INT NOT NULL REFERENCES "PlaneTickets"(id) ON DELETE CASCADE,
+        flight_id INT NOT NULL REFERENCES "PlaneTickets"(id) ON DELETE CASCADE,
         user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
         seat_number VARCHAR(10),
         total_price NUMERIC(10,2)

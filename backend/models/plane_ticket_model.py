@@ -24,7 +24,7 @@ class PlaneTicketBooked(Base):
     __tablename__ = "PlaneTickets_booked"
 
     id = Column(Integer, primary_key=True, index=True)
-    ticket_id = Column(Integer, ForeignKey("PlaneTickets.id", ondelete="CASCADE"))
+    flight_id = Column(Integer, ForeignKey("PlaneTickets.id", ondelete="CASCADE"))
     user_id = Column(Integer, ForeignKey("User.id", ondelete="CASCADE"))
     seat_number = Column(String(10))
     total_price = Column(Numeric(10,2))

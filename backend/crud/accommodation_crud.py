@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func, and_
-from datetime import datetime
+from datetime import datetime, date
 from backend.models.accommodation_model import Accommodation, AccommodationRoomType, AccommodationBooking
 from backend.schemas.accommodation_schema import AccommodationCreate, RoomTypeCreate, BookingCreate
 
@@ -12,11 +12,56 @@ def create_accommodation(db: Session, data: AccommodationCreate):
     db.refresh(new_acc)
     return new_acc
 
-def get_all_accommodations(db: Session):
-    return db.query(Accommodation).all()
+def get_all_accommodations(db: Session, location: str | None = None, max_price: float | None = None, check_in: date | None = None, check_out: date | None = None,):
+    query = db.query(Accommodation)
 
-def get_accommodation_by_id(db: Session, acc_id: int):
-    return db.query(Accommodation).filter(Accommodation.id == acc_id).first()
+    if location:
+        query = query.filter(Accommodation.location.ilike(f"%{location}%"))
+
+    accommodations = query.all()
+    results = []
+
+    for acc in accommodations:
+        room_types = db.query(AccommodationRoomType).filter(
+            AccommodationRoomType.accommodation_id == acc.id
+        )
+
+        if max_price:
+            room_types = room_types.filter(AccommodationRoomType.price_per_night <= max_price)
+
+        room_types = room_types.all()
+
+        if not room_types:
+            continue
+
+        if check_in and check_out:
+            available_room_types = []
+
+            for rt in room_types:
+                overlapping_bookings = db.query(
+                    func.coalesce(func.sum(AccommodationBooking.rooms_booked), 0)
+                ).filter(
+                    AccommodationBooking.room_type_id == rt.id,
+                    AccommodationBooking.check_in_date < check_out,
+                    AccommodationBooking.check_out_date > check_in
+                ).scalar()
+
+                rooms_left = rt.total_rooms - overlapping_bookings
+
+                if rooms_left > 0:
+                    available_room_types.append(rt)
+
+            if not available_room_types:
+                continue
+
+            acc.room_types = available_room_types
+
+        else:
+            acc.room_types = room_types
+
+        results.append(acc)
+
+    return results
 
 # --- RoomType ---
 def create_room_type(db: Session, data: RoomTypeCreate):

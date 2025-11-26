@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from backend.database import get_db
@@ -10,13 +11,9 @@ from backend.crud import plane_ticket_crud
 router = APIRouter(prefix="/plane", tags=["Plane Tickets"])
 
 @router.get("/", response_model=list[PlaneTicketResponse])
-def list_tickets(
-    departure_city: str | None = None,
-    arrival_city: str | None = None,
-    max_price: float | None = None,
-    db: Session = Depends(get_db)
-):
-    return plane_ticket_crud.get_all_tickets(db, departure_city, arrival_city, max_price)
+def list_tickets(departure_city: str | None = None, arrival_city: str | None = None, max_price: float | None = None, departure_date: date | None = None, arrival_date: date | None = None, db: Session = Depends(get_db)):
+    return plane_ticket_crud.get_all_tickets(db, departure_city, arrival_city, max_price, departure_date, arrival_date)
+
 
 
 @router.post("/book", response_model=list[PlaneTicketBookingResponse])
