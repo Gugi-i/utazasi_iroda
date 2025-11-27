@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from backend.database import Base, engine
-from backend.routers import accommodations, auth, hash_helper, cars, plane_tickets
+from backend.routers import accommodations, auth, hash_helper, cars, plane_tickets, journeys
 from backend.init_db import init_database
 
 init_database()
@@ -13,3 +13,4 @@ app.include_router(hash_helper.router)
 app.include_router(cars.router)
 app.include_router(plane_tickets.router)
 app.include_router(accommodations.router)
+app.include_router(journeys.router)

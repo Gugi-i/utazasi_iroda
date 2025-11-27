@@ -20,7 +20,7 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     db_user = authenticate_user(db, user.email, user.password)
     if not db_user:
         raise HTTPException(status_code=400, detail="Invalid email or password")
-    return {"status": "ok", "message": "Login successful"}
+    return {"name": db_user.name, "email": db_user.email, "id": db_user.id}
 
 @router.get("/users", response_model=list[UserResponse])
 def list_users(db: Session = Depends(get_db)):

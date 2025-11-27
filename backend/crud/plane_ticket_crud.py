@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from backend.models.plane_ticket_model import PlaneTicket, PlaneTicketBooked
-from backend.schemas.plane_ticket_schema import PlaneTicketBookingCreate
 
 from datetime import date
 
@@ -24,7 +23,6 @@ def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_pri
         query = query.filter(PlaneTicket.arrival_date == arrival_date)
 
     return query.all()
-
 
 def book_ticket(db: Session, data):
     ticket = db.query(PlaneTicket).filter(PlaneTicket.id == data.flight_id).first()
@@ -86,3 +84,8 @@ def cancel_booking(db: Session, booking_id: int):
 
 def get_all_flight_bookings(db: Session):
     return db.query(PlaneTicketBooked).all()
+
+def get_user_bookings(db: Session, user_id: int):
+    return db.query(PlaneTicketBooked).filter(
+        PlaneTicketBooked.user_id == user_id
+    ).all()

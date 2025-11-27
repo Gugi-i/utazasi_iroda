@@ -43,7 +43,7 @@ def rent_car(data: RentCreate, db: Session = Depends(get_db)):
 def list_rentals(db: Session = Depends(get_db)):
     return car_crud.get_all_rentals(db)
 
-@router.get("/user/{user_id}/rentals")
+@router.get("/user/rentals/{user_id}")
 def list_user_rentals(user_id: int, db: Session = Depends(get_db)):
     rentals = car_crud.get_user_rentals(db, user_id)
     return rentals
