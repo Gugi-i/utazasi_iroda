@@ -2,7 +2,7 @@ from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from backend.database import get_db
-from backend.schemas.car_schema import CarResponse, CarCreate, RentCreate, RentResponse
+from backend.schemas.car_schema import CarResponse, RentCreate, RentResponse
 from backend.crud import car_crud
 
 router = APIRouter(prefix="/cars", tags=["Cars"])
@@ -29,12 +29,6 @@ def list_cars(
     }
 
     return car_crud.get_all_cars(db, filters)
-
-
-# ---- CREATE CAR -----------------------------------------------------
-@router.post("/", response_model=CarResponse)
-def create_car(data: CarCreate, db: Session = Depends(get_db)):
-    return car_crud.create_car(db, data)
 
 
 # ---- RENT CAR ------------------------------------------------------

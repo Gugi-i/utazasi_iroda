@@ -4,8 +4,7 @@ from sqlalchemy.orm import Session
 from backend.database import get_db
 from backend.models.accommodation_model import AccommodationBooking
 from backend.schemas.accommodation_schema import (
-    AccommodationCreate, AccommodationResponse,
-    RoomTypeCreate, RoomTypeResponse,
+    AccommodationResponse,
     BookingCreate, BookingResponse
 )
 from backend.crud import accommodation_crud
@@ -13,19 +12,10 @@ from backend.crud import accommodation_crud
 router = APIRouter(prefix="/accommodations", tags=["Accommodations"])
 
 # --- Accommodation Endpoints ---
-@router.post("/", response_model=AccommodationResponse)
-def create_accommodation(data: AccommodationCreate, db: Session = Depends(get_db)):
-    return accommodation_crud.create_accommodation(db, data)
 
 @router.get("/", response_model=list[AccommodationResponse])
 def list_accommodations(location: str | None = None, max_price: float | None = None, check_in: date | None = None, check_out: date | None = None, db: Session = Depends(get_db)):
     return accommodation_crud.get_all_accommodations(db=db, location=location, max_price=max_price, check_in=check_in, check_out=check_out)
-
-
-# --- RoomType Endpoints ---
-@router.post("/room_type", response_model=RoomTypeResponse)
-def create_room_type(data: RoomTypeCreate, db: Session = Depends(get_db)):
-    return accommodation_crud.create_room_type(db, data)
 
 
 # --- Booking Endpoints ---

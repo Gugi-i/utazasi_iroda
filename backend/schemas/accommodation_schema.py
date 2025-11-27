@@ -7,8 +7,6 @@ class RoomTypeBase(BaseModel):
     total_rooms: int
     price_per_night: float
 
-class RoomTypeCreate(RoomTypeBase):
-    accommodation_id: int
 
 class RoomTypeResponse(RoomTypeBase):
     id: int
@@ -24,8 +22,6 @@ class AccommodationBase(BaseModel):
     type: str
     description: str | None = None
 
-class AccommodationCreate(AccommodationBase):
-    pass
 
 class AccommodationResponse(AccommodationBase):
     id: int

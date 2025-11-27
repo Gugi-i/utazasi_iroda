@@ -2,15 +2,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func, and_
 from datetime import datetime, date
 from backend.models.accommodation_model import Accommodation, AccommodationRoomType, AccommodationBooking
-from backend.schemas.accommodation_schema import AccommodationCreate, RoomTypeCreate, BookingCreate
+from backend.schemas.accommodation_schema import BookingCreate
 
-# --- Accommodation ---
-def create_accommodation(db: Session, data: AccommodationCreate):
-    new_acc = Accommodation(**data.dict())
-    db.add(new_acc)
-    db.commit()
-    db.refresh(new_acc)
-    return new_acc
+# --- Accommodations ---
 
 def get_all_accommodations(db: Session, location: str | None = None, max_price: float | None = None, check_in: date | None = None, check_out: date | None = None,):
     query = db.query(Accommodation)
@@ -63,13 +57,6 @@ def get_all_accommodations(db: Session, location: str | None = None, max_price: 
 
     return results
 
-# --- RoomType ---
-def create_room_type(db: Session, data: RoomTypeCreate):
-    room = AccommodationRoomType(**data.dict())
-    db.add(room)
-    db.commit()
-    db.refresh(room)
-    return room
 
 def get_room_types_by_accommodation(db: Session, acc_id: int):
     return db.query(AccommodationRoomType).filter(AccommodationRoomType.accommodation_id == acc_id).all()

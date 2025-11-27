@@ -100,11 +100,9 @@ def create_all_tables():
         id SERIAL PRIMARY KEY,
         user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
         total_price NUMERIC(10,2),
-        booking_date TIMESTAMP DEFAULT NOW(),
         start_date DATE,
         end_date DATE,
-        number_of_people INT,
-        status VARCHAR(50) DEFAULT 'planned'
+        number_of_people INT
     );
 
     CREATE TABLE IF NOT EXISTS "Journey_PlaneTickets" (

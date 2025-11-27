@@ -52,7 +52,7 @@ def insert_samples_if_needed():
 
     needs_insert = False
 
-    for table in ["Car", "PlaneTickets", "Accommodation", "User"]:
+    for table in ["Car", "PlaneTickets", "Accommodation"]:
         if table_is_empty(cur, table):
             needs_insert = True
 

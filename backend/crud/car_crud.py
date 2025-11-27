@@ -1,10 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 from backend.models.car_model import Car, CarRented
-from backend.schemas.car_schema import CarCreate, RentCreate
-from datetime import datetime
-
-from datetime import datetime
+from backend.schemas.car_schema import RentCreate
 from sqlalchemy import and_, or_
 
 def get_all_cars(db: Session, filters: dict):
@@ -64,15 +61,6 @@ def get_all_cars(db: Session, filters: dict):
             ]
         })
     return result
-
-
-
-def create_car(db: Session, data: CarCreate):
-    new_car = Car(**data.dict())
-    db.add(new_car)
-    db.commit()
-    db.refresh(new_car)
-    return new_car
 
 
 def rent_car(db: Session, data: RentCreate):

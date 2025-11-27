@@ -14,10 +14,6 @@ class CarBase(BaseModel):
     price_per_day: float
 
 
-class CarCreate(CarBase):
-    pass
-
-
 class RentalShort(BaseModel):
     id: int
     rent_start_date: date
