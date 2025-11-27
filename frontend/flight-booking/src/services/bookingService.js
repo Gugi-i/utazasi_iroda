@@ -1,41 +1,22 @@
-export async function checkTicketAvailability(ticketId, date, startLocation, destination) {
+export async function bookTicket({ ticketId, userId, quantity }) {
     try {
+        const res = await fetch("/plane/book", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                ticket_id: ticketId,
+                user_id: userId,
+                quantity: quantity
+            })
+        });
 
-        //const response = await fetch(
-        //    `/api/check-availability?carId=${carId}&pickup=${pickupDate}&return=${returnDate}`
-        //);
+        if (!res.ok) {
+            const errorData = await res.json();
+            throw new Error(errorData.message || "Booking failed.");
+        }
 
-        //if (!response.ok) {
-        //    throw new Error("Failed to check availability");
-        //}
-
-        //const data = await response.json();
-        const data = true;
-        return data;
-
-    } catch (error) {
-        console.error(error);
-        throw error;
+        return await res.json();
+    } catch (err) {
+        throw err;
     }
-}
-
-export async function bookTicket(ticketId, date, startLocation, destination){
-    /*const response = await fetch("/api/book-car", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            carId,
-            pickupDate,
-            returnDate,
-            location
-        })
-    });
-
-    if (!response.ok) {
-        throw new Error("Booking request failed");
-    }
-    
-    return response.json(); // e.g. { success: true }
-    */
-   return true
 }

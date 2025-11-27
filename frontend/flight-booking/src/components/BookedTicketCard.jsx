@@ -1,35 +1,54 @@
 import React from "react";
-import './BookedTicketCard.css';
+import './BookedTicketCard.css'; // new CSS file
 
-function TicketCard({ ticket, onDelete }) {
-    const deleteRental = () => {
-        // fetch(`/api/rentals/${car.id}`, {
-        //     method: 'DELETE',
-        // })
-        // .then(response => {
-        //     if (response.ok) {
-        //         console.log('Rental deleted successfully');
-        //     } else {
-        //         console.error('Failed to delete rental');
-        //     }
-        // })
-        // .catch((error) => {
-        //     console.error('Error deleting rental:', error);
-        // });
-        console.log(`Deleting rental with id: ${ticket.id}`);
+function BookedTicketCard({ ticket, onDelete }) {
+
+    const deleteTicket = () => {
+        // Example backend call (replace with your real API)
+        // fetch(`/api/tickets/${ticket.id}`, { method: 'DELETE' })
+        //   .then(response => { if (response.ok) onDelete(); })
+        //   .catch(err => console.error(err));
+
+        console.log(`Deleting ticket with flight number: ${ticket.flight_number}`);
         onDelete();
-    }
+    };
+
+    // Format departure & arrival dates nicely
+    const formatDateTime = (dt) => {
+        const d = new Date(dt);
+        return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+    };
 
     return (
-        <div className="rental-card">
-            <div className="rental-card-info">
-                <h3>{ticket.name}</h3>
+        <div className="plane-card">
+            {/* Left: Airline Logo or placeholder image */}
+            <div className="plane-card-img">
+                <img src={ticket.airline_logo || '/placeholder-plane.png'} alt={ticket.airline} />
             </div>
-            <button className="cancel-btn" onClick={onDelete}>
+
+            {/* Middle: Ticket Info */}
+            <div className="plane-card-info">
+                <h3>{ticket.airline}</h3>
+                <p className="flight-number">Flight: {ticket.flight_number}</p>
+                <p className="route">
+                    {ticket.departure_city} → {ticket.arrival_city}
+                </p>
+                <p className="dates">
+                    Departure: {formatDateTime(ticket.departure_date)} <br />
+                    Arrival: {formatDateTime(ticket.arrival_date)}
+                </p>
+                <p className="seats">
+                    Seats: {ticket.seats_available} / {ticket.total_seats}
+                </p>
+                <p className="price">Price: €{ticket.price}</p>
+            </div>
+
+            {/* Right: Action Button */}
+            <button className="cancel-btn" onClick={deleteTicket}>
                 Cancel
             </button>
         </div>
     );
 }
 
-export default TicketCard;
+export default BookedTicketCard;

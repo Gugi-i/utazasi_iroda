@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Tickets.css';
-import { checkTicketAvailability, bookTicket } from "../services/bookingService";
+import { bookTicket } from "../services/bookingService";
 import TicketCard from "./TicketCard.jsx";
 import '../App.css';
 
@@ -13,56 +13,34 @@ function Tickets({ searchResults, username, onRequestLogin, searchDate, searchSt
     const [termsChecked, setTermsChecked] = useState(false);
     const [startLocation, setStartLocation] = useState("")
     const [destination, setDestination] = useState("");
-
-    const handleCheckAvailability = async () => {
-        if (!date || !startLocation || !destination) {
-            setAvailabilityMessage("Please give required information.");
-            return;
-        }
-
-        try {
-            const result = await checkTicketAvailability(selectedTicket.id, date, startLocation, destination);
-
-            if (result) {
-                setAvailabilityMessage("Ticket is available!");
-            } else {
-                setAvailabilityMessage(`Not available: ${result.reason}`);
-            }
-        } catch (error) {
-            setAvailabilityMessage("Error checking availability. Please try again.");
-        }
-    };
+    const [quantity, setQuantity] = useState(1);
 
     const handleBooking = async () => {
-        if (!date || !startLocation || !destination) {
-            setAvailabilityMessage("Please fill out all fields.");
+        if (!termsChecked) {
+            setAvailabilityMessage("You must accept the terms to proceed.");
             return;
         }
 
-        if (!termsChecked) {
-            setAvailabilityMessage("You must accept the terms before booking.");
+        if (quantity < 1) {
+            setAvailabilityMessage("Select at least 1 seat.");
             return;
         }
 
         try {
-            const result = await bookTicket(
-                selectedTicket.id,
-                date,
-                startLocation,
-                destination
-            );
+            await bookTicket({
+                ticketId: selectedTicket.id,
+                userId: username.id,
+                quantity: quantity
+            });
 
-            if (result) {
-                setAvailabilityMessage("Booking successful!");
-            } else {
-                setAvailabilityMessage("Booking failed. Please try again later.");
-            }
+            setAvailabilityMessage("Booking successful!");
 
-        } catch (error) {
-            setAvailabilityMessage("Error processing booking.");
-            console.info(error);
+            setSelectedTicket(null);
+        } catch (err) {
+            setAvailabilityMessage(err.message || "Booking failed.");
         }
     };
+
     const tickets = searchResults || [];
 
     return (
@@ -87,86 +65,58 @@ function Tickets({ searchResults, username, onRequestLogin, searchDate, searchSt
                  {selectedTicket && (
                     <div className="modal-overlay">
                         <div className="modal-panel">
-                        <h2>Booking: {selectedTicket.name}</h2>
 
-                        <p><strong>Price:</strong> ${selectedTicket.price}</p>
+                            <h2>Booking: {selectedTicket.airline} {selectedTicket.flight_number}</h2>
 
-                        <label>
-                            Date:
-                            <input 
-                                type="date" 
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                            />
-                        </label>
+                            <p><strong>From:</strong> {selectedTicket.departure_city}</p>
+                            <p><strong>To:</strong> {selectedTicket.arrival_city}</p>
 
-                        <label>
-                            From:
-                            <input
-                                type="text"
-                                placeholder="Enter starting city"
-                                value={startLocation}
-                                onChange={(e) => setLocation(e.target.value)}
-                            />
-                        </label>
+                            <p><strong>Price per seat:</strong> €{selectedTicket.price}</p>
 
-                        <label>
-                            To:
-                            <input
-                                type="text"
-                                placeholder="Enter destination city"
-                                value={destination}
-                                onChange={(e) => setLocation(e.target.value)}
-                            />
-                        </label>
+                            <label>
+                                Number of seats:
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max={selectedTicket.seats_available}
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                />
+                            </label>
 
-                        <label className="terms-checkbox">
-                            <input
-                                type="checkbox"
-                                checked={termsChecked}
-                                onChange={(e) => setTermsChecked(e.target.checked)}
-                            />
-                            I accept the terms and conditions, and I understand that cancellations may require a fee depending on timing.
-                        </label>
+                            <label className="terms-checkbox">
+                                <input
+                                    type="checkbox"
+                                    checked={termsChecked}
+                                    onChange={(e) => setTermsChecked(e.target.checked)}
+                                />
+                                I accept the terms.
+                            </label>
 
-                        <div className="availability-row">
-                            <button
-                                className="secondary-btn"
-                                onClick={handleCheckAvailability}
-                            >
-                                Check Availability
-                            </button>
                             {availabilityMessage && (
-                                <span className="availability-message">{availabilityMessage}</span>
+                                <p className="booking-error">{availabilityMessage}</p>
                             )}
-                        </div>
 
-                        <div className="button-row">
-                            <button
-                                className="primary-btn"
-                                disabled={!termsChecked}
-                                onClick={handleBooking}
-                            >
-                                Book Now
-                            </button>
+                            <div className="button-row">
+                                <button
+                                    className="primary-btn"
+                                    disabled={!termsChecked}
+                                    onClick={handleBooking}
+                                >
+                                    Book Now
+                                </button>
 
-                            <button
-                                className="close-btn"
-                                onClick={() => {
-                                    setSelectedTicket(null);
-                                    setDate("");
-                                    setAvailabilityMessage("");
-                                    setTermsChecked(false);
-                                    setStartLocation("")
-                                    setDestination("")
-                                }}
-                            >
-                                Close
-                            </button>
-                        </div>
+                                <button
+                                    className="close-btn"
+                                    onClick={() => { setSelectedTicket(null); }}
+                                >
+                                    Close
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    )}
+                )}
+
             </div>
         </section>
     );

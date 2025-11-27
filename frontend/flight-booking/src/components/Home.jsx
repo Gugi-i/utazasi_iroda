@@ -31,15 +31,12 @@ function Home() {
             return;
         }
 
-        setSearchError(null);
-
         try {
             const results = await searchTickets(filters);
             setSearchResults(results);
 
             if (results.length === 0) {
                 const msg = "No cars found for the given search.";
-                setSearchError(msg);
 
                 setSnackbarMessage(msg);
                 setSnackbarOpen(true);
@@ -48,7 +45,6 @@ function Home() {
         } catch (e) {
             const msg = "Error contacting the server.";
             setSearchResults([]);
-            setSearchError(msg);
 
             setSnackbarMessage(msg);
             setSnackbarOpen(true);

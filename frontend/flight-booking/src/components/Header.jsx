@@ -56,7 +56,7 @@ function Header({ username, setUsername, showLogin, setShowLogin }) {
                             </li>
                         ) : (
                             <li>
-                                <a onClick={showTicketsPage} style={{cursor: "pointer"}}>My rentals</a>
+                                <a onClick={showTicketsPage} style={{cursor: "pointer"}}>My Tickets</a>
                             </li>
                         )}
                         {username !== "" ?
