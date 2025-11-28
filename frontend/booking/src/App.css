@@ -1,3 +1,4 @@
+/*
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +40,296 @@
 
 .read-the-docs {
   color: #888;
+}
+*/
+
+/* src/App.css */
+
+/* --- FONT IMPORT --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* --- CSS VARIABLES (YOUR SITE'S THEME) --- */
+:root {
+  --primary-color: #007bff;     /* The main blue */
+  --primary-hover: #0056b3;    /* A darker blue for hover */
+  --secondary-color: #6c757d;  /* Grey for subtext */
+  --light-bg: #f8f9fa;         /* Light grey page background */
+  --dark-text: #343a40;        /* Main text color */
+  --white: #ffffff;
+  --border-color: #dee2e6;
+  --container-width: 1200px;
+  --shadow-sm: 0 2px 5px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --border-radius: 8px;
+}
+
+/* --- GLOBAL RESET --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- BASE STYLES --- */
+body {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  color: var(--dark-text);
+  background-color: var(--white); /* White bg for most of the page */
+}
+
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--dark-text);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1, h2, h3 {
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; text-align: center; }
+h3 { font-size: 1.25rem; }
+
+/* --- GLOBAL BUTTON STYLE --- */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+/* 1. Turn the whole app into a flex column */
+.booking-app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Make the app at least as tall as the browser window */
+}
+
+/* 2. Tell the main content to 'grow' and take all the extra space */
+.main-content {
+  flex-grow: 1; /* This is the secret sauce. */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.6); /* dim background */
+  backdrop-filter: blur(3px);    /* nice blur effect */
+
+  z-index: 9999;
+}
+
+/* Main box */
+.modal-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 420px;
+  max-width: 90%;
+  padding: 25px;
+
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+  animation: fadeIn 0.25s ease-out;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
+
+  max-height: 90vh;        /* Never taller than 90% of screen */
+  overflow-y: auto;        /* Scroll if content is too long */
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Booking image */
+.modal-panel img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+/* Inputs */
+.modal-panel input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.modal-panel input[type="checkbox"] {
+  transform: scale(1.2);
+  margin-right: 8px;
+}
+
+/* Close / Book button */
+.modal-panel .book-now-btn {
+  margin-top: 10px;
+  padding: 12px;
+  width: 100%;
+
+  background: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+
+  font-size: 1.1rem;
+  cursor: pointer;
+
+  transition: background 0.2s;
+}
+
+.modal-panel .book-now-btn:hover {
+  background: #005fcc;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.primary-btn {
+  flex: 2;            /* takes twice the space in a row */
+  padding: 14px;      /* bigger padding */
+  font-size: 1.1rem;
+  background: #0077ff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.primary-btn:hover {
+  background: #005fcc;
+}
+
+/* Smaller secondary buttons (Check Availability, Close) */
+.secondary-btn, .close-btn {
+  flex: 1;             /* smaller than Book Now */
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+}
+
+.secondary-btn {
+  background: #e5e5e5;
+}
+
+.secondary-btn:hover {
+  background: #d4d4d4;
+}
+
+.close-btn {
+  background: #ff4b4b;
+  color: white;
+}
+
+.close-btn:hover {
+  background: #c93535;
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.availability-row {
+  display: flex;
+  justify-content: flex-end; /* push to the right */
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.availability-message {
+  font-weight: bold;
+  color: #007700; /* green for available, can change dynamically */
+  white-space: nowrap;
+  margin-top: 8px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-panel input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+}
+
+.close-x {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ffffff;
+  color: black;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.close-x:hover {
+  background: #d93636;
 }

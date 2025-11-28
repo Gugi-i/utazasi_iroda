@@ -1,0 +1,167 @@
+.hotel-card {
+    display: flex;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    height: 280px;
+}
+
+/* Image Section */
+.hotel-card-image-wrapper {
+    width: 35%;
+    position: relative;
+    overflow: hidden;
+}
+
+.hotel-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hotel-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #003580;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.status-available {
+    background-color: #28a745;
+}
+
+.status-booked {
+    background-color: #dc3545;
+}
+
+/* Content Section */
+.hotel-card-content {
+    padding: 16px;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hotel-header {
+    margin-bottom: 8px;
+}
+
+.hotel-name {
+    margin: 0;
+    color: #003580;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.hotel-location {
+    margin: 4px 0 0 0;
+    font-size: 0.875rem;
+    color: #6b6b6b;
+}
+
+.hotel-description {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 8px 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hotel-amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: auto;
+}
+
+.amenity-tag {
+    background: #f2f2f2;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #333;
+}
+
+/* Footer Section - Updated for Flex Layout */
+.hotel-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center items vertically */
+    margin-top: 16px;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 12px;
+    gap: 15px; /* Adds space between price and button */
+}
+
+.price-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Allow price to take up remaining space */
+}
+
+.price-label {
+    font-size: 0.75rem;
+    color: #6b6b6b;
+}
+
+.price-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/* Updated Button Styles */
+.book-btn {
+    flex: 1;            /* takes twice the space in a row */
+    padding: 14px;      /* bigger padding */
+    font-size: 1.1rem;
+    background: #0077ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    /* Preserved font-weight for readability */
+    font-weight: 600;
+    text-align: center;
+}
+
+.book-btn:hover {
+    background: #005fcc;
+}
+
+.book-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hotel-card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .hotel-card-image-wrapper,
+    .hotel-card-content {
+        width: 100%;
+    }
+
+    .hotel-card-image-wrapper {
+        height: 200px;
+    }
+}

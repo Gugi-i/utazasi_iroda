@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import './MyRentalsPage.css'; // CSS for My Rentals Page
 import '../App.css';
-import RentedCarCard from "./RentedCarCard.jsx";
+import RentedCarCard from "./BookedAccommodationCard.jsx";
 
 function MyRentalsPage({ onClose }) {
     const modalRef = useRef(null);
