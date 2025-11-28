@@ -2,8 +2,8 @@ import os
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from dotenv import load_dotenv
-from backend.add_samples import insert_sample_data
-from backend.create_tables import create_all_tables as create_tables
+from backend.utils.add_samples import insert_sample_data
+from backend.utils.create_tables import create_all_tables as create_tables
 
 load_dotenv()
 

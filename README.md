@@ -10,3 +10,11 @@ telepítőnél komponensek küzül PostgreSQL és pgAdmin 4 telepítése
 postgres-nek beállítani egy jelszót
 
 C:\Program Files\PostgreSQL\ ide fog telepedni, ennek a bin mappáját be kell állítani környezeti váltózóként
+
+a backend mappában python -m venv venv paranccsal python virtuális environment létrehozása
+
+pip install -r requirements.txt futtatása
+
+root mappába .env file elhelyezése
+
+Majd ezzel a paranccsal lehet elindítani a backend-et: uvicorn backend.main:app --reload

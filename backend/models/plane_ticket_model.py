@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Numeric, TIMESTAMP, Interval, ForeignKey
 from sqlalchemy.orm import relationship
-from backend.database import Base
+from backend.utils.database import Base
 
 class PlaneTicket(Base):
     __tablename__ = "PlaneTickets"

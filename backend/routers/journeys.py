@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from backend.database import get_db
+from backend.utils.database import get_db
 from backend.schemas.journey_schema import (
     JourneyCreate, JourneyResponse,
     AddCar, AddPlane, AddAccommodation

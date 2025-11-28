@@ -1,7 +1,7 @@
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from backend.database import get_db
+from backend.utils.database import get_db
 from backend.models.accommodation_model import AccommodationBooking
 from backend.schemas.accommodation_schema import (
     AccommodationResponse,

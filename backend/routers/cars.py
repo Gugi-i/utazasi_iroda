@@ -1,7 +1,7 @@
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from backend.database import get_db
+from backend.utils.database import get_db
 from backend.schemas.car_schema import CarResponse, RentCreate, RentResponse
 from backend.crud import car_crud
 

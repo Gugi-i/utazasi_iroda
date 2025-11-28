@@ -1,7 +1,7 @@
 from datetime import date
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from backend.database import get_db
+from backend.utils.database import get_db
 from backend.schemas.plane_ticket_schema import (PlaneTicketResponse,
     PlaneTicketBookingCreate, PlaneTicketBookingResponse
 )

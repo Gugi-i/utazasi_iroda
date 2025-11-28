@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, Numeric, Date, ForeignKey
 from sqlalchemy.orm import relationship
-from backend.database import Base
+from backend.utils.database import Base
 
 class Journey(Base):
     __tablename__ = "Journey"
