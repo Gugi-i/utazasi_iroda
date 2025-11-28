@@ -14,7 +14,7 @@ PlaneTickets:
 (id, flight_number, airline, departure_city, arrival_city, departure_date, arrival_date, duration, price, seats_available, total_seats, class, status)
 
 PlaneTickets_booked:
-(id, ticket_id, user_id, booking_date, seat_number, total_price, status)
+(id, flight_id, user_id, booking_date, seat_number, total_price, status)
 
 Accommodation:
 - holds available accommodations for booking
