@@ -1,6 +1,6 @@
 export async function bookTicket({ ticketId, userId, quantity }) {
     try {
-        const res = await fetch("/plane/book", {
+        const res = await fetch("http://localhost:8000/plane/book", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

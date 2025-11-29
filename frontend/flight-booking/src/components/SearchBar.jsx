@@ -21,9 +21,7 @@ function PlaneSearchBar({ onSearch }) {
         onSearch({
             departure_city: departureCity,
             arrival_city: arrivalCity,
-            departure_date: departureDate,
-            return_date: returnDate || undefined,
-            max_price: maxPrice || undefined
+            departure_date: departureDate
         });
     };
 
