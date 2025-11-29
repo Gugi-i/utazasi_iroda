@@ -110,3 +110,4 @@ coverage/
 
 # Certs
 certs/
+*.pem
