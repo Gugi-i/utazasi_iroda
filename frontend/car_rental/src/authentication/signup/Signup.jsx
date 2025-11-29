@@ -1,35 +1,16 @@
+import {useNavigate} from "react-router-dom";
 import './Signup.css';
-import React, { useState } from "react";
-import {signup} from "../../services/authServices.js";
-import Snackbar from "../../components/Snakbar.jsx";
+import React from "react";
 
 function Signup({ onClose, onShowLogin }) {
-    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+    const navigate = useNavigate();
 
-    const handleCloseSnackbar = () => {
-        setSnackbar({ ...snackbar, show: false });
-    };
-
-    const confirmSignup = (event) => {
-        event.preventDefault();
-
-        const name = event.target.name.value;
-        const email = event.target.email.value;
-        const password = event.target.password.value;
-
-        signup(name, email, password)
-            .then(user => {
-                setSnackbar({ show: true, message: 'Signup successful! Please login.', type: 'success' });
-
-                setTimeout(() => {
-                    onShowLogin();
-                }, 1500);
-            })
-            .catch(err => {
-                console.error('Signup error:', err);
-                const errorMessage = "Signup failed. Please try again.";
-                setSnackbar({ show: true, message: errorMessage, type: 'error' });
-            });
+    const confirmSignup = () => {
+        // API call to register user would go here
+        let successfulSignup = true; // Simulating a successful login response
+        if (successfulSignup) {
+            onShowLogin();
+        }
     };
 
     return (
@@ -54,21 +35,13 @@ function Signup({ onClose, onShowLogin }) {
 
                     <div className="button-row">
                         <button className="primary-btn">Sign Up</button>
-                        <button type="button" className="close-btn" onClick={onClose}>Close</button>
+                        <button className="close-btn" onClick={() => {onClose();}}>Close</button>
                     </div>
                 </form>
                 <div className="sign-up-help">
                     <p>Already have an account? <span onClick={onShowLogin} className="link-text">Login</span></p>
                 </div>
             </div>
-
-            {snackbar.show && (
-                <Snackbar
-                    message={snackbar.message}
-                    type={snackbar.type}
-                    onClose={handleCloseSnackbar}
-                />
-            )}
         </div>
     );
 }

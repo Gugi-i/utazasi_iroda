@@ -1,33 +1,18 @@
 import {useNavigate} from "react-router-dom";
 import './Login.css';
 import React, {useState} from "react";
-import {login} from "../../services/authServices.js";
-import Snackbar from "../../components/Snakbar.jsx";
 
 function Login({ onLoginSuccess, onClose, onShowSignUp }) {
-    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
-
-    const handleCloseSnackbar = () => {
-        setSnackbar({ ...snackbar, show: false });
-    };
+    const navigate = useNavigate();
 
     const confirmLogin = (event) => {
-        event.preventDefault();
-
-        const email = event.target.email.value;
-        const password = event.target.password.value;
-
-        login(email, password)
-            .then(user => {
-                setTimeout(() => {
-                    onLoginSuccess(email);
-                }, 1500);
-            })
-            .catch(err => {
-                console.error('Login error:', err);
-                const errorMessage = "Login failed. Please try again.";
-                setSnackbar({ show: true, message: errorMessage, type: 'error' });
-            });
+        event.preventDefault()
+        // API call to authenticate user would go here
+        let successfulLogin = true; // Simulating a successful login response
+        if (successfulLogin) {
+            // navigate('/', { replace: true });
+            onLoginSuccess(document.getElementById("email").value);
+        }
     };
 
     return (
@@ -57,13 +42,6 @@ function Login({ onLoginSuccess, onClose, onShowSignUp }) {
                     <p>Don't have an account? <span onClick={onShowSignUp} className="link-text">Sign Up</span></p>
                 </div>
             </div>
-            {snackbar.show && (
-                <Snackbar
-                    message={snackbar.message}
-                    type={snackbar.type}
-                    onClose={handleCloseSnackbar}
-                />
-            )}
         </div>
     );
 }
