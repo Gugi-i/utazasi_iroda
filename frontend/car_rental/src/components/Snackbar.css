@@ -2,14 +2,24 @@
     position: fixed;
     bottom: 20px;
     left: 50%;
+    /* Start perfectly centered horizontally */
     transform: translateX(-50%);
     padding: 12px 24px;
     border-radius: 8px;
     color: white;
     font-weight: 600;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 2000;
-    animation: slideUp 0.3s ease-out;
+
+    z-index: 10001;
+
+    /* Use the corrected animation */
+    animation: slideUpCenter 0.3s ease-out;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 300px;
+    justify-content: center;
 }
 
 .snackbar.success {
@@ -20,7 +30,16 @@
     background-color: #dc3545;
 }
 
-@keyframes slideUp {
-    from { transform: translate(-50%, 20px); opacity: 0; }
-    to { transform: translate(-50%, 0); opacity: 1; }
+/* Corrected Animation */
+@keyframes slideUpCenter {
+    from {
+        /* Start slightly lower (off screen or lower on screen) and transparent */
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+    to {
+        /* End at final position (bottom: 20px defined in .snackbar) and fully visible */
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
 }

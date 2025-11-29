@@ -1,72 +1,15 @@
-/* src/components/Footer.css */
-
 .footer {
-    background: var(--dark-text);
-    color: #adb5bd; /* A light grey, not pure white */
-    padding-top: 50px;
+    background: #1a1a1a;
+    padding: 25px 0;
+    color: white;
+    margin-top: 50px;
 }
 
 .footer .container {
-    display: flex;
-    flex-direction: column;
-}
-
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-.footer-logo {
-    display: flex;
-    align-items: center;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--white);
-}
-
-.footer-logo img {
-    height: 35px;
-    margin-right: 10px;
-    /* Optional: Invert white logo to be visible on dark bg */
-    filter: brightness(0) invert(1);
-}
-
-.footer-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-}
-
-.footer-nav a {
-    color: #adb5bd;
-    font-weight: 600;
-}
-
-.footer-nav a:hover {
-    color: var(--white);
-}
-
-.social-links {
-    display: flex;
-    gap: 15px;
-}
-
-.social-links a {
-    color: #adb5bd;
-    font-size: 1.5rem; /* Assuming you use icon fonts */
-}
-
-.social-links a:hover {
-    color: var(--white);
-}
-
-.copyright {
     text-align: center;
-    font-size: 0.9rem;
-    border-top: 1px solid var(--secondary-color);
-    padding-top: 20px;
-    margin-top: 20px;
+}
+
+.footer-logo span {
+    font-size: 18px;
+    font-weight: bold;
 }

@@ -1,72 +1,100 @@
 /* src/components/FeaturedVehicles.css */
 
 .featured-vehicles-section {
-    padding: 120px 0 60px 0; /* Extra top padding to clear the search bar */
+    padding: 120px 0 60px 0;
     background-color: var(--light-bg);
 }
 
 .featured-vehicles-section h2 {
     margin-bottom: 30px;
+    text-align: center; /* Center the section title */
 }
 
 .car-list {
     display: grid;
-    /* Creates a responsive grid:
-       - Fills columns that are at least 300px wide
-       - 1fr makes them share space equally
+    /*
+       Using auto-fit will collapse empty columns.
+       Combined with justify-content: center, this centers the items
+       if they don't fill the full row.
     */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 350px)); /* Max width prevents single item stretching too wide */
+    gap: 30px;
+    justify-content: center; /* This centers the grid tracks within the container */
+    width: 100%;
 }
 
 /* Individual Car Card */
 .car-card {
     background: var(--white);
     border: 1px solid var(--border-color);
-    border-radius: var(--border-radius);
+    border-radius: 12px; /* Slightly rounder corners */
     box-shadow: var(--shadow-sm);
-    overflow: hidden; /* Ensures image corners are rounded */
+    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column; /* Ensures footer/button stays at bottom */
+    height: 100%; /* Makes all cards in a row the same height */
 }
 
 .car-card:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12); /* Slightly stronger hover shadow */
 }
 
 .car-card img {
     width: 100%;
     height: 200px;
-    object-fit: cover; /* Prevents image stretching */
+    object-fit: cover;
+    border-bottom: 1px solid #f0f0f0; /* Subtle separation from text */
+}
+
+.car-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Pushes the button to the bottom if content varies */
 }
 
 .car-card h3 {
-    padding: 15px 20px 0 20px;
+    margin: 0 0 8px 0;
+    font-size: 1.25rem;
+    color: #333;
+    font-weight: 700;
 }
 
 .car-card h4 {
-    padding: 0 0 0 20px;
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
+/* Optional: Add an icon before "people" if you want */
+/* .car-card h4::before { content: '👤'; } */
+
 .car-price {
-    padding: 0 20px 15px 20px;
-    font-size: 1.1rem;
-    font-weight: 600;
+    margin: auto 0 20px 0; /* Auto margin top pushes price down if needed */
+    font-size: 1.25rem;
+    font-weight: 700;
     color: var(--primary-color);
 }
 
 .book-now-btn {
     display: block;
-    width: calc(100% - 40px); /* Full width minus padding */
-    margin: 0 20px 20px 20px;
+    width: 100%;
     padding: 12px;
     background-color: var(--primary-color);
     color: var(--white);
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: 8px; /* Matching inner radius style */
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.3s ease;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+    margin-top: auto; /* Ensures button is always at the bottom */
 }
 
 .book-now-btn:hover {

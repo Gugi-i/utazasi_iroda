@@ -1,52 +1,57 @@
 // components/FeaturedVehicles.js
 import React, { useState } from 'react';
-import './FeaturedVehicles.css'; // CSS for featured vehicles
-import { checkCarAvailability, bookCar } from "../services/bookingService";
+import './FeaturedVehicles.css';
+import { bookCar } from "../services/bookingService"; // Removed checkCarAvailability
 import CarCard from "./CarCard.jsx";
 import '../App.css';
+import Snackbar from "./Snackbar.jsx"; // Import Snackbar
 
-
-function FeaturedVehicles({ searchResults, username, onRequestLogin, searchPickupDate, searchReturnDate, searchLocation }) {
+function FeaturedVehicles({ searchResults, username, onRequestLogin, searchPickupDate, searchReturnDate, searchLocation, onRefreshCars }) {
 
     const [selectedCar, setSelectedCar] = useState(null);
     const [pickupDate, setPickupDate] = useState("");
     const [returnDate, setReturnDate] = useState("");
-    const [availabilityMessage, setAvailabilityMessage] = useState("");
     const [termsChecked, setTermsChecked] = useState(false);
     const [location, setLocation] = useState("");
-    //TODO El kell dönteni, hogy ez kell-e
-    const handleCheckAvailability = async () => {
-        if (!pickupDate || !returnDate) {
-            setAvailabilityMessage("Please give required information.");
-            return;
-        }
 
-        try {
-            const result = await checkCarAvailability(selectedCar.id, pickupDate, returnDate, location);
+    // State for Snackbar
+    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
-            if (result) {
-                setAvailabilityMessage("Car is available!");
-            } else {
-                setAvailabilityMessage(`Not available: ${result.reason}`);
-            }
-        } catch (error) {
-            setAvailabilityMessage("Error checking availability. Please try again.");
-        }
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, show: false });
+    };
+
+    const resetStates = () => {
+        setSelectedCar(null);
+        setPickupDate("");
+        setReturnDate("");
+        setTermsChecked(false);
+        setLocation("");
+    }
+
+    const closeBookingModal = () => {
+        resetStates();
+        onRefreshCars();
     };
 
     const handleBooking = async () => {
-        if (!pickupDate || !returnDate) {
-            setAvailabilityMessage("Please fill out all fields.");
+        console.log("Handling booking...");
+
+        // Basic Validation
+        if (!pickupDate || !returnDate || !location) {
+            setSnackbar({ show: true, message: "Please fill out all fields.", type: 'error' });
             return;
         }
-
+        console.log("Terms checked:", termsChecked);
         if (!termsChecked) {
-            setAvailabilityMessage("You must accept the terms before booking.");
+            console.log("Terms not accepted.");
+            setSnackbar({ show: true, message: "You must accept the terms before booking.", type: 'error' });
             return;
         }
 
         try {
             console.log("Booking car:", selectedCar.id, pickupDate, returnDate);
+
             const result = await bookCar(
                 selectedCar.id,
                 pickupDate,
@@ -54,27 +59,23 @@ function FeaturedVehicles({ searchResults, username, onRequestLogin, searchPicku
             );
 
             if (result) {
-                setAvailabilityMessage("Booking successful! 🎉");
+                setSnackbar({ show: true, message: "Booking successful!", type: 'success' });
+                setTimeout(() => {
+                    closeBookingModal();
+                }, 1500);
             } else {
-                setAvailabilityMessage("Booking failed. Please try again.");
+                setSnackbar({ show: true, message: "Booking failed. Please try again.", type: 'error' });
             }
 
         } catch (error) {
-            setAvailabilityMessage("Error processing booking.");
             console.info(error);
+            // Extract error message if available, or fallback
+            const errorMsg = error.message || "Error processing booking.";
+            setSnackbar({ show: true, message: errorMsg, type: 'error' });
         }
     };
 
-    // Dummy data for featured cars
-    const cars = searchResults || []; /*[
-        { id: 1, name: 'Nissan Altima', pricePerDay: 50.00, imageUrl: 'src/assets/car2.jpg' },
-        { id: 2, name: 'Toyota RAV4', pricePerDay: 65.00, imageUrl: 'src/assets/car3.jpg' },
-        { id: 3, name: 'Fiat 500', pricePerDay: 40.00, imageUrl: 'src/assets/car1.jpg' },
-        { id: 4, name: 'Honda Civic', pricePerDay: 55.00, imageUrl: 'src/assets/car4.jpg' },
-        { id: 5, name: 'Ford Mustang', pricePerDay: 80.00, imageUrl: 'src/assets/car5.jpg' },
-        { id: 6, name: 'Chevrolet Malibu', pricePerDay: 60.00, imageUrl: 'src/assets/car6.jpg' },
-        // Add more cars as needed
-    ];*/
+    const cars = searchResults || [];
 
     return (
         <section id="browse" className="featured-vehicles-section">
@@ -82,104 +83,88 @@ function FeaturedVehicles({ searchResults, username, onRequestLogin, searchPicku
 
                 <div className="car-list">
                     {cars.map(car => (
-                        <CarCard key={car.id} car={car}  onBook={() => {
-                                if (!username) {
-                                    onRequestLogin();
-                                    return;
-                                }
-                                setSelectedCar(car);
-                                setPickupDate(searchPickupDate || "");
-                                setReturnDate(searchReturnDate || "");
-                                setLocation(searchLocation || "");
-                            }}  
+                        <CarCard key={car.id} car={car} onBook={() => {
+                            if (!username) {
+                                onRequestLogin();
+                                return;
+                            }
+                            setSelectedCar(car);
+                            setPickupDate(searchPickupDate || "");
+                            setReturnDate(searchReturnDate || "");
+                            setLocation(searchLocation || "");
+                        }}
                         />
                     ))}
                 </div>
-                 {selectedCar && (
+
+                {/* Booking Modal */}
+                {selectedCar && (
                     <div className="modal-overlay">
                         <div className="modal-panel">
-                        <h2>Booking: {selectedCar.name}</h2>
+                            <h2>Booking: {selectedCar.make} {selectedCar.model}</h2>
 
-                        
+                            <p><strong>Price:</strong> ${selectedCar.price_per_day}/day</p>
 
-                        <p><strong>Price:</strong> ${selectedCar.pricePerDay}/day</p>
+                            <p><strong>Location:</strong> {location}</p>
 
-                        <label>
-                            Pickup date:
-                            <input 
-                                type="date" 
-                                value={pickupDate}
-                                onChange={(e) => setPickupDate(e.target.value)}
-                            />
-                        </label>
+                            <label>
+                                Pickup date:
+                                <input
+                                    type="date"
+                                    value={pickupDate}
+                                    onChange={(e) => setPickupDate(e.target.value)}
+                                />
+                            </label>
 
-                        <label>
-                            Return date:
-                            <input 
-                                type="date"
-                                value={returnDate}
-                                onChange={(e) => setReturnDate(e.target.value)}
-                            />
-                        </label>
+                            <label>
+                                Return date:
+                                <input
+                                    type="date"
+                                    value={returnDate}
+                                    onChange={(e) => setReturnDate(e.target.value)}
+                                />
+                            </label>
 
-                        <label>
-                            Location:
-                            <input
-                                type="text"
-                                placeholder="Enter pickup location"
-                                value={location}
-                                onChange={(e) => setLocation(e.target.value)}
-                            />
-                        </label>
+                            <label className="terms-checkbox">
+                                <input
+                                    type="checkbox"
+                                    checked={termsChecked}
+                                    onChange={(e) => setTermsChecked(e.target.checked)}
+                                />
+                                I accept the terms and conditions, and I understand that cancellations may require a fee
+                                depending on timing.
+                            </label>
 
-                        <label className="terms-checkbox">
-                            <input
-                                type="checkbox"
-                                checked={termsChecked}
-                                onChange={(e) => setTermsChecked(e.target.checked)}
-                            />
-                            I accept the terms and conditions, and I understand that cancellations may require a fee depending on timing.
-                        </label>
+                            {/* Removed the separate Availability Check row/button */}
 
-                        <div className="availability-row">
-                            <button
-                                className="secondary-btn"
-                                onClick={handleCheckAvailability}
-                            >
-                                Check Availability
-                            </button>
-                            {availabilityMessage && (
-                                <span className="availability-message">{availabilityMessage}</span>
-                            )}
-                        </div>
+                            <div className="button-row">
+                                <button
+                                    className="primary-btn"
+                                    onClick={handleBooking}
+                                >
+                                    Book Now
+                                </button>
 
-                        <div className="button-row">
-                            <button
-                                className="primary-btn"
-                                disabled={!termsChecked}
-                                onClick={handleBooking}
-                            >
-                                Book Now
-                            </button>
-
-                            <button
-                                className="close-btn"
-                                onClick={() => {
-                                    setSelectedCar(null);
-                                    setPickupDate("");
-                                    setReturnDate("");
-                                    setAvailabilityMessage("");
-                                    setTermsChecked(false);
-                                    setLocation("")
-                                }}
-                            >
-                                Close
-                            </button>
-                        </div>
+                                <button
+                                    className="close-btn"
+                                    onClick={resetStates}
+                                >
+                                    Close
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    )}
+                )}
             </div>
+
+            {/* Render Snackbar globally for this component */}
+            {snackbar.show && (
+                <Snackbar
+                    message={snackbar.message}
+                    type={snackbar.type}
+                    onClose={handleCloseSnackbar}
+                />
+            )}
         </section>
     );
 }

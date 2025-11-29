@@ -22,7 +22,7 @@ function Header() {
 
     const handleLogin = (loggedInUsername) => {
         console.log("App received logged in username:", loggedInUsername);
-        setUsername(loggedInUsername);
+        // setUsername(loggedInUsername);
         setShowLogin(false);
         setOpen(true);
     };
@@ -71,9 +71,6 @@ function Header() {
                 </div>
                 <nav className="nav-menu">
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#browse">Browse Cars</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
                         {username === "" ? (
                             <li>
                                 <button className="sign-up-btn" id="login" onClick={showLoginPage}>Login</button>

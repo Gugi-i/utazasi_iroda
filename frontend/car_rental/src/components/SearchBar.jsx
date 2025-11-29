@@ -77,7 +77,12 @@ function SearchBar({ onSearch }) {
   <button
     type="button"
     className="primary-btn"
-    onClick={() => setShowAdvanced(prev => !prev)}
+    onClick={() => {
+        setShowAdvanced(prev => !prev)
+        setMinPrice('');
+        setMaxPrice('');
+        setMinSpace('');
+    }}
   >
     {showAdvanced ? "Hide Advanced Options" : "Show Advanced Options"}
   </button>
