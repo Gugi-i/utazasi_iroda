@@ -18,3 +18,17 @@ pip install -r requirements.txt futtatása
 root mappába .env file elhelyezése
 
 Majd ezzel a paranccsal lehet elindítani a backend-et: uvicorn backend.main:app --reload
+
+Https használatához szükség van egy tanúsítványra és egy kulcsra, amit a certs mappába kell elhelyezni.
+
+Ehhez telepíteni kell a számítógépre a mkcert-et: 
+1. choco install mkcert
+2. mkcert -install
+
+A tanúsítvány és kulcs létrehozásához az alábbi parancsra van szükség a certs könyvtárban:
+
+mkcert localhost
+
+Ezek után az alábbi paranccsal lehet elindítani a backend-et https-el:
+
+uvicorn backend.main:app --reload --ssl-keyfile=../certs/localhost-key.pem --ssl-certfile=../certs/localhost.pem
