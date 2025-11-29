@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import './Header.css';
 import Snackbar from '@mui/material/Snackbar';
 import Login from "../authentication/login/Login.jsx";
+import Signup from "../authentication/signup/Signup.jsx";
 import MyRentalsPage from "./MyRentalsPage.jsx";
 import MuiAlert from '@mui/material/Alert';
 
@@ -11,11 +12,11 @@ import MuiAlert from '@mui/material/Alert';
     return storedUsername ? storedUsername : "";
 } */
 
-function Header({ username, setUsername, showLogin, setShowLogin }) {
-    //const [username, setUsername] = useState(checkLoggedInUsername());
-    //const [showLogin, setShowLogin] = React.useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    //const [open, setOpen] = useState(false);
+function Header() {
+    const [username, setUsername] = useState(checkLoggedInUsername());
+    const [showLogin, setShowLogin] = React.useState(false);
+    const [showSignUp, setShowSignUp] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const [showMyRentals, setShowMyRentals] = useState(false);
 
     const handleLogin = (loggedInUsername) => {
@@ -39,6 +40,24 @@ function Header({ username, setUsername, showLogin, setShowLogin }) {
 
     const closeLoginPage = () => {
         setShowLogin(false);
+    }
+
+    const showSignUpPage = () => {
+        setShowSignUp(true);
+    }
+
+    const closeSignUpPage = () => {
+        setShowSignUp(false);
+    }
+
+    const changeToSignUp = () => {
+        setShowLogin(false);
+        setShowSignUp(true);
+    }
+
+    const changeToLogin = () => {
+        setShowSignUp(false);
+        setShowLogin(true);
     }
 
     const showRentalsPage = () => {
@@ -87,7 +106,12 @@ function Header({ username, setUsername, showLogin, setShowLogin }) {
         </header>
             <div>
                 {
-                    showLogin && <Login onLoginSuccess={handleLogin} onClose={closeLoginPage}/>
+                    showLogin && <Login onLoginSuccess={handleLogin} onClose={closeLoginPage} onShowSignUp={changeToSignUp}/>
+                }
+            </div>
+            <div>
+                {
+                    showSignUp && <Signup onClose={closeSignUpPage} onShowLogin={changeToLogin} />
                 }
             </div>
             <div>
