@@ -6,7 +6,7 @@ import CarCard from "./CarCard.jsx";
 import '../App.css';
 
 
-function FeaturedVehicles({ searchResults, searchError }) {
+function FeaturedVehicles({ searchResults, username, onRequestLogin, searchPickupDate, searchReturnDate, searchLocation }) {
 
     const [selectedCar, setSelectedCar] = useState(null);
     const [pickupDate, setPickupDate] = useState("");
@@ -79,14 +79,20 @@ function FeaturedVehicles({ searchResults, searchError }) {
     return (
         <section id="browse" className="featured-vehicles-section">
             <div className="container">
-                <h2>Featured Vehicles</h2>
-                {searchError && (
-                    <p className="error-message">{searchError}</p>
-                )}
 
                 <div className="car-list">
                     {cars.map(car => (
-                        <CarCard key={car.id} car={car}  onBook={setSelectedCar} />
+                        <CarCard key={car.id} car={car}  onBook={() => {
+                                if (!username) {
+                                    onRequestLogin();
+                                    return;
+                                }
+                                setSelectedCar(car);
+                                setPickupDate(searchPickupDate || "");
+                                setReturnDate(searchReturnDate || "");
+                                setLocation(searchLocation || "");
+                            }}  
+                        />
                     ))}
                 </div>
                  {selectedCar && (
