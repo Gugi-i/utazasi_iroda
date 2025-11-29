@@ -20,11 +20,14 @@ function SearchBar({ onSearch }) {
             }
             onSearch({
                 city: pickupLocation,
-                startDate: pickupDate,
-                endDate: returnDate,
+                start_date: pickupDate,
+                end_date: returnDate,
                 min_price: minPrice || undefined,
                 max_price: maxPrice || undefined,
-                min_space: minSpace || undefined
+                min_space: minSpace || undefined,
+                pickupDate,
+                returnDate,
+                location: pickupLocation
             });
         };
 
@@ -67,13 +70,13 @@ function SearchBar({ onSearch }) {
 
                 {/* Buttons stacked vertically */}
                 <div className="search-buttons" style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '10px' }}>
-  <button type="submit" className="search-button">
+  <button type="submit" className="primary-btn">
     Search Cars
   </button>
 
   <button
     type="button"
-    className="toggle-advanced-btn"
+    className="primary-btn"
     onClick={() => setShowAdvanced(prev => !prev)}
   >
     {showAdvanced ? "Hide Advanced Options" : "Show Advanced Options"}

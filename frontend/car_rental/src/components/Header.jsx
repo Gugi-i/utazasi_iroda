@@ -7,10 +7,10 @@ import Signup from "../authentication/signup/Signup.jsx";
 import MyRentalsPage from "./MyRentalsPage.jsx";
 import MuiAlert from '@mui/material/Alert';
 
-function checkLoggedInUsername() {
+/*function checkLoggedInUsername() {
     const storedUsername = localStorage.getItem("username");
     return storedUsername ? storedUsername : "";
-}
+} */
 
 function Header() {
     const [username, setUsername] = useState(checkLoggedInUsername());
@@ -24,7 +24,14 @@ function Header() {
         setUsername(loggedInUsername);
         localStorage.setItem("username", loggedInUsername);
         setShowLogin(false);
-        setOpen(true);
+        //setOpen(true);
+        setOpenSnackbar(true);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem("username");
+        setUsername("");
+        window.location.reload();
     };
 
     const showLoginPage = () => {
@@ -113,19 +120,19 @@ function Header() {
                 }
             </div>
             <Snackbar
-                open={open}
+                open={openSnackbar}
                 autoHideDuration={3000}
-                onClose={() => setOpen(false)}
+                onClose={() => setOpenSnackbar(false)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                >
-            <MuiAlert
-                elevation={6}
-                variant="filled"
-                severity="success" // gives green color
-                onClose={() => setOpen(false)}
             >
-                Successful login! Welcome, {username}!
-            </MuiAlert>
+                <MuiAlert
+                    elevation={6}
+                    variant="filled"
+                    severity="success"
+                    onClose={() => setOpenSnackbar(false)}
+                >
+                    Successful login! Welcome, {username}!
+                </MuiAlert>
             </Snackbar>
             </>
     );
