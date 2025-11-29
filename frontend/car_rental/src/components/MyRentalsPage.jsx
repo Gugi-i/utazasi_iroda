@@ -1,105 +1,127 @@
-import React, {useEffect, useRef, useState} from "react";
-import './MyRentalsPage.css'; // CSS for My Rentals Page
+import React, { useEffect, useRef, useState } from "react";
+import './MyRentalsPage.css';
 import '../App.css';
 import RentedCarCard from "./RentedCarCard.jsx";
+import { deleteRental, getRentalsForUser } from "../services/rentalServices.js";
+import Snackbar from "../components/Snackbar.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 
 function MyRentalsPage({ onClose }) {
     const modalRef = useRef(null);
+    const [rentals, setRentals] = useState([]);
 
-    // Close modal when clicking outside
+    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+
+    const [confirmModal, setConfirmModal] = useState({
+        show: false,
+        itemToDelete: null
+    });
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, show: false });
+    };
+
     useEffect(() => {
         function handleClickOutside(event) {
             if (modalRef.current && !modalRef.current.contains(event.target)) {
-                onClose();
+                if (!confirmModal.show) {
+                    onClose();
+                }
             }
         }
-
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, [onClose]);
-    const [rentals, setRentals] = useState([]);
+    }, [onClose, confirmModal.show]);
+
+    const getRentals = () => {
+        getRentalsForUser().then(data => {
+            const mappedRentals = data.map(rental => {
+                const carInfo = rental.car || rental;
+                return {
+                    car_id: rental.car_id,
+                    rent_id: rental.id || rental.rental_id,
+                    carModel: `${carInfo.make} ${carInfo.model}`,
+                    rentalDate: rental.rent_start_date ? rental.rent_start_date.replace(/-/g, '.') : '',
+                    returnDate: rental.rent_end_date ? rental.rent_end_date.replace(/-/g, '.') : '',
+                    status: rental.status,
+                    imageUrl: carInfo.imageUrl || rental.imageUrl
+                };
+            });
+            setRentals(mappedRentals);
+        }).catch(error => {
+            console.error('Error fetching rentals:', error);
+            setSnackbar({ show: true, message: 'Failed to load rentals.', type: 'error' });
+        });
+    }
+
     useEffect(() => {
         getRentals();
-    }, []);const getRentals = () => {
-        // fetch('/api/rentals', {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        // })
-        // .then(response => response.json())
-        // .then(data => {
-        //     console.log(data);
-        //     // Here you would typically set the rentals state with the fetched data
-        //     rentals = data;
-        // })
-        // .catch((error) => {
-        //     console.error('Error fetching rentals:', error);
-        // });
-        const mockData = [
-            {
-                id: 1,
-                carModel: "Toyota Camry",
-                rentalDate: "2024.06.01.",
-                returnDate: "2024.06.05.",
-                status: "Completed",
-                imageUrl: 'src/assets/car4.jpg'
-            },
-            {
-                id: 2,
-                carModel: "Honda Accord",
-                rentalDate: "2024.06.10.",
-                returnDate: "2024.06.15.",
-                status: "Ongoing",
-                imageUrl: 'src/assets/car5.jpg'
-            },
-            {
-                id: 3,
-                carModel: "Ford Mustang",
-                rentalDate: "2024.06.20.",
-                returnDate: "2024.06.25.",
-                status: "Upcoming",
-                imageUrl: 'src/assets/car6.jpg'
-            },
-            {
-                id: 4,
-                carModel: "Chevrolet Malibu",
-                rentalDate: "2024.07.01.",
-                returnDate: "2024.07.05.",
-                status: "Upcoming",
-                imageUrl: 'src/assets/car2.jpg'
-            },
-            {
-                id: 5,
-                carModel: "Nissan Altima",
-                rentalDate: "2024.07.10.",
-                returnDate: "2024.07.15.",
-                status: "Upcoming",
-                imageUrl: 'src/assets/car3.jpg'
-            }
-        ];
-        setRentals(mockData);
-    }
-    const handleDelete = (carToDelete) => {
-        setRentals(rentals.filter(item => item.id !== carToDelete.id));
+    }, []);
+
+    const initiateDelete = (car) => {
+        setConfirmModal({
+            show: true,
+            itemToDelete: car
+        });
     };
-    // getRentals();
+
+    const closeConfirmModal = () => {
+        setConfirmModal({ show: false, itemToDelete: null });
+    };
+
+    const executeDelete = () => {
+        const carToDelete = confirmModal.itemToDelete;
+        if (!carToDelete) return;
+
+        deleteRental(carToDelete.rent_id)
+            .then(() => {
+                setSnackbar({ show: true, message: 'Rental cancelled successfully!', type: 'success' });
+                getRentals();
+                closeConfirmModal();
+            })
+            .catch((error) => {
+                console.error('Error deleting rental:', error);
+                setSnackbar({ show: true, message: 'Failed to cancel rental. Please try again.', type: 'error' });
+                closeConfirmModal();
+            });
+    };
+
     return (
-        <div className="modal-overlay" ref={modalRef}>
-            <div className="modal-panel" style={{width: "50%"}}>
+        <div className="modal-overlay">
+            <div className="modal-panel" style={{ width: "50%" }} ref={modalRef}>
                 <button className="close-x" onClick={onClose}>✕</button>
                 <h2>My rentals</h2>
-                {rentals === [] ?
-                    (
-                        <p>You have no rentals at the moment.</p>
-                    ) : null
-                }
-                {rentals.map((car, index) => (
-                    <RentedCarCard key={index} car={car}
-                                   onDelete={() => handleDelete(car)}></RentedCarCard>
-                ))}
 
+                {rentals.length === 0 ? (
+                    <p>You have no rentals at the moment.</p>
+                ) : null}
+
+                <div className="rentals-list-container" style={{maxHeight: '70vh', overflowY: 'auto'}}>
+                    {rentals.map((car, index) => (
+                        <RentedCarCard
+                            key={car.rent_id || index}
+                            car={car}
+                            onDelete={() => initiateDelete(car)}
+                        />
+                    ))}
+                </div>
             </div>
+
+            <ConfirmationModal
+                isOpen={confirmModal.show}
+                title="Cancel Booking?"
+                message={`Are you sure you want to cancel your rental for the ${confirmModal.itemToDelete?.carModel}? This action cannot be undone.`}
+                onCancel={closeConfirmModal}
+                onConfirm={executeDelete}
+            />
+
+            {snackbar.show && (
+                <Snackbar
+                    message={snackbar.message}
+                    type={snackbar.type}
+                    onClose={handleCloseSnackbar}
+                />
+            )}
         </div>
     );
 }

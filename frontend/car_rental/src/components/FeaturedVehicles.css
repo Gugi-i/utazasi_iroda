@@ -44,6 +44,10 @@
     padding: 15px 20px 0 20px;
 }
 
+.car-card h4 {
+    padding: 0 0 0 20px;
+}
+
 .car-price {
     padding: 0 20px 15px 20px;
     font-size: 1.1rem;

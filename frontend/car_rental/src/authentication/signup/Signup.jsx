@@ -1,7 +1,7 @@
 import './Signup.css';
 import React, { useState } from "react";
 import {signup} from "../../services/authServices.js";
-import Snackbar from "../../components/Snakbar.jsx";
+import Snackbar from "../../components/Snackbar.jsx";
 
 function Signup({ onClose, onShowLogin }) {
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });

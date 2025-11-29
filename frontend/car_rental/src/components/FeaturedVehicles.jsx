@@ -16,7 +16,7 @@ function FeaturedVehicles({ searchResults, searchError }) {
     const [location, setLocation] = useState("");
     //TODO El kell dönteni, hogy ez kell-e
     const handleCheckAvailability = async () => {
-        if (!pickupDate || !returnDate || !location) {
+        if (!pickupDate || !returnDate) {
             setAvailabilityMessage("Please give required information.");
             return;
         }
@@ -35,7 +35,7 @@ function FeaturedVehicles({ searchResults, searchError }) {
     };
 
     const handleBooking = async () => {
-        if (!pickupDate || !returnDate || !location) {
+        if (!pickupDate || !returnDate) {
             setAvailabilityMessage("Please fill out all fields.");
             return;
         }
@@ -46,11 +46,11 @@ function FeaturedVehicles({ searchResults, searchError }) {
         }
 
         try {
+            console.log("Booking car:", selectedCar.id, pickupDate, returnDate);
             const result = await bookCar(
                 selectedCar.id,
                 pickupDate,
-                returnDate,
-                location
+                returnDate
             );
 
             if (result) {

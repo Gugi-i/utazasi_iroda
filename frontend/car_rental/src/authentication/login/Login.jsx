@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import './Login.css';
 import React, {useState} from "react";
 import {login} from "../../services/authServices.js";
-import Snackbar from "../../components/Snakbar.jsx";
+import Snackbar from "../../components/Snackbar.jsx";
 
 function Login({ onLoginSuccess, onClose, onShowSignUp }) {
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
@@ -20,6 +20,7 @@ function Login({ onLoginSuccess, onClose, onShowSignUp }) {
         login(email, password)
             .then(user => {
                 setTimeout(() => {
+                    localStorage.setItem('user', JSON.stringify(user));
                     onLoginSuccess(email);
                 }, 1500);
             })

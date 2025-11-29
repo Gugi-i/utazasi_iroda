@@ -8,7 +8,8 @@ import MyRentalsPage from "./MyRentalsPage.jsx";
 import MuiAlert from '@mui/material/Alert';
 
 function checkLoggedInUsername() {
-    const storedUsername = localStorage.getItem("username");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const storedUsername = storedUser ? storedUser.name : null;
     return storedUsername ? storedUsername : "";
 }
 
@@ -22,7 +23,6 @@ function Header() {
     const handleLogin = (loggedInUsername) => {
         console.log("App received logged in username:", loggedInUsername);
         setUsername(loggedInUsername);
-        localStorage.setItem("username", loggedInUsername);
         setShowLogin(false);
         setOpen(true);
     };
@@ -88,7 +88,7 @@ function Header() {
                                 <li>
                                     <button className="sign-up-btn" id="logout" onClick={() => {
                                         window.location.reload()
-                                        localStorage.removeItem("username");
+                                        localStorage.removeItem("user");
                                     }}>Logout</button>
                                 </li>
                             ) : null
