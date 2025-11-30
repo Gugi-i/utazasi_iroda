@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import date
 
 class JourneyCreate(BaseModel):
@@ -6,6 +6,7 @@ class JourneyCreate(BaseModel):
     start_date: date
     end_date: date
     number_of_people: int
+    email: EmailStr
 
 
 class JourneyResponse(BaseModel):
@@ -102,6 +103,7 @@ class JourneyDetailResponse(JourneyResponse):
     end_date: date
     number_of_people: int
     total_price: float
+    email: EmailStr
 
     cars: list[JourneyCarResponse]
     plane_tickets: list[JourneyPlaneResponse]

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import EmailStr
 from sqlalchemy.orm import Session
 
 from backend.utils.auth import get_current_user
@@ -28,6 +29,14 @@ def all_journeys(db: Session = Depends(get_db)):
 @router.get("/user/{user_id}", response_model=list[JourneyDetailResponse])
 def user_journeys(user_id: int, db: Session = Depends(get_db)):
     return journey_crud.get_user_journeys(db, user_id)
+
+# ---- GET JOURNEY BY EMAIL ----
+@router.get("/email/{email}", response_model=list[JourneyDetailResponse])
+def journey_by_email(email: str, db: Session = Depends(get_db)):
+    journeys = journey_crud.get_journey_by_email(db, email)
+    if journeys:
+        return journeys
+    raise HTTPException(404, "Journey not found")
 
 
 # ---- DELETE JOURNEY ----

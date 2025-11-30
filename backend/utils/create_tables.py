@@ -119,7 +119,8 @@ def create_all_tables():
         total_price NUMERIC(10,2),
         start_date DATE,
         end_date DATE,
-        number_of_people INT
+        number_of_people INT,
+        email VARCHAR(255) NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS "Journey_PlaneTickets" (

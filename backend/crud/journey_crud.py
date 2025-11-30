@@ -1,3 +1,4 @@
+from pydantic import EmailStr
 from sqlalchemy.orm import Session, joinedload
 from backend.models.journey_model import Journey, JourneyCar, JourneyPlane, JourneyAccommodation
 from backend.models.car_model import CarRented
@@ -45,6 +46,7 @@ def create_journey(db: Session, data):
         start_date=data.start_date,
         end_date=data.end_date,
         number_of_people=data.number_of_people,
+        email=data.email,
         total_price=0
     )
     db.add(journey)
@@ -69,6 +71,18 @@ def get_user_journeys(db: Session, user_id: int):
     return (
         db.query(Journey)
         .filter(Journey.user_id == user_id)
+        .options(
+            joinedload(Journey.cars),
+            joinedload(Journey.plane_tickets),
+            joinedload(Journey.accommodations)
+        )
+        .all()
+    )
+    
+def get_journey_by_email(db: Session, email: str):
+    return (
+        db.query(Journey)
+        .filter(Journey.email == email)
         .options(
             joinedload(Journey.cars),
             joinedload(Journey.plane_tickets),
