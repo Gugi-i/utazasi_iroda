@@ -12,7 +12,7 @@ def insert_sample_data(conn):
 
     for person in persons:
         cur.execute("""
-            INSERT INTO "Person" (name, email, password_hash, type)
+            INSERT INTO "Person" (name, email, password_hash, role)
             VALUES (%s, %s, %s, %s)
             RETURNING id
         """, person)
