@@ -8,22 +8,22 @@ import Signup from "../authentication/signup/Signup.jsx";
 import MuiAlert from '@mui/material/Alert';
 import MyBookingsPage from "./MyBookingsPage.jsx";
 
-function checkLoggedInUsername() {
+function checkLoggedInUser() {
     const storedUser = localStorage.getItem("user");
-    const storedUsername = storedUser ? JSON.parse(storedUser).name : null;
-    return storedUsername ? storedUsername : "";
+    const storedUserId = storedUser ? JSON.parse(storedUser).id : null;
+    return storedUserId ? storedUserId : -1;
 }
 
 function Header() {
-    const [username, setUsername] = useState(checkLoggedInUsername());
+    const [userId, setUserId] = useState(checkLoggedInUser());
     const [showLogin, setShowLogin] = React.useState(false  );
     const [showSignUp, setShowSignUp] = React.useState(false);
     const [open, setOpen] = useState(false);
     const [showMyBookings, setShowMyBookings] = useState(false);
 
-    const handleLogin = (loggedInUsername) => {
-        console.log("App received logged in username:", loggedInUsername);
-        setUsername(loggedInUsername);
+    const handleLogin = (loggedInUserId) => {
+        console.log("App received logged in user id:", loggedInUserId);
+        setUserId(loggedInUserId);
         setShowLogin(false);
         setOpen(true);
     };
@@ -68,7 +68,7 @@ function Header() {
                     </div>
                     <nav className="nav-menu">
                         <ul>
-                            {username === "" ? (
+                            {userId === -1 ? (
                                 <li>
                                     <button className="sign-up-btn" id="login" onClick={showLoginPage}>Login</button>
                                 </li>
@@ -77,7 +77,7 @@ function Header() {
                                     <a onClick={showBookingsPage} style={{cursor: "pointer"}}>My bookings</a>
                                 </li>
                             )}
-                            {username !== "" ?
+                            {userId !== -1 ?
                                 (
                                     <li>
                                         <button className="sign-up-btn" id="logout" onClick={() => {
@@ -105,7 +105,7 @@ function Header() {
             </div>
             <div>
                 {
-                    showMyBookings && <MyBookingsPage username={username} onClose={closeBookingsPage}/>
+                    showMyBookings && <MyBookingsPage onClose={closeBookingsPage}/>
                 }
             </div>
             <Snackbar
@@ -120,7 +120,7 @@ function Header() {
                     severity="success" // gives green color
                     onClose={() => setOpen(false)}
                 >
-                    Successful login! Welcome, {username}!
+                    Successful login! Welcome!
                 </MuiAlert>
             </Snackbar>
         </>

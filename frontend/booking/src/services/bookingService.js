@@ -27,3 +27,31 @@ export async function bookAccommodation(accommodationId, roomTypeId, checkInDate
 
     return response.json();
 }
+
+export async function getAccommodationsForUser() {
+    const storedUser = localStorage.getItem("user");
+    const userId = storedUser ? JSON.parse(storedUser).id : null;
+    const url = `https://localhost:8000/accommodations/bookings/user/${encodeURIComponent(userId)}`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error("Fetching rentals failed: " + response.status);
+    }
+
+    const data = await response.json();
+    console.log(data)
+    return data;
+}
+
+export async function deleteAccommodation(bookingId) {
+    const url = `https://localhost:8000/accommodations/accommodation/booking/${encodeURIComponent(bookingId)}`;
+    const response = await fetch(url, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error("Deleting booking failed: " + response.status);
+    }
+
+    return true;
+}

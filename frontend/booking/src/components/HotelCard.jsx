@@ -3,7 +3,7 @@ import './HotelCard.css';
 
 function HotelCard({ hotel, onBook }) {
     // Fallback image based on ID or random if imageUrl is missing from backend
-    const imageUrl = hotel.imageUrl || `https://picsum.photos/seed/${hotel.id}/400/300`;
+    const imageUrl = hotel.image_url || `https://picsum.photos/seed/${hotel.id}/400/300`;
 
     return (
         <div className="hotel-card">

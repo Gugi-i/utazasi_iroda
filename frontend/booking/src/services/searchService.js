@@ -19,10 +19,5 @@ export async function searchAccommodations(filters) {
         throw new Error("Car search failed: " + response.status);
     }
 
-    const data = await response.json();
-    for (let i = 0; i < data.length; i++) {
-        data[i].imageUrl = 'src/assets/car' + ((data[i].id % 6) + 1) + '.jpg';
-    }
-
-    return data;
+    return await response.json();
 }

@@ -17,7 +17,7 @@ function Home() {
     const [searchError, setSearchError] = useState(null);
 
     const user = localStorage.getItem("user");
-    const username = user ? JSON.parse(user).name : "";
+    const userId = user ? JSON.parse(user).id : -1;
     const [showLogin, setShowLogin] = useState(false);
 
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
@@ -86,7 +86,7 @@ function Home() {
                     <HotelList
                     searchResults={searchResults}
                     onRequestLogin={() => setShowLogin(true)}
-                    username={username}
+                    userId={userId}
                     searchCheckInDate={searchCheckInDate}
                     searchCheckOutDate={searchCheckOutDate}
                     />

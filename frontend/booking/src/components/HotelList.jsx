@@ -11,7 +11,7 @@ import {bookAccommodation} from "../services/bookingService.js"; // Import Snack
 // Dummy data fallback is removed or kept as comment if preferred, using props
 const dummyHotels = [];
 
-function HotelList({ searchResults, username, onRequestLogin, searchCheckInDate, searchCheckOutDate }) {
+function HotelList({ searchResults, userId, onRequestLogin, searchCheckInDate, searchCheckOutDate }) {
     const [selectedHotel, setSelectedHotel] = useState(null);
     const [selectedRoom, setSelectedRoom] = useState(null);
 
@@ -41,7 +41,7 @@ function HotelList({ searchResults, username, onRequestLogin, searchCheckInDate,
     };
 
     const onBookClick = (hotel, room) => {
-        if (!username) {
+        if (!userId) {
             console.log("User not logged in. Prompting login.");
             if (onRequestLogin) onRequestLogin();
             return;

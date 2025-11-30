@@ -1,94 +1,98 @@
 import React, { useState } from "react";
 import './BookedAccommodationCard.css';
-// import { cancelBookingApi } from '../services/bookingService';
-import ConfirmationModal from './ConfirmationModal'; // Import the new modal
+import ConfirmationModal from './ConfirmationModal';
 
 function BookedAccommodationCard({ booking, onDelete }) {
-    // State to control modal visibility
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Triggered when user clicks "Cancel" button on the card
-    const handleInitialClick = () => {
-        setIsModalOpen(true);
-    };
+    const handleInitialClick = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
 
-    // Triggered when user confirms inside the modal
     const handleConfirmCancel = async () => {
         try {
-            // Call the API service using the ID
-            // await cancelBookingApi(booking.id);
-
-            // Update UI only after successful API call
+            // Call your API delete function here if needed, e.g., await cancelBookingApi(booking.id);
             if (onDelete) {
                 onDelete(booking.id);
             }
         } catch (error) {
             alert("Failed to cancel booking. Please try again.");
         } finally {
-            // Close the modal regardless of success/failure
             setIsModalOpen(false);
         }
     };
 
-    // Triggered when user cancels/closes the modal
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+    // Safely access properties or provide defaults
+    const bookingStatus = booking.status || 'Confirmed';
+    const hotelName = booking.name || `Booking #${booking.id}`;
+    const location = booking.location || 'Unknown Location';
+    const roomName = booking.room || `Room Type ${booking.room_type_id}`;
+    const imageUrl = booking.imageUrl;
+    // Ensure dates are strings before slicing/formatting if they come as full timestamps
+    const checkIn = booking.check_in_date ? booking.check_in_date.toString().split('T')[0] : 'N/A';
+    const checkOut = booking.check_out_date ? booking.check_out_date.toString().split('T')[0] : 'N/A';
 
     return (
         <>
             <div className="booking-card">
-                {/* Left: Image or Type Placeholder */}
+                {/* Image Section */}
                 <div className="booking-card-img-wrapper">
-                    {booking.imageUrl ? (
-                        <img src={booking.imageUrl} alt={booking.name} className="booking-card-img" />
+                    {imageUrl ? (
+                        <img src={imageUrl} alt={hotelName} className="booking-card-img" />
                     ) : (
                         <div className="booking-card-placeholder">
-                            {booking.type}
+                            <span className="placeholder-icon">🏨</span>
                         </div>
                     )}
                 </div>
 
-                {/* Middle: Text Info */}
+                {/* Info Section */}
                 <div className="booking-card-info">
-                    <h3>{booking.name}</h3>
+                    <div className="booking-header">
+                        <h3 className="hotel-name">{hotelName}</h3>
+                        <span className={`status-badge status-${bookingStatus.toLowerCase()}`}>
+                            {bookingStatus}
+                        </span>
+                    </div>
 
-                    <p className="booking-dates">
-                        {booking.check_in_date} — {booking.check_out_date}
-                    </p>
-
-                    <p className="booking-details">
-                        {booking.room} • {booking.location}
-                    </p>
-
-                    <p className="booking-price">
-                        Total: <span>${booking.total_price}</span>
-                    </p>
-
-                    <span className={`status-badge ${booking.status.toLowerCase()}`}>
-                        {booking.status}
-                    </span>
+                    <div className="booking-details-grid">
+                        <div className="detail-item">
+                            <span className="detail-label">Dates</span>
+                            <span className="detail-value">{checkIn} - {checkOut}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Room</span>
+                            <span className="detail-value">{roomName}</span>
+                        </div>
+                        <div className="detail-item">
+                            <span className="detail-label">Location</span>
+                            <span className="detail-value">{location}</span>
+                        </div>
+                        <div className="detail-item price-item">
+                            <span className="detail-label">Total</span>
+                            <span className="detail-value price">${booking.total_price}</span>
+                        </div>
+                    </div>
                 </div>
 
-                {booking.status === 'Confirmed' &&
-                    <button
-                        className="cancel-btn"
-                        onClick={handleInitialClick} // Opens the modal instead of window.confirm
-                        disabled={booking.status === 'Cancelled'}
-                    >
-                        Cancel
-                    </button>
-                }
-
+                {/* Action Section */}
+                <div className="booking-card-actions">
+                    {bookingStatus === 'Confirmed' && (
+                        <button
+                            className="cancel-btn"
+                            onClick={handleInitialClick}
+                        >
+                            Cancel
+                        </button>
+                    )}
+                </div>
             </div>
 
-            {/* Render the Confirmation Modal */}
             <ConfirmationModal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 onConfirm={handleConfirmCancel}
                 title="Cancel Booking?"
-                message={`Are you sure you want to cancel your stay at ${booking.name}? This action cannot be undone.`}
+                message={`Are you sure you want to cancel your stay at ${hotelName}? This action cannot be undone.`}
             />
         </>
     );

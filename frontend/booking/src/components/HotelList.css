@@ -2,17 +2,17 @@
 
 .hotel-list-container {
     padding: 20px;
-    max-width: 1200px; /* Wider container to fit more cards */
+    /* Constrain the width slightly so single cards don't span excessively on huge monitors */
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 /* Grid Layout for Hotel Cards */
 .hotel-grid {
     display: grid;
-    /* Responsive grid similar to the car rental one */
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    /* Force a single column layout */
+    grid-template-columns: 1fr;
     gap: 30px;
-    justify-content: center;
     width: 100%;
 }
 
@@ -94,7 +94,7 @@
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .hotel-grid {
-        grid-template-columns: 1fr; /* Single column on mobile */
+        /* On mobile, it remains 1 column, but gaps might be smaller */
         gap: 20px;
     }
 
