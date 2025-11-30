@@ -35,7 +35,6 @@ function MyBookingsPage({ onClose }) {
 
                 const mappedBookings = data.map(booking => {
                     // --- 1. Date Formatting Logic ---
-                    // Assumes input is YYYY-MM-DD. Replaces '-' with '.' and adds a trailing dot.
                     const formatDate = (dateStr) => {
                         if (!dateStr) return "";
                         return dateStr.replace(/-/g, '.') + '.';
@@ -46,24 +45,17 @@ function MyBookingsPage({ onClose }) {
 
                     // --- 2. Status Calculation Logic ---
                     const calculateStatus = (apiStatus, startStr, endStr) => {
-                        // If API explicitly says cancelled, keep it.
                         if (apiStatus && apiStatus.toLowerCase() === 'cancelled') {
                             return 'Cancelled';
                         }
-
                         const today = new Date();
-                        today.setHours(0, 0, 0, 0); // Reset time for accurate date comparison
-
+                        today.setHours(0, 0, 0, 0);
                         const startDate = new Date(startStr);
                         const endDate = new Date(endStr);
 
-                        if (today > endDate) {
-                            return 'Completed';
-                        } else if (today >= startDate && today <= endDate) {
-                            return 'Ongoing';
-                        } else {
-                            return 'Confirmed'; // Or 'Upcoming'
-                        }
+                        if (today > endDate) return 'Completed';
+                        if (today >= startDate && today <= endDate) return 'Ongoing';
+                        return 'Confirmed';
                     };
 
                     const computedStatus = calculateStatus(
@@ -72,23 +64,35 @@ function MyBookingsPage({ onClose }) {
                         booking.check_out_date
                     );
 
+                    // --- 3. Room Name Logic ---
+                    const getRoomName = (capacity) => {
+                        if (!capacity) return "Standard Room";
+                        if (capacity === 1) return "Single Room";
+                        if (capacity === 2) return "Double Room";
+                        if (capacity >= 3) return "Family Room";
+                        return "Standard Room";
+                    };
+
+                    // Safely access capacity (handling potential null/undefined)
+                    const capacity = booking.room_type ? booking.room_type.room_capacity : 0;
+                    const roomName = getRoomName(capacity);
+
+                    // Safely access accommodation details
+                    const acc = booking.room_type?.accommodation || {};
+
                     return {
                         id: booking.id,
-                        name: booking.name || "Unknown Accommodation",
-                        location: booking.location || "Unknown Location",
-                        room: booking.room_type || "Standard Room",
+                        name: acc.name || "Unknown Hotel",
+                        location: acc.location || "Unknown Location",
+                        room: roomName, // Updated Room Name
 
-                        // Use the formatted date strings
                         check_in_date: formattedCheckIn,
                         check_out_date: formattedCheckOut,
-
                         total_price: booking.total_price,
-
-                        // Use the calculated status
                         status: computedStatus,
 
-                        // Handle Image: Fallback if API doesn't provide one
-                        imageUrl: booking.image_url || `src/assets/room${(booking.id % 5) + 1}.jpg`
+                        // Handle Image: use image from accommodation or fallback
+                        imageUrl: acc.image_url || booking.image_url || `src/assets/room${(booking.id % 5) + 1}.jpg`
                     };
                 });
 
@@ -111,7 +115,6 @@ function MyBookingsPage({ onClose }) {
         deleteAccommodation(bookingId)
             .then(() => {
                 setSnackbar({ show: true, message: 'Booking cancelled successfully!', type: 'success' });
-                // Refresh the list to recalculate statuses/remove items
                 getAccomodations();
             })
             .catch((error) => {

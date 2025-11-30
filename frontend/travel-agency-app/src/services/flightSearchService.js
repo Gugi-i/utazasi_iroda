@@ -14,7 +14,7 @@ export async function searchTickets(filters) {
         params.append("departure_date", filters.departure_date)
     }
 
-    const url = `http://localhost:8000/plane?${params.toString()}`;
+    const url = `https://localhost:8000/plane?${params.toString()}`;
 
     try {
         const response = await fetch(url);

@@ -1,5 +1,6 @@
 export async function searchCars(filters) {
   const params = new URLSearchParams();
+  console.log("Searching cars using:", filters);
 
   if (filters.city) params.append("city", filters.city);
   if (filters.min_price) params.append("min_price", filters.min_price);
@@ -8,7 +9,8 @@ export async function searchCars(filters) {
   if (filters.start_date) params.append("start_date", filters.start_date);
   if (filters.end_date) params.append("end_date", filters.end_date);
 
-  const url = `http://localhost:8000/cars?${params.toString()}`;
+  const url = `https://localhost:8000/cars?${params.toString()}`;
+  console.log("Car search URL:", url);
 
   const res = await fetch(url);
   if (!res.ok) throw new Error("Car search failed: " + res.status);

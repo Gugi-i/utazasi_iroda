@@ -47,6 +47,7 @@ export default function RentalModal({ open, onClose, onAddCar, initialCity = "",
         start_date: startDate,
         end_date: endDate
       });
+      console.log(results)
 
       setCars(results);
     } catch (e) {

@@ -2,8 +2,10 @@ import React from 'react';
 import './HotelCard.css';
 
 function HotelCard({ hotel, onBook }) {
-    // Fallback image based on ID or random if imageUrl is missing from backend
-    const imageUrl = hotel.image_url || `https://picsum.photos/seed/${hotel.id}/400/300`;
+    // Fallback image if not provided
+    const imageUrl = hotel.imageUrl || `https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80`;
+    console.log(hotel)
+    console.log(hotel.room)
 
     return (
         <div className="hotel-card">
@@ -30,23 +32,25 @@ function HotelCard({ hotel, onBook }) {
                     {hotel.description}
                 </p>
 
-                {/* Room Types List */}
+                {/* Room Types List - This was likely the source of the error */}
                 <div className="room-types-list">
                     <h4 className="room-types-title">Available Rooms:</h4>
+
                     {hotel.room_types && hotel.room_types.length > 0 ? (
                         hotel.room_types.map((room) => (
                             <div key={room.id} className="room-type-item">
                                 <div className="room-info">
+                                    {/* Render properties, NOT the 'room' object itself */}
                                     <span className="room-capacity">
                                         👤 {room.room_capacity} Person{room.room_capacity > 1 ? 's' : ''}
                                     </span>
-                                    {/* You could add total_rooms logic here if needed (e.g. "Only 2 left!") */}
                                 </div>
                                 <div className="room-action">
                                     <span className="room-price">${room.price_per_night}</span>
                                     <button
                                         className="book-room-btn"
-                                        onClick={() => onBook(hotel, room)} // Pass both hotel and specific room
+                                        // Pass the specific room object to the handler
+                                        onClick={() => onBook(hotel, room)}
                                     >
                                         Select
                                     </button>

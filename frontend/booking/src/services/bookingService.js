@@ -1,6 +1,7 @@
 export async function bookAccommodation(accommodationId, roomTypeId, checkInDate, checkOutDate) {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const userId = storedUser ? storedUser.id : null;
+    const token = storedUser ? storedUser.access_token : null;
 
     const url = "https://localhost:8000/accommodations/book"; // Updated URL
 
@@ -14,8 +15,11 @@ export async function bookAccommodation(accommodationId, roomTypeId, checkInDate
     };
 
     const response = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // This is the standard format
+        },
         body: JSON.stringify(bookingData)
     });
 
@@ -31,8 +35,15 @@ export async function bookAccommodation(accommodationId, roomTypeId, checkInDate
 export async function getAccommodationsForUser() {
     const storedUser = localStorage.getItem("user");
     const userId = storedUser ? JSON.parse(storedUser).id : null;
+    const token = storedUser ? JSON.parse(storedUser).access_token : null;
     const url = `https://localhost:8000/accommodations/bookings/user/${encodeURIComponent(userId)}`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // This is the standard format
+        }
+    });
 
     if (!response.ok) {
         throw new Error("Fetching rentals failed: " + response.status);
@@ -45,8 +56,14 @@ export async function getAccommodationsForUser() {
 
 export async function deleteAccommodation(bookingId) {
     const url = `https://localhost:8000/accommodations/accommodation/booking/${encodeURIComponent(bookingId)}`;
+    const storedUser = localStorage.getItem("user");
+    const token = storedUser ? JSON.parse(storedUser).access_token : null;
     const response = await fetch(url, {
         method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // This is the standard format
+        }
     });
 
     if (!response.ok) {
