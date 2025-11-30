@@ -32,3 +32,5 @@ class CarRented(Base):
 
     car = relationship("Car", back_populates="rentals")
     person = relationship("Person", back_populates="rentals")
+    
+    journey_links = relationship("JourneyCar", back_populates="car_rented")

@@ -42,3 +42,5 @@ class AccommodationBooking(Base):
 
     room_type = relationship("AccommodationRoomType", back_populates="bookings")
     person = relationship("Person", back_populates="accommodation_bookings")
+    
+    journey_links = relationship("JourneyAccommodation", back_populates="accommodation_booked")

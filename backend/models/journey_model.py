@@ -25,6 +25,7 @@ class JourneyPlane(Base):
     plane_ticket_booked_id = Column(Integer, ForeignKey("PlaneTickets_booked.id", ondelete="CASCADE"))
 
     journey = relationship("Journey", back_populates="plane_tickets")
+    plane_ticket_booked = relationship("PlaneTicketBooked", back_populates="journey_links")
 
 
 class JourneyCar(Base):
@@ -35,6 +36,7 @@ class JourneyCar(Base):
     car_rented_id = Column(Integer, ForeignKey("Car_rented.id", ondelete="CASCADE"))
 
     journey = relationship("Journey", back_populates="cars")
+    car_rented = relationship("CarRented", back_populates="journey_links")
 
 
 class JourneyAccommodation(Base):
@@ -45,3 +47,4 @@ class JourneyAccommodation(Base):
     accommodation_booked_id = Column(Integer, ForeignKey("AccommodationBooking.id", ondelete="CASCADE"))
 
     journey = relationship("Journey", back_populates="accommodations")
+    accommodation_booked = relationship("AccommodationBooking", back_populates="journey_links")

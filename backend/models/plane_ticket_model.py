@@ -31,3 +31,5 @@ class PlaneTicketBooked(Base):
 
     ticket = relationship("PlaneTicket", back_populates="bookings")
     person = relationship("Person", back_populates="plane_bookings")
+    
+    journey_links = relationship("JourneyPlane", back_populates="plane_ticket_booked")
