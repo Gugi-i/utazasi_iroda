@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import EmailStr
 from sqlalchemy.orm import Session
 
 from backend.utils.auth import get_current_user
@@ -48,10 +47,9 @@ def cancel_journey(journey_id: int, db: Session = Depends(get_db), user=Depends(
 
 
 # ---- ADD ELEMENTS ----
-@router.post("/{journey_id}/add_car")
+@router.post("/{journey_id}/add-car")
 def add_car(journey_id: int, data: AddCar, db: Session = Depends(get_db), user=Depends(get_current_user)):
     return journey_crud.add_car_to_journey(db, journey_id, data.car_rented_id)
-
 
 @router.post("/{journey_id}/add_plane")
 def add_plane(journey_id: int, data: AddPlane, db: Session = Depends(get_db), user=Depends(get_current_user)):
@@ -64,22 +62,18 @@ def add_accommodation(journey_id: int, data: AddAccommodation, db: Session = Dep
 
 
 # ---- REMOVE ELEMENTS ----
-@router.delete("/cars/{item_id}")
+@router.delete("/car/{item_id}")
 def delete_car(item_id: int, db: Session = Depends(get_db), user=Depends(get_current_user)):
     if journey_crud.remove_car(db, item_id):
         return {"deleted": item_id}
-    raise HTTPException(404, "Car not found in journey")
-
 
 @router.delete("/planes/{item_id}")
 def delete_plane(item_id: int, db: Session = Depends(get_db), user=Depends(get_current_user)):
     if journey_crud.remove_plane(db, item_id):
         return {"deleted": item_id}
-    raise HTTPException(404, "Plane ticket not found in journey")
 
 
 @router.delete("/accommodations/{item_id}")
 def delete_accommodation(item_id: int, db: Session = Depends(get_db), user=Depends(get_current_user)):
     if journey_crud.remove_accommodation(db, item_id):
         return {"deleted": item_id}
-    raise HTTPException(404, "Accommodation not found in journey")
