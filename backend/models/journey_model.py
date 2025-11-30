@@ -6,7 +6,7 @@ class Journey(Base):
     __tablename__ = "Journey"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("User.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("Person.id", ondelete="CASCADE"), nullable=False)
     total_price = Column(Numeric(10, 2), default=0)
     start_date = Column(Date)
     end_date = Column(Date)

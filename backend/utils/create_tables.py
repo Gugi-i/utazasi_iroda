@@ -51,7 +51,7 @@ def create_all_tables():
     CREATE TABLE IF NOT EXISTS "Car_rented" (
         id SERIAL PRIMARY KEY,
         car_id INT NOT NULL REFERENCES "Car"(id) ON DELETE CASCADE,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         rent_start_date DATE NOT NULL,
         rent_end_date DATE NOT NULL,
         total_price NUMERIC(10,2)
@@ -74,7 +74,7 @@ def create_all_tables():
     CREATE TABLE IF NOT EXISTS "PlaneTickets_booked" (
         id SERIAL PRIMARY KEY,
         flight_id INT NOT NULL REFERENCES "PlaneTickets"(id) ON DELETE CASCADE,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         seat_number VARCHAR(10),
         total_price NUMERIC(10,2)
     );
@@ -100,7 +100,7 @@ def create_all_tables():
         id SERIAL PRIMARY KEY,
         accommodation_id INT NOT NULL REFERENCES "Accommodation"(id) ON DELETE CASCADE,
         room_type_id INT NOT NULL REFERENCES "AccommodationRoomType"(id) ON DELETE CASCADE,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         rooms_booked INT NOT NULL,               
         check_in_date DATE NOT NULL,
         check_out_date DATE NOT NULL,
@@ -109,7 +109,7 @@ def create_all_tables():
 
     CREATE TABLE IF NOT EXISTS "Journey" (
         id SERIAL PRIMARY KEY,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         total_price NUMERIC(10,2),
         start_date DATE,
         end_date DATE,

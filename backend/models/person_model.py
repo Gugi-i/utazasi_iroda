@@ -10,6 +10,10 @@ class Person(Base):
 
     user = relationship("User", back_populates="person", uselist=False)
     worker = relationship("Worker", back_populates="person", uselist=False)
+    
+    rentals = relationship("CarRented", back_populates="person")
+    plane_bookings = relationship("PlaneTicketBooked", back_populates="person")
+    accommodation_bookings = relationship("AccommodationBooking", back_populates="person")
 
 from sqlalchemy import ForeignKey
 
@@ -22,10 +26,6 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
 
     person = relationship("Person", back_populates="user")
-
-    rentals = relationship("CarRented", back_populates="user")
-    plane_bookings = relationship("PlaneTicketBooked", back_populates="user")
-    accommodation_bookings = relationship("AccommodationBooking", back_populates="user")
 
 class Worker(Base):
     __tablename__ = "Worker"

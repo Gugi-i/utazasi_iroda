@@ -49,6 +49,7 @@ def get_all_cars(db: Session, filters: dict):
             "space": car.space,
             "city": car.city,
             "price_per_day": float(car.price_per_day),
+            "status": car.status,
             "rentals": [
                 {
                     "id": r.id,
