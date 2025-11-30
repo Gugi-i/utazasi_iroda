@@ -1,7 +1,7 @@
 import './Signup.css';
 import React, { useState } from "react";
 import {signup} from "../../services/authService.js";
-import Snackbar from "../../components/Snakbar.jsx";
+import Snackbar from "../../components/Snackbar.jsx";
 
 function Signup({ onClose, onShowLogin }) {
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
@@ -35,7 +35,7 @@ function Signup({ onClose, onShowLogin }) {
     return (
         <div className="modal-overlay">
             <div className="modal-panel">
-                <h2>Sign Up to Speedy Rentals</h2>
+                <h2>Sign Up to Speedy Airliness</h2>
                 <form className="sign-up-form" onSubmit={confirmSignup}>
                     <div className="form-group">
                         <label htmlFor="email">Email:</label>

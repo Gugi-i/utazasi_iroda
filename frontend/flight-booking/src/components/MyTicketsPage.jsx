@@ -1,59 +1,85 @@
 import React, { useEffect, useRef, useState } from "react";
 import './MyTicketsPage.css';
-import BookedTicketCard from "./BookedTicketCard.jsx"; // <-- use your renamed component
+import '../App.css';
+import BookedTicketCard from "./BookedTicketCard.jsx";
+import { deleteTicket, getTicketsForUser } from "../services/bookingService.js";
+import Snackbar from "../components/Snackbar.jsx";
+import ConfirmationModal from "./ConfirmationModal.jsx";
 
-function MyTicketsPage({ username, onClose }) {
+function MyTicketsPage({ onClose }) {
     const modalRef = useRef(null);
     const [tickets, setTickets] = useState([]);
 
-    // Close modal when clicking outside
+    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+
+    const [confirmModal, setConfirmModal] = useState({
+        show: false,
+        itemToDelete: null
+    });
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, show: false });
+    };
+
+
     useEffect(() => {
         const handleClickOutside = (event) => {
-            if (modalRef.current && !modalRef.current.contains(event.target) && typeof onClose === 'function') {
-                onClose();
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                if (!confirmModal.show) {
+                    onClose();
+                }
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [onClose]);
+    }, [onClose, confirmModal.show]);
 
-    // Mock tickets for now; replace with real API fetch
+    const getTickets = () => {
+        getTicketsForUser().then(data => {
+           const mappedTickets = data.map(ticket => ({
+                id: ticket.id,
+                flight_id: ticket.flight_id,
+                seat_number: ticket.seat_number,
+                price: ticket.total_price
+            }));
+
+            setTickets(mappedTickets);
+        }).catch(error => {
+            console.error('Error fetching tickets:', error);
+            setSnackbar({ show: true, message: 'Failed to load tickets.', type: 'error' });
+        });
+    }
+
     useEffect(() => {
-        const mockTickets = [
-            {
-                id: 1,
-                airline: "Airline Airlines",
-                flight_number: "AA123",
-                departure_city: "New York",
-                arrival_city: "London",
-                departure_date: "2024-12-01T10:00:00",
-                arrival_date: "2024-12-01T18:00:00",
-                price: 450,
-                total_seats: 150,
-                seats_available: 5,
-                airline_logo: "/placeholder-plane.png"
-            },
-            {
-                id: 2,
-                airline: "SkyHigh",
-                flight_number: "SH456",
-                departure_city: "Paris",
-                arrival_city: "Berlin",
-                departure_date: "2024-12-05T08:30:00",
-                arrival_date: "2024-12-05T10:15:00",
-                price: 120,
-                total_seats: 100,
-                seats_available: 12,
-                airline_logo: "/placeholder-plane.png"
-            }
-        ];
-
-        setTickets(mockTickets);
+        getTickets();
     }, []);
 
-    const handleDelete = (ticketToDelete) => {
-        // Optional: call backend API to cancel ticket
-        setTickets(tickets.filter(t => t.id !== ticketToDelete.id));
+    const initiateDelete = (ticket) => {
+        setConfirmModal({
+            show: true,
+            itemToDelete: ticket
+        });
+    };
+
+    const closeConfirmModal = () => {
+        setConfirmModal({ show: false, itemToDelete: null });
+    };
+
+    const executeDelete = () => {
+        const ticketToDelete = confirmModal.itemToDelete;
+        if (!ticketToDelete) return;
+        console.log(ticketToDelete)
+        deleteTicket(ticketToDelete.id)
+            .then(() => {
+                setSnackbar({ show: true, message: 'Booking cancelled successfully!', type: 'success' });
+                getTickets();
+                closeConfirmModal();
+            })
+            .catch((error) => {
+                console.error('Error deleting booking:', error);
+                setSnackbar({ show: true, message: 'Failed to cancel ticket. Please try again.', type: 'error' });
+                closeConfirmModal();
+            });
     };
 
     return (
@@ -64,16 +90,33 @@ function MyTicketsPage({ username, onClose }) {
 
                 {tickets.length === 0 ? (
                     <p>You have no tickets at the moment.</p>
-                ) : (
-                    tickets.map(ticket => (
+                ) : null}
+
+                <div className="tickets-list-container" style={{maxHeight: '70vh', overflowY: 'auto'}}>
+                    {tickets.map((ticket, index) => (
                         <BookedTicketCard
-                            key={ticket.id}
-                            ticket={ticket}       // pass ticket object
-                            onDelete={() => handleDelete(ticket)} // delete callback
+                            key={ticket.rent_id || index}
+                            ticket={ticket}
+                            onDelete={() => initiateDelete(ticket)}
                         />
-                    ))
-                )}
+                    ))}
+                </div>
             </div>
+            <ConfirmationModal
+                isOpen={confirmModal.show}
+                title="Cancel Booking?"
+                message={`Are you sure you want to cancel your ticket for the ${confirmModal.itemToDelete?.carModel}? This action cannot be undone.`}
+                onCancel={closeConfirmModal}
+                onConfirm={executeDelete}
+            />
+
+            {snackbar.show && (
+                <Snackbar
+                    message={snackbar.message}
+                    type={snackbar.type}
+                    onClose={handleCloseSnackbar}
+                />
+            )}
         </div>
     );
 }

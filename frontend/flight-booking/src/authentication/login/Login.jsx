@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import './Login.css';
 import React, {useState} from "react";
 import {login} from "../../services/authService.js";
-import Snackbar from "../../components/Snakbar.jsx";
+import Snackbar from "../../components/Snackbar.jsx";
 
 function Login({ onLoginSuccess, onClose, onShowSignUp }) {
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
@@ -20,6 +20,7 @@ function Login({ onLoginSuccess, onClose, onShowSignUp }) {
         login(email, password)
             .then(user => {
                 setTimeout(() => {
+                    localStorage.setItem('user', JSON.stringify(user));
                     onLoginSuccess(email);
                 }, 1500);
             })
@@ -33,7 +34,7 @@ function Login({ onLoginSuccess, onClose, onShowSignUp }) {
     return (
         <div className="modal-overlay">
             <div className="modal-panel">
-                <h2>Login to Speedy Rentals</h2>
+                <h2>Login to Speedy Airlines</h2>
                 <form className="login-form" onSubmit={confirmLogin}>
                     <div className="form-group">
                         <label htmlFor="email">Email:</label>

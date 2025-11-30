@@ -3,41 +3,63 @@ import './Tickets.css';
 import { bookTicket } from "../services/bookingService";
 import TicketCard from "./TicketCard.jsx";
 import '../App.css';
+import Snackbar from "./Snackbar.jsx";
 
 
 function Tickets({ searchResults, username, onRequestLogin, searchDate, searchStartLocation, searchDestination }) {
 
     const [selectedTicket, setSelectedTicket] = useState(null);
-    const [date, setDate] = useState("");
-    const [availabilityMessage, setAvailabilityMessage] = useState("");
-    const [termsChecked, setTermsChecked] = useState(false);
-    const [startLocation, setStartLocation] = useState("")
-    const [destination, setDestination] = useState("");
     const [quantity, setQuantity] = useState(1);
+    const [termsChecked, setTermsChecked] = useState(false);
+
+    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, show: false });
+    };
+
+    const resetStates = () => {
+        setSelectedTicket(null);
+        setDate("");
+        setStartLocation("");
+        setTermsChecked(false);
+        setDestination("");
+    }
+
+    const closeBookingModal = () => {
+        resetStates();
+        onRefreshTickets
+        ();
+    };
 
     const handleBooking = async () => {
         if (!termsChecked) {
-            setAvailabilityMessage("You must accept the terms to proceed.");
+            setSnackbar({ show: true, message: "You must accept the terms before booking.", type: 'error' });
             return;
         }
 
         if (quantity < 1) {
-            setAvailabilityMessage("Select at least 1 seat.");
+            setSnackbar({ show: true, message: "Select at least 1 seat.", type: 'error' });
             return;
         }
 
         try {
-            await bookTicket({
-                ticketId: selectedTicket.id,
-                userId: username.id,
-                quantity: quantity
+            const result = await bookTicket({
+                flight_id: selectedTicket.id,
+                quantity
             });
 
-            setAvailabilityMessage("Booking successful!");
-
-            setSelectedTicket(null);
-        } catch (err) {
-            setAvailabilityMessage(err.message || "Booking failed.");
+        if (result) {
+                setSnackbar({ show: true, message: "Booking successful!", type: 'success' });
+                setTimeout(() => {
+                    closeBookingModal();
+                }, 1500);
+            } else {
+                setSnackbar({ show: true, message: "Booking failed. Please try again.", type: 'error' });
+            }
+        } catch (error) {
+            const errorMsg = error.message || "Error processing booking.";
+            setSnackbar({ show: true, message: errorMsg, type: 'error' });
         }
     };
 
@@ -56,7 +78,7 @@ function Tickets({ searchResults, username, onRequestLogin, searchDate, searchSt
                                 }
                                 setSelectedTicket(ticket);
                                 setDate(searchDate || "");
-                                setStartLocation(searchStartLocation)
+                                setStartLocation(searchStartLocation || "")
                                 setDestination(searchDestination || "");
                             }}  
                         />
@@ -93,10 +115,6 @@ function Tickets({ searchResults, username, onRequestLogin, searchDate, searchSt
                                 I accept the terms.
                             </label>
 
-                            {availabilityMessage && (
-                                <p className="booking-error">{availabilityMessage}</p>
-                            )}
-
                             <div className="button-row">
                                 <button
                                     className="primary-btn"
@@ -108,7 +126,7 @@ function Tickets({ searchResults, username, onRequestLogin, searchDate, searchSt
 
                                 <button
                                     className="close-btn"
-                                    onClick={() => { setSelectedTicket(null); }}
+                                    onClick={resetStates}
                                 >
                                     Close
                                 </button>
@@ -118,6 +136,15 @@ function Tickets({ searchResults, username, onRequestLogin, searchDate, searchSt
                 )}
 
             </div>
+
+            {snackbar.show && (
+                <Snackbar
+                    message={snackbar.message}
+                    type={snackbar.type}
+                    onClose={handleCloseSnackbar}
+                />
+            )}
+
         </section>
     );
 }

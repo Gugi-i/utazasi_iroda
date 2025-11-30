@@ -1,33 +1,44 @@
 import Header from "./Header.jsx";
 import HeroSection from "./HeroSection.jsx";
 import SearchBar from "./SearchBar.jsx";
-import FeaturedVehicles from "./Tickets.jsx";
+import Tickets from "./Tickets.jsx";
 import Footer from "./Footer.jsx";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import Snackbar from "../components/Snackbar.jsx";
 import { searchTickets } from "../services/searchService.js";
 import { useState } from "react";
 
 function Home() {
 
     const [searchResults, setSearchResults] = useState([]);
-    const [username, setUsername] = useState(localStorage.getItem("username") || "");
+
+    const user = localStorage.getItem("user");
+    const username = user ? JSON.parse(user).name : "";
+
     const [showLogin, setShowLogin] = useState(false);
 
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState("");
+    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+
+    const [noTicketsMessage, setNoTicketsMessage] = useState("");
 
     const [searchDate, setSearchDate] = useState("");
     const [searchDestination, setSearchDestination] = useState("");
+    const [searchStartLocation, setSearchStartLocation] = useState("")
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, show: false });
+    };
 
     const handleSearch = async (filters) => {
-        setSearchDate(filters.Date);
-        setSearchDestination(filters.Destination);
-        if (filters.error) {
-            setSearchResults([]);
+        console.log(filters)
+        setSearchDate(filters.date);
+        setSearchDestination(filters.arrival_city);
+        setSearchStartLocation(filters.departure_date)
 
-            setSnackbarMessage(filters.error);
-            setSnackbarOpen(true);
+        setNoTicketsMessage("");
+        setSearchResults([]);
+
+        if (filters.error) {console.log("here")
+            setSnackbar({ show: true, message: filters.error, type: 'error' });
             return;
         }
 
@@ -36,58 +47,58 @@ function Home() {
             setSearchResults(results);
 
             if (results.length === 0) {
-                const msg = "No cars found for the given search.";
-
-                setSnackbarMessage(msg);
-                setSnackbarOpen(true);
+                setNoTicketsMessage("No tickets found for the given search criteria. Please try different dates or filters.");
             }
 
         } catch (e) {
             const msg = "Error contacting the server.";
             setSearchResults([]);
 
-            setSnackbarMessage(msg);
-            setSnackbarOpen(true);
+            setSnackbar({ show: true, message: msg, type: 'error' });
         }
     };
 
+    const refreshTickets = () => {
+        handleSearch({
+            departure_city: departureCity,
+            arrival_city: arrivalCity,
+            departure_date: departureDate
+        });
+    }
+
     return (
         <div className="plane-ticket-app">
-            <Header 
-                username={username}
-                setUsername={setUsername}
-                showLogin={showLogin}
-                setShowLogin={setShowLogin}
-            />
+            <Header/>
 
             <main className="main-content">
                 <HeroSection/>
                 <SearchBar onSearch={handleSearch}/>
-                <FeaturedVehicles
-                    searchResults={searchResults}
-                    username={username}
-                    onRequestLogin={() => setShowLogin(true)}
-                    searchDate={searchDate}
-                    searchDestination={searchDestination}
-                />
+                 {noTicketsMessage ? (
+                    <div className="no-results-container">
+                        <h3>No Tickets Found</h3>
+                        <p>{noTicketsMessage}</p>
+                    </div>
+                ) : (
+                    <Tickets
+                        searchResults={searchResults}
+                        username={username}
+                        onRequestLogin={() => setShowLogin(true)}
+                        searchDate={searchDate}
+                        searchStartLocation={searchStartLocation}
+                        searchDestination={searchDestination}
+                        onRefreshTickets={refreshTickets}
+                    />
+                )}
             </main>
 
             <Footer/>
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={3000}
-                onClose={() => setSnackbarOpen(false)}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            >
-                <MuiAlert
-                    elevation={6}
-                    variant="filled"
-                    severity="error"
-                    onClose={() => setSnackbarOpen(false)}
-                >
-                    {snackbarMessage}
-                </MuiAlert>
-            </Snackbar>
+            {snackbar.show && (
+                <Snackbar
+                    message={snackbar.message}
+                    type={snackbar.type}
+                    onClose={handleCloseSnackbar}
+                />
+            )}
         </div>
         
     );

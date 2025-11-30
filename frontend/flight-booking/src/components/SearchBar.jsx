@@ -6,9 +6,6 @@ function PlaneSearchBar({ onSearch }) {
     const [departureCity, setDepartureCity] = useState('');
     const [arrivalCity, setArrivalCity] = useState('');
     const [departureDate, setDepartureDate] = useState('');
-    const [returnDate, setReturnDate] = useState('');
-    const [maxPrice, setMaxPrice] = useState('');
-    const [showAdvanced, setShowAdvanced] = useState(false);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -30,7 +27,6 @@ function PlaneSearchBar({ onSearch }) {
             <div className="container">
                 <form className="search-form" onSubmit={handleSearch}>
 
-                    {/* Departure city */}
                     <div className="input-group">
                         <label>Departure City</label>
                         <input
@@ -41,7 +37,6 @@ function PlaneSearchBar({ onSearch }) {
                         />
                     </div>
 
-                    {/* Arrival city */}
                     <div className="input-group">
                         <label>Arrival City</label>
                         <input
@@ -52,7 +47,6 @@ function PlaneSearchBar({ onSearch }) {
                         />
                     </div>
 
-                    {/* Departure date */}
                     <div className="input-group">
                         <label>Departure Date</label>
                         <input
