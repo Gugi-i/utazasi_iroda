@@ -6,6 +6,7 @@ export default function FlightModal({ open, onClose, onAddFlight, initialFrom = 
   const [departureCity, setDepartureCity] = useState(initialFrom);
   const [arrivalCity, setArrivalCity] = useState(initialTo);
   const [departureDate, setDepartureDate] = useState(initialDate);
+  const [quantity, setQuantity] = useState(1)
   const [flights, setFlights] = useState([]);
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,8 +24,8 @@ export default function FlightModal({ open, onClose, onAddFlight, initialFrom = 
   }, [open, initialFrom, initialTo, initialDate]);
 
   const handleSearch = async () => {
-    if (!departureCity || !arrivalCity || !departureDate) {
-      setError("Departure city, arrival city, and departure date are required.");
+    if (!departureCity || !arrivalCity) {
+      setError("Departure city, arrival city are required.");
       return;
     }
 
@@ -39,7 +40,7 @@ export default function FlightModal({ open, onClose, onAddFlight, initialFrom = 
       });
 
       setFlights(results);
-      setSelectedFlight(null); // reset selection
+      setSelectedFlight(null);
     } catch (err) {
       console.error(err);
       setError("Failed to fetch flights.");
@@ -53,27 +54,39 @@ export default function FlightModal({ open, onClose, onAddFlight, initialFrom = 
       setError("Please select a flight to add.");
       return;
     }
-    onAddFlight(selectedFlight);
+    const flightWithQuantity = { ...selectedFlight, quantity };
+    onAddFlight(flightWithQuantity);
+    console.log(selectedFlight);
     onClose();
   };
+
+  useEffect(() => {
+    if (open) setQuantity(1);
+  }, [open]);
 
   return (
     <Modal open={open} title="Search Flights" onClose={onClose}>
       {error && <div style={{ color: "red" }}>{error}</div>}
 
       <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+
+        <label>From:</label>
         <input
           className="home-input"
           placeholder="From"
           value={departureCity}
           onChange={(e) => setDepartureCity(e.target.value)}
         />
+
+        <label>To:</label>
         <input
           className="home-input"
           placeholder="To"
           value={arrivalCity}
           onChange={(e) => setArrivalCity(e.target.value)}
         />
+
+        <label>Date:</label>
         <input
           type="date"
           className="home-input"
@@ -102,6 +115,16 @@ export default function FlightModal({ open, onClose, onAddFlight, initialFrom = 
               <div>Seats Available: {f.seats_available}</div>
             </div>
           ))}
+          <div style={{ marginTop: "1rem" }}>
+            <label>Number of tickets:</label>
+            <input
+              type="number"
+              min={1}
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              style={{ width: "4rem", marginLeft: "0.5rem" }}
+            />
+          </div>
         </div>
       )}
 

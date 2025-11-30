@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./Home.css";
 import FlightModal from "./FlightModal";
 //import FlightBackModal from "./FlightBackModal";
-//import CarModal from "./CarModal";
+import RentalModal from "./RentalModal";
 //import AccommodationModal from "./AccommodationModal";
 
 
@@ -28,8 +28,8 @@ export default function Home() {
   const [destinationLocation, setDestinationLocation] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [flightThere, setFlightThere] = useState(null);
-  const [flightBack, setFlightBack] = useState(null);
+  const [flightThere, setFlightThere] = useState([]);
+  const [flightBack, setFlightBack] = useState([]);
   const [cars, setCars] = useState([]);
   const [accommodations, setAccommodations] = useState([]);
   const [modal, setModal] = useState(null);
@@ -40,51 +40,59 @@ export default function Home() {
     setModal(type);
   };
 
-  const confirmModal = () => {
-    if (modal === "flight-there") setFlightThere(temp);
-    if (modal === "flight-back") setFlightBack(temp);
-    if (modal === "car") setCars((prev) => [...prev, temp]);
-    if (modal === "accommodation") setAccommodations((prev) => [...prev, temp]);
-    setModal(null);
-  };
-
   const bookJourney = () => {
     console.log({ startLocation,destinationLocation, startDate, endDate, flightThere, flightBack, cars, accommodations });
   };
 
   return (
     <div className="home-container">
-      <h1 className="home-title">Plan Your Journey</h1>
+      <h1 className="home-title">Plan a Journey</h1>
 
       <div className="home-card">
-        <input
-          className="home-input"
-          placeholder="From"
-          value={startLocation}
-          onChange={(e) => setStartLocation(e.target.value)}
-        />
+        <div className="date-grid">
+          <div className="date-field">
+            <label>Start location:</label>
+            <input
+              className="home-input"
+              placeholder="From"
+              value={startLocation}
+              onChange={(e) => setStartLocation(e.target.value)}
+            />
+          </div>
 
-        <input
-          className="home-input"
-          placeholder="Destination"
-          value={destinationLocation}
-          onChange={(e) => setDestinationLocation(e.target.value)}
-        />
+          <div className="date-field">
+            <label>Destination location:</label>
+            <input
+              className="home-input"
+              placeholder="Destination"
+              value={destinationLocation}
+              onChange={(e) => setDestinationLocation(e.target.value)}
+            />
+          </div>
+        </div>
 
         <div className="date-grid">
-          <input
-            type="date"
-            className="home-input"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-          <input
-            type="date"
-            className="home-input"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
+          <div className="date-field">
+            <label>Start date:</label>
+            <input
+              type="date"
+              className="home-input"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+
+          <div className="date-field">
+            <label>End date:</label>
+            <input
+              type="date"
+              className="home-input"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
         </div>
+
 
         <div className="button-group">
           <button className="action-button" onClick={() => openModal("flight-there")}>
@@ -93,34 +101,67 @@ export default function Home() {
           <button className="action-button" onClick={() => openModal("flight-back")}>
             Add Return Flight
           </button>
-          <button className="action-button" onClick={() => openModal("car")}>Rent Car</button>
+          <button className="action-button" onClick={() => openModal("car")}>
+            Rent Car
+          </button>
           <button className="action-button" onClick={() => openModal("accommodation")}>
             Book Accommodation
           </button>
         </div>
 
         <div className="item-list">
-          {flightThere && (
-            <div className="item-card">
-              ✈️ Flight To: {flightThere.from} → {flightThere.to} ({flightThere.date})
-            </div>
-          )}
-          {flightBack && (
-            <div className="item-card">
-              ✈️ Return Flight: {flightBack.from} → {flightBack.to} ({flightBack.date})
-            </div>
-          )}
-          {cars.map((c, i) => (
+          <label>Flights to destination: </label>
+          {flightThere.map((f, i) => (
             <div key={i} className="item-card">
-              🚗 Car Rental: {c.company} ({c.from}–{c.to})
+              <div>
+                Flight {f.flight_number} — {f.airline}: {f.departure_city} → {f.arrival_city} 
+                ({new Date(f.departure_date).toLocaleString()}) — Tickets: {f.quantity} , Price: {f.price*f.quantity}$
+              </div>
+              <button 
+                className="remove-button"
+                onClick={() => setFlightThere(prev => prev.filter((_, idx) => idx !== i))}
+              >
+                Remove
+              </button>
             </div>
           ))}
+          <label>Return Flights: </label>
+          {flightBack.map((f, i) => (
+              <div key={i} className="item-card">
+              <div>
+                Flight {f.flight_number} — {f.airline}: {f.departure_city} → {f.arrival_city} 
+                ({new Date(f.departure_date).toLocaleString()}) — Tickets: {f.quantity} , Price: {f.price*f.quantity}$
+              </div>
+              <button 
+                className="remove-button"
+                onClick={() => setFlightBack(prev => prev.filter((_, idx) => idx !== i))}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <label>Chosen vehicles: </label>
+          {cars.map((c, i) => (
+            <div key={i} className="item-card">
+              <div>
+                Car: {c.make} {c.model} {c.startDate} — {c.endDate}, Price: {c.price_per_day*c.numDays}$
+              </div>
+              <button 
+                className="remove-button"
+                onClick={() => setCars(prev => prev.filter((_, idx) => idx !== i))}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <label>Accomodations: </label>
           {accommodations.map((a, i) => (
             <div key={i} className="item-card">
-              🏨 {a.name} ({a.from}–{a.to})
+              Accomodation: {a.name} ({a.from}–{a.to})
             </div>
           ))}
         </div>
+
 
         <button className="book-button" onClick={bookJourney}>
           Book Journey
@@ -131,7 +172,9 @@ export default function Home() {
         <FlightModal
         open={modal === "flight-there"}
         onClose={() => setModal(null)}
-        onAddFlight={(flight) => setFlightThere(flight)}
+        onAddFlight={(flight) => 
+          setFlightThere(prev => [...prev, flight])
+        }
         title="Add Flight To"
         initialFrom={startLocation}
         initialTo={destinationLocation}
@@ -141,12 +184,24 @@ export default function Home() {
         <FlightModal
         open={modal === "flight-back"}
         onClose={() => setModal(null)}
-        onAddFlight={(flight) => setFlightBack(flight)}
+        onAddFlight={(flight) => 
+          setFlightBack(prev => [...prev, flight])
+        }
         title="Add Return Flight"
         initialFrom={destinationLocation}
         initialTo={startLocation}
         initialDate={endDate}
         />
+
+        <RentalModal
+          open={modal === "car"}
+          onClose={() => setModal(null)}
+          onAddCar={(car) => setCars((prev) => [...prev, car])}
+          initialCity={destinationLocation}
+          initialStartDate={startDate}
+          initialEndDate={endDate}
+        />
+
 
     </div>
   );

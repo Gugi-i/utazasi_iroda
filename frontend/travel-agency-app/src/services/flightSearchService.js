@@ -10,6 +10,9 @@ export async function searchTickets(filters) {
     if (filters.arrival_city) {
         params.append("arrival_city", filters.arrival_city);
     }
+    if (filters.departure_date){
+        params.append("departure_date", filters.departure_date)
+    }
 
     const url = `http://localhost:8000/plane?${params.toString()}`;
 
