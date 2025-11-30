@@ -109,7 +109,7 @@ def insert_sample_data(conn):
         cur.execute("""
             INSERT INTO "Accommodation"
             (image_url, name, location, type, description)
-            VALUES (%s,%s,%s,%s)
+            VALUES (%s,%s,%s,%s,%s)
         """, acc)
         
     room_types = [

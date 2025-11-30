@@ -55,8 +55,7 @@ def create_all_tables():
         rent_start_date DATE NOT NULL,
         rent_end_date DATE NOT NULL,
         total_price NUMERIC(10,2),
-        booking_date TIMESTAMP DEFAULT NOW(),
-        status VARCHAR(50) DEFAULT 'booked'
+        booking_date TIMESTAMP DEFAULT NOW()
     );
 
     CREATE TABLE IF NOT EXISTS "PlaneTickets" (
@@ -106,8 +105,7 @@ def create_all_tables():
         rooms_booked INT NOT NULL,               
         check_in_date DATE NOT NULL,
         check_out_date DATE NOT NULL,
-        total_price NUMERIC(10,2),
-        status VARCHAR(50) DEFAULT 'booked'
+        total_price NUMERIC(10,2)
     );
 
     CREATE TABLE IF NOT EXISTS "Journey" (
@@ -143,4 +141,3 @@ def create_all_tables():
     conn.commit()
     cur.close()
     conn.close()
-
