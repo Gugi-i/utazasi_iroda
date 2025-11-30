@@ -43,6 +43,36 @@ class BookingBase(BaseModel):
 class BookingCreate(BookingBase):
     pass
 
+class AccommodationInfo(BaseModel):
+    id: int
+    name: str
+    location: str
+    image_url: str | None
+    type: str | None
+
+    class Config:
+        orm_mode = True
+        
+class RoomTypeInfo(BaseModel):
+    id: int
+    room_capacity: int
+    price_per_night: float
+    accommodation: AccommodationInfo
+
+    class Config:
+        orm_mode = True
+
+class BookingDetailedResponse(BaseModel):
+    id: int
+    rooms_booked: int
+    check_in_date: date
+    check_out_date: date
+    total_price: float
+    room_type: RoomTypeInfo
+
+    class Config:
+        orm_mode = True
+        
 class BookingResponse(BookingBase):
     id: int
     total_price: float

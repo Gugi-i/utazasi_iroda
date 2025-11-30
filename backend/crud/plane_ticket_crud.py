@@ -1,11 +1,10 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from backend.models.plane_ticket_model import PlaneTicket, PlaneTicketBooked
-
-from datetime import date
+from datetime import date, datetime
 
 def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_price=None, departure_date: date | None = None, arrival_date: date | None = None):
-    query = db.query(PlaneTicket).filter(PlaneTicket.departure_date >= date.today())
+    query = db.query(PlaneTicket).filter(PlaneTicket.departure_date >= datetime.now())
 
     if departure_city:
         query = query.filter(PlaneTicket.departure_city.ilike(f"%{departure_city}%"))
@@ -17,10 +16,14 @@ def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_pri
         query = query.filter(PlaneTicket.price <= max_price)
 
     if departure_date:
-        query = query.filter(PlaneTicket.departure_date == departure_date)
+        start = datetime.combine(departure_date, datetime.min.time())
+        end = datetime.combine(departure_date, datetime.max.time())
+        query = query.filter(PlaneTicket.departure_date.between(start, end))
 
     if arrival_date:
-        query = query.filter(PlaneTicket.arrival_date == arrival_date)
+        start = datetime.combine(arrival_date, datetime.min.time())
+        end = datetime.combine(arrival_date, datetime.max.time())
+        query = query.filter(PlaneTicket.arrival_date.between(start, end))
 
     return query.all()
 

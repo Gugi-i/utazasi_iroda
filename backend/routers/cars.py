@@ -36,13 +36,15 @@ def list_cars(
 # ---- RENT CAR ------------------------------------------------------
 @router.post("/rent", response_model=RentResponse)
 def rent_car(data: RentCreate, db: Session = Depends(get_db), user=Depends(get_current_user)):
-    rental = car_crud.rent_car(db, data)
     
     if not date_is_valid(data.rent_start_date, data.rent_end_date):
         raise HTTPException(status_code=400, detail="Invalid rent start/end dates")
     
+    rental = car_crud.rent_car(db, data)
+    
     if not rental:
         raise HTTPException(status_code=400, detail="Car not available")
+    
     return rental
 
 @router.get("/rent", response_model=list[RentResponse])

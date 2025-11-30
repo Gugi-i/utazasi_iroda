@@ -6,7 +6,7 @@ from backend.utils.database import get_db
 from backend.models.accommodation_model import AccommodationBooking
 from backend.schemas.accommodation_schema import (
     AccommodationResponse,
-    BookingCreate, BookingResponse
+    BookingCreate, BookingResponse, BookingDetailedResponse
 )
 from backend.crud import accommodation_crud
 from backend.crud.accommodation_crud import roomtype_belongs_to_accommodation, date_is_valid
@@ -23,7 +23,6 @@ def list_accommodations(location: str | None = None, max_price: float | None = N
 # --- Booking Endpoints ---
 @router.post("/book", response_model=BookingResponse)
 def book_room(data: BookingCreate, db: Session = Depends(get_db), user=Depends(get_current_user)):
-    booking = accommodation_crud.create_booking(db, data)
     
     if not date_is_valid(data.check_in_date, data.check_out_date):
         raise HTTPException(status_code=400, detail="Invalid check-in/check-out dates")
@@ -31,8 +30,11 @@ def book_room(data: BookingCreate, db: Session = Depends(get_db), user=Depends(g
     if not roomtype_belongs_to_accommodation(db, data.accommodation_id, data.room_type_id):
         raise HTTPException(status_code=400, detail="Room type does not belong to this accommodation")
 
+    booking = accommodation_crud.create_booking(db, data)
+    
     if not booking:
         raise HTTPException(status_code=400, detail="Not enough rooms available")
+    
     return booking
 
 @router.delete("/accommodation/booking/{booking_id}")
@@ -47,10 +49,10 @@ def delete_accommodation_booking(booking_id: int, db: Session = Depends(get_db),
 
     return {"message": "Booking deleted successfully", "booking_id": booking_id}
 
-@router.get("/bookings", response_model=list[BookingResponse])
+@router.get("/bookings", response_model=list[BookingDetailedResponse])
 def all_bookings(db: Session = Depends(get_db)):
     return accommodation_crud.list_all_bookings(db)
 
-@router.get("/bookings/user/{user_id}", response_model=list[BookingResponse])
+@router.get("/bookings/user/{user_id}", response_model=list[BookingDetailedResponse])
 def user_bookings(user_id: int, db: Session = Depends(get_db)):
     return accommodation_crud.list_user_bookings(db, user_id)
