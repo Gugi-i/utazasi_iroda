@@ -75,6 +75,12 @@ def create_all_tables():
         id SERIAL PRIMARY KEY,
         flight_id INT NOT NULL REFERENCES "PlaneTickets"(id) ON DELETE CASCADE,
         user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
+        flight_number VARCHAR(50) NOT NULL,
+        airline VARCHAR(100) NOT NULL,
+        departure_city VARCHAR(100) NOT NULL,
+        arrival_city VARCHAR(100) NOT NULL,
+        departure_date TIMESTAMP NOT NULL,
+        arrival_date TIMESTAMP NOT NULL,
         seat_number VARCHAR(10),
         total_price NUMERIC(10,2)
     );

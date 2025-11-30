@@ -34,6 +34,12 @@ class PlaneTicketBookingResponse(BaseModel):
     id: int
     flight_id: int
     user_id: int
+    flight_number: str
+    airline: str
+    departure_city: str
+    arrival_city: str
+    departure_date: datetime
+    arrival_date: datetime
     seat_number: str
     total_price: float
 

@@ -1,6 +1,6 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import func, and_
-from datetime import datetime, date
+from datetime import date
 from backend.models.accommodation_model import Accommodation, AccommodationRoomType, AccommodationBooking
 from backend.schemas.accommodation_schema import BookingCreate
 
@@ -99,10 +99,24 @@ def create_booking(db: Session, data: BookingCreate):
     return booking
 
 def list_user_bookings(db: Session, user_id: int):
-    return db.query(AccommodationBooking).filter(AccommodationBooking.user_id == user_id).all()
-
+    return (
+        db.query(AccommodationBooking)
+        .filter(AccommodationBooking.user_id == user_id)
+        .options(
+            joinedload(AccommodationBooking.room_type)
+            .joinedload(AccommodationRoomType.accommodation)
+        )
+        .all()
+    )
 def list_all_bookings(db: Session):
-    return db.query(AccommodationBooking).all()
+    return (
+        db.query(AccommodationBooking)
+        .options(
+            joinedload(AccommodationBooking.room_type)
+            .joinedload(AccommodationRoomType.accommodation)
+        )
+        .all()
+    )
 
 def roomtype_belongs_to_accommodation(db: Session, accommodation_id: int, room_type_id: int) -> bool:
     exists = db.query(AccommodationRoomType).filter(
