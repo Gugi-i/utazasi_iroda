@@ -19,18 +19,21 @@ def create_all_tables():
     sql_commands = """
     CREATE TABLE IF NOT EXISTS "Person" (
         id SERIAL PRIMARY KEY,
+        role VARCHAR(50) NOT NULL CHECK (role IN ('user','worker'))
+    );
+
+    CREATE TABLE IF NOT EXISTS "User" (
+        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) UNIQUE NOT NULL,
-        role VARCHAR(50) NOT NULL
+        password_hash VARCHAR(255) NOT NULL
     );
-    
-    CREATE TABLE IF NOT EXISTS "User" (
-        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE
-    );
-    
+
     CREATE TABLE IF NOT EXISTS "Worker" (
-        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE
+        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS "Car" (

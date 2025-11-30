@@ -4,25 +4,34 @@ def insert_sample_data(conn):
     # -------------------------
     # PERSONS
     # -------------------------
-
     persons = [
         ("John Doe", "john@example.com", "hashedpassword123", "user"),
         ("Anna Worker", "anna@work.com", "hashedpassword456", "worker"),
     ]
 
     for person in persons:
+        # Insert only the role into Person
         cur.execute("""
-            INSERT INTO "Person" (name, email, password_hash, role)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO "Person" (role)
+            VALUES (%s)
             RETURNING id
-        """, person)
+        """, (person[3],))
 
         person_id = cur.fetchone()[0]
 
         if person[3] == "user":
-            cur.execute('INSERT INTO "User" (id) VALUES (%s)', (person_id,))
+            # Insert credentials into User
+            cur.execute("""
+                INSERT INTO "User" (id, name, email, password_hash)
+                VALUES (%s, %s, %s, %s)
+            """, (person_id, person[0], person[1], person[2]))
         else:
-            cur.execute('INSERT INTO "Worker" (id) VALUES (%s)', (person_id,))
+            # Insert credentials into Worker
+            cur.execute("""
+                INSERT INTO "Worker" (id, name, email, password_hash)
+                VALUES (%s, %s, %s, %s)
+            """, (person_id, person[0], person[1], person[2]))
+
 
 
     # -------------------------
