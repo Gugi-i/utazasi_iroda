@@ -11,4 +11,4 @@ class User(Base):
 
     rentals = relationship("CarRented", back_populates="user")
     plane_bookings = relationship("PlaneTicketBooked", back_populates="user")
-    accommodations_bookings = relationship("AccommodationBooking", back_populates="user")
+    accommodation_bookings = relationship("AccommodationBooking", back_populates="user")
