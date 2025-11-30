@@ -6,7 +6,7 @@ import FeaturedVehicles from "./FeaturedVehicles.jsx";
 import Footer from "./Footer.jsx";
 import Snackbar from "../components/Snackbar.jsx";
 import { searchCars } from "../services/searchService.js";
-import './Home.css'; // Create this file for styling the empty state message
+import './Home.css';
 
 function Home() {
 
@@ -94,7 +94,6 @@ function Home() {
                 <HeroSection/>
                 <SearchBar onSearch={handleSearch}/>
 
-                {/* Condition to show either the error message OR the results */}
                 {noCarsMessage ? (
                     <div className="no-results-container">
                         <h3>No Cars Found</h3>

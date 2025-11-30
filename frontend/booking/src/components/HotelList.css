@@ -1,0 +1,105 @@
+/* HotelList.css */
+
+.hotel-list-container {
+    padding: 20px;
+    max-width: 1200px; /* Wider container to fit more cards */
+    margin: 0 auto;
+}
+
+/* Grid Layout for Hotel Cards */
+.hotel-grid {
+    display: grid;
+    /* Responsive grid similar to the car rental one */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    justify-content: center;
+    width: 100%;
+}
+
+/* --- Booking Modal Specific Styles --- */
+
+/* Summary box inside the modal */
+.booking-summary {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.booking-summary p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: #495057;
+}
+
+.booking-summary p strong {
+    color: #212529;
+}
+
+/* Modal Input Fields */
+.modal-panel input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    transition: border-color 0.2s;
+}
+
+.modal-panel input[type="date"]:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Labels for inputs */
+.modal-panel label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #495057;
+    display: block; /* Ensure labels are on their own line */
+    margin-bottom: 2px;
+}
+
+/* Specific style for the checkbox label container to keep it inline */
+.modal-panel label.terms-checkbox {
+    display: flex;
+    align-items: flex-start; /* Align top if text wraps */
+    gap: 10px;
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.modal-panel label.terms-checkbox input[type="checkbox"] {
+    margin-top: 3px; /* Align checkbox with the first line of text */
+    transform: scale(1.1);
+}
+
+/* Modal Title Override */
+.modal-panel h2 {
+    text-align: center;
+    color: #003580; /* Booking.com style blue */
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hotel-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 20px;
+    }
+
+    .modal-panel {
+        width: 95% !important;
+        padding: 20px;
+    }
+}

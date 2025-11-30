@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import './MyBookingsPage.css'; // Ensure CSS handles accommodation styles if needed
 import '../App.css';
 import BookedAccommodationCard from "./BookedAccommodationCard.jsx";
-import { getBookingsApi } from "../services/bookingService.js"; // Import the service
+// import { getBookingsApi } from "../services/bookingService.js"; // Import the service
 
 function MyBookingsPage({ onClose }) {
     const modalRef = useRef(null);
@@ -22,23 +22,23 @@ function MyBookingsPage({ onClose }) {
     }, [onClose]);
 
     // Fetch bookings on mount
-    useEffect(() => {
-        fetchBookings();
-    }, []);
-
-    const fetchBookings = async () => {
-        setLoading(true);
-        try {
-            const data = await getBookingsApi();
-            setBookings(data);
-            setError(null);
-        } catch (err) {
-            console.error("Failed to load bookings", err);
-            setError("Failed to load your bookings. Please try again.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    // useEffect(() => {
+    //     fetchBookings();
+    // }, []);
+    //
+    // const fetchBookings = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const data = await getBookingsApi();
+    //         setBookings(data);
+    //         setError(null);
+    //     } catch (err) {
+    //         console.error("Failed to load bookings", err);
+    //         setError("Failed to load your bookings. Please try again.");
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     const handleDelete = (bookingIdToDelete) => {
         // Update local state to remove the item immediately from UI

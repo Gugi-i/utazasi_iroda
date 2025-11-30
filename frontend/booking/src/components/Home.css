@@ -1,0 +1,19 @@
+.no-results-container {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f8f9fa; /* Matches your light-bg variable */
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.no-results-container h3 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.no-results-container p {
+    color: #666;
+    font-size: 1.1rem;
+}

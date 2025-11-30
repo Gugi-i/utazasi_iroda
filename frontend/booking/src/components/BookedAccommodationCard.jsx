@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import './BookedAccommodationCard.css';
-import { cancelBookingApi } from '../services/bookingService';
+// import { cancelBookingApi } from '../services/bookingService';
 import ConfirmationModal from './ConfirmationModal'; // Import the new modal
 
 function BookedAccommodationCard({ booking, onDelete }) {
@@ -16,7 +16,7 @@ function BookedAccommodationCard({ booking, onDelete }) {
     const handleConfirmCancel = async () => {
         try {
             // Call the API service using the ID
-            await cancelBookingApi(booking.id);
+            // await cancelBookingApi(booking.id);
 
             // Update UI only after successful API call
             if (onDelete) {
@@ -70,14 +70,16 @@ function BookedAccommodationCard({ booking, onDelete }) {
                     </span>
                 </div>
 
-                {/* Right: Action Button */}
-                <button
-                    className="cancel-btn"
-                    onClick={handleInitialClick} // Opens the modal instead of window.confirm
-                    disabled={booking.status === 'Cancelled'}
-                >
-                    Cancel
-                </button>
+                {booking.status === 'Confirmed' &&
+                    <button
+                        className="cancel-btn"
+                        onClick={handleInitialClick} // Opens the modal instead of window.confirm
+                        disabled={booking.status === 'Cancelled'}
+                    >
+                        Cancel
+                    </button>
+                }
+
             </div>
 
             {/* Render the Confirmation Modal */}

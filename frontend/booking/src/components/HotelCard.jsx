@@ -2,24 +2,19 @@ import React from 'react';
 import './HotelCard.css';
 
 function HotelCard({ hotel, onBook }) {
-    console.log('Rendering HotelCard for:', hotel);
+    // Fallback image based on ID or random if imageUrl is missing from backend
+    const imageUrl = hotel.imageUrl || `https://picsum.photos/seed/${hotel.id}/400/300`;
+
     return (
         <div className="hotel-card">
-            {/* Image Section
-                Note: The new schema does not include an 'imageUrl'.
-                A placeholder or the 'type' is displayed here instead.
-            */}
             {/* Image Section */}
-
             <div className="hotel-card-image-wrapper">
-
-                <img src={hotel.imageUrl} alt={hotel.name} className="hotel-card-img" />
-
-                {hotel.badge && (
-
-                    <span className="hotel-badge">{hotel.badge}</span>
-
-                )}
+                <img
+                    src={imageUrl}
+                    alt={hotel.name}
+                    className="hotel-card-img"
+                />
+                <span className="hotel-badge">{hotel.type}</span>
             </div>
 
             {/* Content Section */}
@@ -31,33 +26,36 @@ function HotelCard({ hotel, onBook }) {
                     </p>
                 </div>
 
-                {/* Description Section */}
-                <p className="hotel-description" style={{ fontSize: '0.9rem', color: '#666', margin: '10px 0' }}>
+                <p className="hotel-description">
                     {hotel.description}
                 </p>
 
-                {/* Room and Capacity Details */}
-                <div className="hotel-amenities">
-                    <span className="amenity-tag">Room: {hotel.room}</span>
-                    <span className="amenity-tag">Capacity: {hotel.capacity} ppl</span>
-                    <span className="amenity-tag">{hotel.type}</span>
-                </div>
-
-                <div className="hotel-footer">
-                    <div className="price-container">
-                        <span className="price-label">Price per night</span>
-                        {/* Using 'price_per_night' from schema */}
-                        <span className="price-amount">${hotel.price_per_night}</span>
-                    </div>
-
-                    {/* Passing the full accommodation object (including id) to onBook */}
-                    <button
-                        className="book-btn"
-                        onClick={() => onBook(hotel)}
-                        disabled={hotel.status !== 'Available'}
-                    >
-                        {hotel.status === 'Available' ? 'Book Now' : 'Unavailable'}
-                    </button>
+                {/* Room Types List */}
+                <div className="room-types-list">
+                    <h4 className="room-types-title">Available Rooms:</h4>
+                    {hotel.room_types && hotel.room_types.length > 0 ? (
+                        hotel.room_types.map((room) => (
+                            <div key={room.id} className="room-type-item">
+                                <div className="room-info">
+                                    <span className="room-capacity">
+                                        👤 {room.room_capacity} Person{room.room_capacity > 1 ? 's' : ''}
+                                    </span>
+                                    {/* You could add total_rooms logic here if needed (e.g. "Only 2 left!") */}
+                                </div>
+                                <div className="room-action">
+                                    <span className="room-price">${room.price_per_night}</span>
+                                    <button
+                                        className="book-room-btn"
+                                        onClick={() => onBook(hotel, room)} // Pass both hotel and specific room
+                                    >
+                                        Select
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="no-rooms">No rooms available.</p>
+                    )}
                 </div>
             </div>
         </div>

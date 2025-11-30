@@ -1,91 +1,174 @@
-// Example usage inside a parent component
+import React, { useState } from 'react';
 import HotelCard from './HotelCard';
+// Ensure you have these or equivalent CSS files available for layout/modal styling
+import './HotelList.css';
+// You might need to adjust the path to your common App.css or similar
+import '../App.css';
+import Snackbar from "./Snackbar.jsx";
+import {bookAccommodation} from "../services/bookingService.js"; // Import Snackbar
+// import { bookAccommodation } from "../services/bookingService"; // Import your booking service
 
-const dummyHotels = [
-    {
-        id: 1,
-        name: "Grand Plaza Hotel",
-        location: "Paris, 0.5km from center",
-        type: "Hotel",
-        description: "A luxury hotel featuring a pool, spa, and complimentary breakfast.",
-        room: "Standard Room",
-        capacity: 2,
-        price_per_night: 199,
-        status: "Available",
-        imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 2,
-        name: "Eiffel View Suites",
-        location: "Paris, 1.2km from center",
-        type: "Apartment",
-        description: "Spacious suites with city views and kitchenette facilities.",
-        room: "Deluxe Suite",
-        capacity: 4,
-        price_per_night: 245,
-        status: "Available",
-        imageUrl: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 3,
-        name: "Seaside Bliss Resort",
-        location: "Maui, Beachfront",
-        type: "Resort",
-        description: "Relaxing beachfront stay with private balcony and ocean breeze.",
-        room: "Ocean View King",
-        capacity: 2,
-        price_per_night: 450,
-        status: "Booked",
-        imageUrl: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 4,
-        name: "Urban Loft Downtown",
-        location: "New York, Soho",
-        type: "Apartment",
-        description: "Modern open-plan loft in the heart of the fashion district.",
-        room: "Studio",
-        capacity: 2,
-        price_per_night: 210,
-        status: "Available",
-        imageUrl: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 5,
-        name: "Backpacker's Haven",
-        location: "Berlin, Mitte",
-        type: "Hostel",
-        description: "Budget-friendly accommodation with shared lounge and kitchen.",
-        room: "Bunk in Dorm",
-        capacity: 1,
-        price_per_night: 35,
-        status: "Available",
-        imageUrl: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 6,
-        name: "City Center Inn",
-        location: "London, 0.2km from center",
-        type: "Hotel",
-        description: "Conveniently located hotel with modern rooms and easy access to public transport.",
-        room: "Double Room",
-        capacity: 2,
-        price_per_night: 150,
-        status: "Available",
-        imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
-    }
-];
+// Dummy data fallback is removed or kept as comment if preferred, using props
+const dummyHotels = [];
 
-function HotelList() {
-    const handleBook = (hotel) => {
-        console.log("Booking hotel:", hotel.name);
+function HotelList({ searchResults, username, onRequestLogin, searchCheckInDate, searchCheckOutDate }) {
+    const [selectedHotel, setSelectedHotel] = useState(null);
+    const [selectedRoom, setSelectedRoom] = useState(null);
+
+    // Booking Form States
+    const [checkInDate, setCheckInDate] = useState(searchCheckInDate);
+    const [checkOutDate, setCheckOutDate] = useState(searchCheckOutDate);
+    const [termsChecked, setTermsChecked] = useState(false);
+
+    // Snackbar State
+    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, show: false });
     };
 
+    const resetStates = () => {
+        setSelectedHotel(null);
+        setSelectedRoom(null);
+        setCheckInDate("");
+        setCheckOutDate("");
+        setTermsChecked(false);
+    };
+
+    const closeBookingModal = () => {
+        resetStates();
+        // Add onRefresh callback if needed later
+    };
+
+    const onBookClick = (hotel, room) => {
+        if (!username) {
+            console.log("User not logged in. Prompting login.");
+            if (onRequestLogin) onRequestLogin();
+            return;
+        }
+        setSelectedHotel(hotel);
+        setSelectedRoom(room);
+
+        setCheckInDate(searchCheckInDate || "");
+        setCheckOutDate(searchCheckOutDate || "");
+    };
+
+    const handleBooking = async () => {
+
+        if (!checkInDate || !checkOutDate) {
+            setSnackbar({ show: true, message: "Please select check-in and check-out dates.", type: 'error' });
+            return;
+        }
+
+        if (!termsChecked) {
+            setSnackbar({ show: true, message: "You must accept the terms before booking.", type: 'error' });
+            return;
+        }
+
+        try {
+            console.log("Booking accommodation:" + selectedHotel.id + " Room Type ID: " + selectedRoom.id + " Check-in: " + checkInDate + " Check-out: " + checkOutDate);
+
+            const result = await bookAccommodation(
+                selectedHotel.id,
+                selectedRoom.id,
+                checkInDate,
+                checkOutDate
+            );
+
+            if (result) {
+                setSnackbar({ show: true, message: "Booking successful!", type: 'success' });
+                setTimeout(() => {
+                    closeBookingModal();
+                }, 1500);
+            } else {
+                setSnackbar({ show: true, message: "Booking failed. Please try again.", type: 'error' });
+            }
+
+        } catch (error) {
+            console.info(error);
+            // Extract error message if available, or fallback
+            const errorMsg = error.message || "Error processing booking.";
+            setSnackbar({ show: true, message: errorMsg, type: 'error' });
+        }
+    };
+
+    const accommodations = searchResults || dummyHotels;
+
     return (
-        <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
-            {dummyHotels.map(hotel => (
-                <HotelCard key={hotel.id} hotel={hotel} onBook={handleBook} />
-            ))}
+        <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }} className="hotel-list-container">
+
+            <div className="hotel-grid">
+                {accommodations.map(hotel => (
+                    <HotelCard key={hotel.id} hotel={hotel} onBook={onBookClick} />
+                ))}
+            </div>
+
+            {/* Booking Modal */}
+            {selectedRoom && selectedHotel && (
+                <div className="modal-overlay">
+                    <div className="modal-panel">
+                        <h2>Booking: {selectedHotel.name}</h2>
+
+                        <div className="booking-summary" style={{ marginBottom: '15px', padding: '10px', background: '#f9f9f9', borderRadius: '8px' }}>
+                            <p style={{ margin: '5px 0' }}><strong>Location:</strong> {selectedHotel.location}</p>
+                            <p style={{ margin: '5px 0' }}><strong>Room Capacity:</strong> {selectedRoom.room_capacity} Person(s)</p>
+                            <p style={{ margin: '5px 0', color: '#007bff', fontSize: '1.1em' }}><strong>Price:</strong> ${selectedRoom.price_per_night}/night</p>
+                        </div>
+
+                        <label>
+                            Check-in Date:
+                            <input
+                                type="date"
+                                value={checkInDate}
+                                onChange={(e) => setCheckInDate(e.target.value)}
+                            />
+                        </label>
+
+                        <label>
+                            Check-out Date:
+                            <input
+                                type="date"
+                                value={checkOutDate}
+                                onChange={(e) => setCheckOutDate(e.target.value)}
+                            />
+                        </label>
+
+                        <label className="terms-checkbox">
+                            <input
+                                type="checkbox"
+                                checked={termsChecked}
+                                onChange={(e) => setTermsChecked(e.target.checked)}
+                            />
+                            I accept the terms and conditions, and I understand that cancellations may require a fee depending on timing.
+                        </label>
+
+                        <div className="button-row">
+                            <button
+                                className="primary-btn"
+                                onClick={handleBooking}
+                            >
+                                Book Now
+                            </button>
+
+                            <button
+                                className="close-btn"
+                                onClick={resetStates}
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Render Snackbar */}
+            {snackbar.show && (
+                <Snackbar
+                    message={snackbar.message}
+                    type={snackbar.type}
+                    onClose={handleCloseSnackbar}
+                />
+            )}
         </div>
     );
 }

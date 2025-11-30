@@ -7,33 +7,66 @@ import SearchBar from "./SearchBar.jsx";
 // import { searchCars } from "../services/searchService.js";
 import { useState } from "react";
 import HotelList from "./HotelList.jsx";
+import Snackbar from "../components/Snackbar.jsx";
+import {searchAccommodations} from "../services/searchService.js";
+import './Home.css';
 
 function Home() {
 
     const [searchResults, setSearchResults] = useState([]);
     const [searchError, setSearchError] = useState(null);
 
+    const user = localStorage.getItem("user");
+    const username = user ? JSON.parse(user).name : "";
+    const [showLogin, setShowLogin] = useState(false);
+
+    const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
+
+    const [noAccommodationsMessage, setNoAccommodationsMessage] = useState("");
+
+    const [searchLocation, setSearchLocation] = useState("");
+    const [searchMaxPrice, setSearchMaxPrice] = useState("");
+    const [searchCheckInDate, setSearchCheckInDate] = useState("");
+    const [searchCheckOutDate, setSearchCheckOutDate] = useState("");
+
+    const handleCloseSnackbar = () => {
+        setSnackbar({ ...snackbar, show: false });
+    };
+
     const handleSearch = async (filters) => {
+        console.log("Search initiated with filters:", filters);
+        setSearchCheckInDate(filters.check_in);
+        setSearchCheckOutDate(filters.check_out);
+        setSearchLocation(filters.location);
+        setSearchMaxPrice(filters.max_price || "");
+
+        // Reset previous states
+        setNoAccommodationsMessage("");
+        setSearchResults([]);
 
         if (filters.error) {
-            setSearchResults([]);
             setSearchError(filters.error);
+            setSnackbar({ show: true, message: filters.error, type: 'error' });
             return;
         }
 
         setSearchError(null);
 
         try {
-            const results = await searchCars(filters);
-            setSearchResults(results);
+            const results = await searchAccommodations(filters);
 
             if (results.length === 0) {
-                setSearchError("No cars found for the given search.");
+                console.log("No accommodations found for the given search criteria.");
+                setNoAccommodationsMessage("No accommodations found for the given search criteria. Please try different dates or filters.");
+            } else {
+                setSearchResults(results);
             }
 
         } catch (e) {
+            const msg = "Error contacting the server.";
             setSearchResults([]);
-            setSearchError("Error contacting the server.");
+            setSearchError(msg);
+            setSnackbar({ show: true, message: msg, type: 'error' });
         }
     };
 
@@ -44,13 +77,35 @@ function Home() {
             <main className="main-content">
                 <HeroSection/>
                 <SearchBar onSearch={handleSearch}/>
-                <HotelList/>
+                {noAccommodationsMessage ? (
+                    <div className="no-results-container">
+                        <h3>No Accommodations Found</h3>
+                        <p>{noAccommodationsMessage}</p>
+                    </div>
+                ) : (
+                    <HotelList
+                    searchResults={searchResults}
+                    onRequestLogin={() => setShowLogin(true)}
+                    username={username}
+                    searchCheckInDate={searchCheckInDate}
+                    searchCheckOutDate={searchCheckOutDate}
+                    />
+                )}
                 {/*<FeaturedVehicles searchResults={searchResults} searchError={searchError} />*/}
                 {/*<HowItWorks/>*/}
             </main>
 
             {/*<Footer/>*/}
+            {snackbar.show && (
+                <Snackbar
+                    message={snackbar.message}
+                    type={snackbar.type}
+                    onClose={handleCloseSnackbar}
+                />
+            )}
         </div>
+
+
     );
 }
 

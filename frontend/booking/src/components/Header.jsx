@@ -9,13 +9,14 @@ import MuiAlert from '@mui/material/Alert';
 import MyBookingsPage from "./MyBookingsPage.jsx";
 
 function checkLoggedInUsername() {
-    const storedUsername = localStorage.getItem("username");
+    const storedUser = localStorage.getItem("user");
+    const storedUsername = storedUser ? JSON.parse(storedUser).name : null;
     return storedUsername ? storedUsername : "";
 }
 
 function Header() {
     const [username, setUsername] = useState(checkLoggedInUsername());
-    const [showLogin, setShowLogin] = React.useState(false);
+    const [showLogin, setShowLogin] = React.useState(false  );
     const [showSignUp, setShowSignUp] = React.useState(false);
     const [open, setOpen] = useState(false);
     const [showMyBookings, setShowMyBookings] = useState(false);
