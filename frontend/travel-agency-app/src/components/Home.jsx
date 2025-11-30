@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./Home.css";
 import FlightModal from "./FlightModal";
-//import FlightBackModal from "./FlightBackModal";
 import RentalModal from "./RentalModal";
 //import AccommodationModal from "./AccommodationModal";
+import { bookJourney } from "../services/journeyCreationService.js";
 
 
 function Modal({ open, title, onClose, children }) {
@@ -33,6 +33,7 @@ export default function Home() {
   const [cars, setCars] = useState([]);
   const [accommodations, setAccommodations] = useState([]);
   const [modal, setModal] = useState(null);
+  const [email, setEmail] = useState("");
   const [temp, setTemp] = useState({});
 
   const openModal = (type) => {
@@ -40,9 +41,26 @@ export default function Home() {
     setModal(type);
   };
 
-  const bookJourney = () => {
-    console.log({ startLocation,destinationLocation, startDate, endDate, flightThere, flightBack, cars, accommodations });
-  };
+  const handleBookJourney = async () => {
+    console.log("startDate:", startDate);
+    console.log("endDate:", endDate);
+    const result = await bookJourney({
+      userId: 1,
+      email: email,
+      startDate,
+      endDate,
+      flightThere,
+      flightBack,
+      cars,
+      accommodations
+    });
+
+    if (result.success) {
+      alert("Journey booked successfully! ID: " + result.journeyId);
+    } else {
+      alert("Booking failed: " + result.error);
+    }
+};
 
   return (
     <div className="home-container">
@@ -67,6 +85,16 @@ export default function Home() {
               placeholder="Destination"
               value={destinationLocation}
               onChange={(e) => setDestinationLocation(e.target.value)}
+            />
+          </div>
+
+          <div className="date-field">
+            <label>Email:</label>
+            <input
+              className="home-input"
+              placeholder="e-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
         </div>
@@ -163,7 +191,7 @@ export default function Home() {
         </div>
 
 
-        <button className="book-button" onClick={bookJourney}>
+        <button className="book-button" onClick={handleBookJourney}>
           Book Journey
         </button>
       </div>
