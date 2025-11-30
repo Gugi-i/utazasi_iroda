@@ -1,3 +1,5 @@
+import hashlib
+
 def insert_sample_data(conn):
     cur = conn.cursor()
     
@@ -5,34 +7,32 @@ def insert_sample_data(conn):
     # PERSONS
     # -------------------------
     persons = [
-        ("John Doe", "john@example.com", "hashedpassword123", "user"),
-        ("Anna Worker", "anna@work.com", "hashedpassword456", "worker"),
+        ("John", "john@example.com", "123", "user"),
+        ("Anna", "anna@work.com", "456", "worker"),
+        ("Maria", "maria@work.com", "789", "worker"),
+        ("Peter", "peter@work.com", "abc", "worker"),
     ]
 
     for person in persons:
-        # Insert only the role into Person
         cur.execute("""
             INSERT INTO "Person" (role)
             VALUES (%s)
             RETURNING id
         """, (person[3],))
-
         person_id = cur.fetchone()[0]
 
+        pwd_hash = hashlib.sha256(person[2].encode()).hexdigest()
+
         if person[3] == "user":
-            # Insert credentials into User
             cur.execute("""
                 INSERT INTO "User" (id, name, email, password_hash)
                 VALUES (%s, %s, %s, %s)
-            """, (person_id, person[0], person[1], person[2]))
+            """, (person_id, person[0], person[1], pwd_hash))
         else:
-            # Insert credentials into Worker
             cur.execute("""
                 INSERT INTO "Worker" (id, name, email, password_hash)
                 VALUES (%s, %s, %s, %s)
-            """, (person_id, person[0], person[1], person[2]))
-
-
+            """, (person_id, person[0], person[1], pwd_hash))
 
     # -------------------------
     # CARS
@@ -43,6 +43,8 @@ def insert_sample_data(conn):
         ("img/bmw_x3.jpg", "BMW", "X3", 2021, 7, "Paris", 50.0, "available"),
         ("img/audi_a4.jpg", "Audi", "A4", 2020, 5, "Rome", 45.0, "available"),
         ("img/ford_focus.jpg", "Ford", "Focus", 2018, 5, "New York", 40.0, "available"),
+        ("img/mercedes_c_class.jpg", "Mercedes", "C-Class", 2022, 5, "London", 55.0, "available"),
+        ("img/volvo_xc90.jpg", "Volvo", "XC90", 2021, 7, "Paris", 60.0, "available"),
     ]
 
     for car in cars:
@@ -55,25 +57,13 @@ def insert_sample_data(conn):
     # FLIGHTS
     # -------------------------
     flights = [
-        ("FL101", "WizzAir", "Budapest", "London",
-         "2025-01-01 10:00", "2025-01-01 13:00", "03:00",
-         120.0, 150, 150),
-
-        ("FL102", "Ryanair", "Berlin", "Paris",
-         "2025-02-15 09:00", "2025-02-15 11:00", "02:00",
-         90.0, 120, 120),
-
-        ("FL103", "LOT", "Rome", "Berlin",
-         "2025-03-10 14:00", "2025-03-10 16:00", "02:00",
-         110.0, 100, 100),
-
-        ("FL104", "AirFrance", "Paris", "Rome",
-         "2025-04-01 08:30", "2025-04-01 11:00", "02:30",
-         140.0, 80, 80),
-
-        ("FL105", "Delta", "New York", "London",
-         "2025-05-20 06:00", "2025-05-20 13:00", "07:00",
-         500.0, 200, 200),
+        ("FL101", "WizzAir", "Budapest", "London", "2026-01-01 10:00", "2026-01-01 13:00", "03:00", 120.0, 150, 150),
+        ("FL102", "Ryanair", "Berlin", "Paris", "2026-02-15 09:00", "2026-02-15 11:00", "02:00", 90.0, 120, 120),
+        ("FL103", "LOT", "Rome", "Berlin", "2026-03-10 14:00", "2026-03-10 16:00", "02:00", 110.0, 100, 100),
+        ("FL104", "AirFrance", "Paris", "Rome", "2026-04-01 08:30", "2026-04-01 11:00", "02:30", 140.0, 80, 80),
+        ("FL105", "Delta", "New York", "London", "2026-05-20 06:00", "2026-05-20 13:00", "07:00", 500.0, 200, 200),
+        ("FL106", "British Airways", "London", "Paris", "2026-01-05 09:00", "2026-01-05 11:00", "02:00", 130.0, 100, 100),
+        ("FL107", "Lufthansa", "Berlin", "Rome", "2026-02-20 12:00", "2026-02-20 14:30", "02:30", 150.0, 90, 90),
     ]
 
     for flight in flights:
@@ -89,21 +79,14 @@ def insert_sample_data(conn):
     # ACCOMMODATIONS
     # -------------------------
     accommodations = [
-    ("img/london_central_hotel.jpg", "London Central Hotel", "London", "Hotel",
-     "Central hotel in London"),
-
-    ("img/berlin_cozy_inn.jpg", "Berlin Cozy Inn", "Berlin", "Guesthouse",
-     "Cozy guesthouse near city center"),
-
-    ("img/paris_apartments.jpg", "Paris Apartments", "Paris", "Apartment",
-     "Modern apartments with kitchen"),
-
-    ("img/rome_hostel.jpg", "Rome Hostel", "Rome", "Hostel",
-     "Budget-friendly hostel near Colosseum"),
-
-    ("img/nyc_luxury_suites.jpg", "NYC Luxury Suites", "New York", "Hotel",
-     "Luxury suites in Manhattan"),
-]
+        ("img/london_central_hotel.jpg", "London Central Hotel", "London", "Hotel", "Central hotel in London"),
+        ("img/berlin_cozy_inn.jpg", "Berlin Cozy Inn", "Berlin", "Guesthouse", "Cozy guesthouse near city center"),
+        ("img/paris_apartments.jpg", "Paris Apartments", "Paris", "Apartment", "Modern apartments with kitchen"),
+        ("img/rome_hostel.jpg", "Rome Hostel", "Rome", "Hostel", "Budget-friendly hostel near Colosseum"),
+        ("img/nyc_luxury_suites.jpg", "NYC Luxury Suites", "New York", "Hotel", "Luxury suites in Manhattan"),
+        ("img/london_boutique.jpg", "London Boutique", "London", "Hotel", "Boutique hotel in London"),
+        ("img/paris_luxury.jpg", "Paris Luxury Suites", "Paris", "Hotel", "Luxury hotel near Eiffel Tower"),
+    ]
 
     for acc in accommodations:
         cur.execute("""
@@ -111,30 +94,31 @@ def insert_sample_data(conn):
             (image_url, name, location, type, description)
             VALUES (%s,%s,%s,%s,%s)
         """, acc)
-        
+
     room_types = [
+        # London (1)
+        (1, 1, 20, 80.00),
+        (1, 2, 20, 120.00),
+        (1, 4, 10, 180.00),
+        (6, 2, 10, 200.00),
 
-    # London (1)
-    (1, 1, 20, 80.00),
-    (1, 2, 20, 120.00),
-    (1, 4, 10, 180.00),
+        # Berlin (2)
+        (2, 2, 15, 70.00),
+        (2, 3, 10, 95.00),
 
-    # Berlin (2)
-    (2, 2, 15, 70.00),
-    (2, 3, 10, 95.00),
+        # Paris (3)
+        (3, 2, 10, 110.00),
+        (3, 4, 10, 150.00),
+        (7, 2, 5, 220.00),
 
-    # Paris (3)
-    (3, 2, 10, 110.00),
-    (3, 4, 10, 150.00),
+        # Rome Hostel (4)
+        (4, 1, 40, 25.00),
 
-    # Rome Hostel (4)
-    (4, 1, 40, 25.00),
-
-    # NYC (5)
-    (5, 2, 10, 300.00),
-    (5, 3, 10, 380.00),
-    (5, 4, 5, 450.00),
-]
+        # NYC (5)
+        (5, 2, 10, 300.00),
+        (5, 3, 10, 380.00),
+        (5, 4, 5, 450.00),
+    ]
 
     for rt in room_types:
         cur.execute("""

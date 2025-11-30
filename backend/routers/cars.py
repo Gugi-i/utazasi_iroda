@@ -1,6 +1,7 @@
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from backend.utils.auth import get_current_user
 from backend.utils.database import get_db
 from backend.schemas.car_schema import CarResponse, RentCreate, RentResponse
 from backend.crud import car_crud
@@ -34,7 +35,7 @@ def list_cars(
 
 # ---- RENT CAR ------------------------------------------------------
 @router.post("/rent", response_model=RentResponse)
-def rent_car(data: RentCreate, db: Session = Depends(get_db)):
+def rent_car(data: RentCreate, db: Session = Depends(get_db), user=Depends(get_current_user)):
     rental = car_crud.rent_car(db, data)
     
     if not date_is_valid(data.rent_start_date, data.rent_end_date):
@@ -56,7 +57,7 @@ def list_user_rentals(user_id: int, db: Session = Depends(get_db)):
 
 # ---- CANCEL RENT ---------------------------------------------------
 @router.delete("/rent/{rent_id}")
-def cancel_rent(rent_id: int, db: Session = Depends(get_db)):
+def cancel_rent(rent_id: int, db: Session = Depends(get_db), user=Depends(get_current_user)):
     success = car_crud.cancel_rent(db, rent_id)
     if not success:
         raise HTTPException(status_code=404, detail="Rental not found")

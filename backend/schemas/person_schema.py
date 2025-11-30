@@ -21,13 +21,13 @@ class PersonResponseWithEmail(BaseModel):
 
 class UserCreate(BaseModel):
     name: str
-    email: str
+    email: EmailStr
     password: str
 
 class PersonLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str
     
 class WorkerLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str

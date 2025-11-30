@@ -26,6 +26,13 @@ class PlaneTicketBooked(Base):
     id = Column(Integer, primary_key=True, index=True)
     flight_id = Column(Integer, ForeignKey("PlaneTickets.id", ondelete="CASCADE"))
     user_id = Column(Integer, ForeignKey("Person.id", ondelete="CASCADE"))
+    flight_number = Column(String, nullable=False)
+    airline = Column(String, nullable=False)
+    departure_city = Column(String, nullable=False)
+    arrival_city = Column(String, nullable=False)
+    departure_date = Column(TIMESTAMP, nullable=False)
+    arrival_date = Column(TIMESTAMP, nullable=False)
+    
     seat_number = Column(String(10))
     total_price = Column(Numeric(10,2))
 

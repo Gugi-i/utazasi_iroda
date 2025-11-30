@@ -5,7 +5,7 @@ from backend.models.plane_ticket_model import PlaneTicket, PlaneTicketBooked
 from datetime import date
 
 def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_price=None, departure_date: date | None = None, arrival_date: date | None = None):
-    query = db.query(PlaneTicket.departure_date >= date.today())
+    query = db.query(PlaneTicket).filter(PlaneTicket.departure_date >= date.today())
 
     if departure_city:
         query = query.filter(PlaneTicket.departure_city.ilike(f"%{departure_city}%"))
@@ -55,6 +55,12 @@ def book_ticket(db: Session, data):
             flight_id=data.flight_id,
             user_id=data.user_id,
             seat_number=str(seat),
+            flight_number=ticket.flight_number,
+            airline=ticket.airline,
+            departure_city=ticket.departure_city,
+            arrival_city=ticket.arrival_city,
+            departure_date=ticket.departure_date,
+            arrival_date=ticket.arrival_date,
             total_price=float(ticket.price)
         )
         db.add(b)

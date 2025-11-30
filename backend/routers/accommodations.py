@@ -1,6 +1,7 @@
 from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from backend.utils.auth import get_current_user
 from backend.utils.database import get_db
 from backend.models.accommodation_model import AccommodationBooking
 from backend.schemas.accommodation_schema import (
@@ -21,7 +22,7 @@ def list_accommodations(location: str | None = None, max_price: float | None = N
 
 # --- Booking Endpoints ---
 @router.post("/book", response_model=BookingResponse)
-def book_room(data: BookingCreate, db: Session = Depends(get_db)):
+def book_room(data: BookingCreate, db: Session = Depends(get_db), user=Depends(get_current_user)):
     booking = accommodation_crud.create_booking(db, data)
     
     if not date_is_valid(data.check_in_date, data.check_out_date):
@@ -35,7 +36,7 @@ def book_room(data: BookingCreate, db: Session = Depends(get_db)):
     return booking
 
 @router.delete("/accommodation/booking/{booking_id}")
-def delete_accommodation_booking(booking_id: int, db: Session = Depends(get_db)):
+def delete_accommodation_booking(booking_id: int, db: Session = Depends(get_db), user=Depends(get_current_user)):
     booking = db.query(AccommodationBooking).filter_by(id=booking_id).first()
 
     if not booking:

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from backend.models.person_model import Person, User, Worker
 from backend.utils.database import get_db
+from backend.utils.security import create_access_token
 from backend.schemas.person_schema import PersonResponse, UserCreate, PersonLogin, WorkerLogin, PersonResponseWithEmail
 from backend.crud.person_crud import (
     create_person, create_user_account,
@@ -26,18 +27,25 @@ def signup_user(data: UserCreate, db: Session = Depends(get_db)):
 
     return {
         "id": person.id,
+        "role": person.role,
         "name": user.name,
-        "email": user.email,
-        "role": person.role
+        "email": user.email
     }
 
 @router.post("/login")
 def login(data: PersonLogin, db: Session = Depends(get_db)):
-    person = authenticate_login(db, data.email, data.password)
+    identifier = data.email
+    if not identifier:
+        raise HTTPException(400, "Email required")
+
+    person = authenticate_login(db, identifier, data.password)
     if not person:
-        raise HTTPException(status_code=400, detail="Invalid email or password")
+        raise HTTPException(400, "Invalid email or password")
+    token = create_access_token({"id": person.id, "role": person.role})
 
     return {
+        "access_token": token,
+        "token_type": "bearer",
         "id": person.id,
         "role": person.role
     }
