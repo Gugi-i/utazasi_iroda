@@ -27,7 +27,8 @@ def signup_user(data: UserCreate, db: Session = Depends(get_db)):
     return {
         "id": person.id,
         "name": user.name,
-        "email": user.email
+        "email": user.email,
+        "role": person.role
     }
 
 @router.post("/login")
