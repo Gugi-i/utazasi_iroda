@@ -65,7 +65,6 @@ def get_room_types_by_accommodation(db: Session, acc_id: int):
 def check_availability(db: Session, room_type_id: int, rooms_needed: int, check_in_date, check_out_date):
     booked_rooms = db.query(func.sum(AccommodationBooking.rooms_booked)).filter(
         AccommodationBooking.room_type_id == room_type_id,
-        AccommodationBooking.status == "booked",
         and_(
             AccommodationBooking.check_in_date < check_out_date,
             AccommodationBooking.check_out_date > check_in_date
@@ -92,8 +91,7 @@ def create_booking(db: Session, data: BookingCreate):
 
     booking = AccommodationBooking(
         **data.dict(),
-        total_price=total_price,
-        booking_date=datetime.now()
+        total_price=total_price
     )
 
     db.add(booking)

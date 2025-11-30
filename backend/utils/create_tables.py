@@ -54,8 +54,7 @@ def create_all_tables():
         user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
         rent_start_date DATE NOT NULL,
         rent_end_date DATE NOT NULL,
-        total_price NUMERIC(10,2),
-        booking_date TIMESTAMP DEFAULT NOW()
+        total_price NUMERIC(10,2)
     );
 
     CREATE TABLE IF NOT EXISTS "PlaneTickets" (

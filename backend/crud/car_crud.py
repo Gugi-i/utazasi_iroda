@@ -42,20 +42,19 @@ def get_all_cars(db: Session, filters: dict):
 
         result.append({
             "id": car.id,
+            "image_url": car.image_url,
             "make": car.make,
             "model": car.model,
             "year": car.year,
             "space": car.space,
             "city": car.city,
             "price_per_day": float(car.price_per_day),
-            "status": car.status,
             "rentals": [
                 {
                     "id": r.id,
                     "car_id": r.car_id,
                     "rent_start_date": r.rent_start_date,
-                    "rent_end_date": r.rent_end_date,
-                    "status": r.status
+                    "rent_end_date": r.rent_end_date
                 }
                 for r in rentals
             ]
@@ -91,8 +90,7 @@ def rent_car(db: Session, data: RentCreate):
         user_id=data.user_id,
         rent_start_date=data.rent_start_date,
         rent_end_date=data.rent_end_date,
-        total_price=total_price,
-        status="booked"
+        total_price=total_price
     )
 
     db.add(rental)
@@ -127,6 +125,7 @@ def get_user_rentals(db: Session, user_id: int):
         result.append({
             "rental_id": r.id,
             "car_id": car.id,
+            "image_url": car.image_url,
             "make": car.make,
             "model": car.model,
             "year": car.year,

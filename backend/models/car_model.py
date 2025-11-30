@@ -28,8 +28,7 @@ class CarRented(Base):
     rent_start_date = Column(Date, nullable=False)
     rent_end_date = Column(Date, nullable=False)
     total_price = Column(Numeric(10, 2))
-    booking_date = Column(TIMESTAMP)
-    status = Column(String(50), default="booked")
+
 
     car = relationship("Car", back_populates="rentals")
     user = relationship("User", back_populates="rentals")

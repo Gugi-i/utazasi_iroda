@@ -19,7 +19,6 @@ class RentalShort(BaseModel):
     id: int
     rent_start_date: date
     rent_end_date: date
-    status: str
 
     class Config:
         orm_mode = True
@@ -50,7 +49,6 @@ class RentResponse(BaseModel):
     rent_start_date: date
     rent_end_date: date
     total_price: float
-    status: str
 
     class Config:
         orm_mode = True

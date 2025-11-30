@@ -39,7 +39,6 @@ class AccommodationBooking(Base):
     check_in_date = Column(Date, nullable=False)
     check_out_date = Column(Date, nullable=False)
     total_price = Column(Numeric(10,2))
-    status = Column(String(50), default="booked")
 
     room_type = relationship("AccommodationRoomType", back_populates="bookings")
     user = relationship("User", back_populates="accommodation_bookings")
