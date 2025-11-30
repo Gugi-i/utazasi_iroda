@@ -6,6 +6,7 @@ from typing import List, Optional
 # -------------------- CAR -----------------------
 
 class CarBase(BaseModel):
+    image_url: Optional[str] = None
     make: str
     model: str
     year: int

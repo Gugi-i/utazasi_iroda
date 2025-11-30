@@ -6,6 +6,7 @@ class Accommodation(Base):
     __tablename__ = "Accommodation"
 
     id = Column(Integer, primary_key=True)
+    image_url = Column(String(255))
     name = Column(String(255), nullable=False)
     location = Column(String(255), nullable=False)
     type = Column(String(50), nullable=False)  

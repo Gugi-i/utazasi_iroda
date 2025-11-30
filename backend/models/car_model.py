@@ -7,6 +7,7 @@ class Car(Base):
     __tablename__ = "Car"
 
     id = Column(Integer, primary_key=True)
+    image_url = Column(String(255))
     make = Column(String(100), nullable=False)
     model = Column(String(100), nullable=False)
     year = Column(Integer, nullable=False)

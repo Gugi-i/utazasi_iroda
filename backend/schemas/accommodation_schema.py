@@ -17,6 +17,7 @@ class RoomTypeResponse(RoomTypeBase):
 
 # --- Accommodation ---
 class AccommodationBase(BaseModel):
+    image_url: str | None = None
     name: str
     location: str
     type: str

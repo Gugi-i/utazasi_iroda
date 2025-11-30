@@ -29,17 +29,17 @@ def insert_sample_data(conn):
     # CARS
     # -------------------------
     cars = [
-        ("Toyota", "Corolla", 2020, 5, "London", 30.0, "available"),
-        ("Honda", "Civic", 2019, 5, "Berlin", 28.0, "available"),
-        ("BMW", "X3", 2021, 7, "Paris", 50.0, "available"),
-        ("Audi", "A4", 2020, 5, "Rome", 45.0, "available"),
-        ("Ford", "Focus", 2018, 5, "New York", 40.0, "available"),
+        ("img/toyota_corolla.jpg", "Toyota", "Corolla", 2020, 5, "London", 30.0, "available"),
+        ("img/honda_civic.jpg", "Honda", "Civic", 2019, 5, "Berlin", 28.0, "available"),
+        ("img/bmw_x3.jpg", "BMW", "X3", 2021, 7, "Paris", 50.0, "available"),
+        ("img/audi_a4.jpg", "Audi", "A4", 2020, 5, "Rome", 45.0, "available"),
+        ("img/ford_focus.jpg", "Ford", "Focus", 2018, 5, "New York", 40.0, "available"),
     ]
 
     for car in cars:
         cur.execute("""
-            INSERT INTO "Car" (make, model, year, space, city, price_per_day, status)
-            VALUES (%s,%s,%s,%s,%s,%s,%s)
+            INSERT INTO "Car" (image_url, make, model, year, space, city, price_per_day, status)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
         """, car)
 
     # -------------------------
@@ -80,26 +80,26 @@ def insert_sample_data(conn):
     # ACCOMMODATIONS
     # -------------------------
     accommodations = [
-    ("London Central Hotel", "London", "Hotel",
+    ("img/london_central_hotel.jpg", "London Central Hotel", "London", "Hotel",
      "Central hotel in London"),
 
-    ("Berlin Cozy Inn", "Berlin", "Guesthouse",
+    ("img/berlin_cozy_inn.jpg", "Berlin Cozy Inn", "Berlin", "Guesthouse",
      "Cozy guesthouse near city center"),
 
-    ("Paris Apartments", "Paris", "Apartment",
+    ("img/paris_apartments.jpg", "Paris Apartments", "Paris", "Apartment",
      "Modern apartments with kitchen"),
 
-    ("Rome Hostel", "Rome", "Hostel",
+    ("img/rome_hostel.jpg", "Rome Hostel", "Rome", "Hostel",
      "Budget-friendly hostel near Colosseum"),
 
-    ("NYC Luxury Suites", "New York", "Hotel",
+    ("img/nyc_luxury_suites.jpg", "NYC Luxury Suites", "New York", "Hotel",
      "Luxury suites in Manhattan"),
 ]
 
     for acc in accommodations:
         cur.execute("""
             INSERT INTO "Accommodation"
-            (name, location, type, description)
+            (image_url, name, location, type, description)
             VALUES (%s,%s,%s,%s)
         """, acc)
         
