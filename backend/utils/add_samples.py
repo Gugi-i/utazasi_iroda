@@ -1,5 +1,29 @@
 def insert_sample_data(conn):
     cur = conn.cursor()
+    
+    # -------------------------
+    # PERSONS
+    # -------------------------
+
+    persons = [
+        ("John Doe", "john@example.com", "hashedpassword123", "user"),
+        ("Anna Worker", "anna@work.com", "hashedpassword456", "worker"),
+    ]
+
+    for person in persons:
+        cur.execute("""
+            INSERT INTO "Person" (name, email, password_hash, type)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id
+        """, person)
+
+        person_id = cur.fetchone()[0]
+
+        if person[3] == "user":
+            cur.execute('INSERT INTO "User" (id) VALUES (%s)', (person_id,))
+        else:
+            cur.execute('INSERT INTO "Worker" (id) VALUES (%s)', (person_id,))
+
 
     # -------------------------
     # CARS

@@ -17,15 +17,25 @@ def create_all_tables():
     cur = conn.cursor()
 
     sql_commands = """
-    CREATE TABLE IF NOT EXISTS "User" (
+    CREATE TABLE IF NOT EXISTS "Person" (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) UNIQUE NOT NULL
+        password_hash VARCHAR(255) UNIQUE NOT NULL,
+        type VARCHAR(50) NOT NULL
+    );
+    
+    CREATE TABLE IF NOT EXISTS "User" (
+        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE
+    );
+    
+    CREATE TABLE IF NOT EXISTS "Worker" (
+        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS "Car" (
         id SERIAL PRIMARY KEY,
+        image_url VARCHAR(255),
         make VARCHAR(100) NOT NULL,
         model VARCHAR(100) NOT NULL,
         year INT NOT NULL,
@@ -70,6 +80,7 @@ def create_all_tables():
 
     CREATE TABLE IF NOT EXISTS "Accommodation" (
         id SERIAL PRIMARY KEY,
+        image_url VARCHAR(255),
         name VARCHAR(255) NOT NULL,
         location VARCHAR(255) NOT NULL,
         type VARCHAR(50) NOT NULL,     
