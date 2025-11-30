@@ -3,6 +3,7 @@ from sqlalchemy import and_, or_
 from backend.models.car_model import Car, CarRented
 from backend.schemas.car_schema import RentCreate
 from sqlalchemy import and_, or_
+from datetime import date
 
 def get_all_cars(db: Session, filters: dict):
     query = db.query(Car)
@@ -42,6 +43,7 @@ def get_all_cars(db: Session, filters: dict):
 
         result.append({
             "id": car.id,
+            "image_url": car.image_url,
             "make": car.make,
             "model": car.model,
             "year": car.year,
@@ -54,14 +56,12 @@ def get_all_cars(db: Session, filters: dict):
                     "id": r.id,
                     "car_id": r.car_id,
                     "rent_start_date": r.rent_start_date,
-                    "rent_end_date": r.rent_end_date,
-                    "status": r.status
+                    "rent_end_date": r.rent_end_date
                 }
                 for r in rentals
             ]
         })
     return result
-
 
 def rent_car(db: Session, data: RentCreate):
     car = db.query(Car).filter(Car.id == data.car_id).first()
@@ -91,15 +91,13 @@ def rent_car(db: Session, data: RentCreate):
         user_id=data.user_id,
         rent_start_date=data.rent_start_date,
         rent_end_date=data.rent_end_date,
-        total_price=total_price,
-        status="booked"
+        total_price=total_price
     )
 
     db.add(rental)
     db.commit()
     db.refresh(rental)
     return rental
-
 
 def cancel_rent(db: Session, rent_id: int):
     rent = db.query(CarRented).filter(CarRented.id == rent_id).first()
@@ -127,6 +125,7 @@ def get_user_rentals(db: Session, user_id: int):
         result.append({
             "rental_id": r.id,
             "car_id": car.id,
+            "image_url": car.image_url,
             "make": car.make,
             "model": car.model,
             "year": car.year,
@@ -136,3 +135,8 @@ def get_user_rentals(db: Session, user_id: int):
             "total_price": float(r.total_price)
         })
     return result
+
+def date_is_valid(rent_start_date: date, rent_end_date: date):
+    if (rent_start_date >= rent_end_date) or (rent_start_date < date.today()):
+        return False
+    return True

@@ -5,7 +5,7 @@ from backend.models.plane_ticket_model import PlaneTicket, PlaneTicketBooked
 from datetime import date
 
 def get_all_tickets(db: Session, departure_city=None, arrival_city=None, max_price=None, departure_date: date | None = None, arrival_date: date | None = None):
-    query = db.query(PlaneTicket)
+    query = db.query(PlaneTicket.departure_date >= date.today())
 
     if departure_city:
         query = query.filter(PlaneTicket.departure_city.ilike(f"%{departure_city}%"))

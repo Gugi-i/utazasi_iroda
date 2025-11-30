@@ -17,6 +17,7 @@ class RoomTypeResponse(RoomTypeBase):
 
 # --- Accommodation ---
 class AccommodationBase(BaseModel):
+    image_url: str | None = None
     name: str
     location: str
     type: str
@@ -45,7 +46,6 @@ class BookingCreate(BookingBase):
 class BookingResponse(BookingBase):
     id: int
     total_price: float
-    status: str
 
     class Config:
         orm_mode = True

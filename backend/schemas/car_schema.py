@@ -6,6 +6,7 @@ from typing import List, Optional
 # -------------------- CAR -----------------------
 
 class CarBase(BaseModel):
+    image_url: Optional[str] = None
     make: str
     model: str
     year: int
@@ -18,7 +19,6 @@ class RentalShort(BaseModel):
     id: int
     rent_start_date: date
     rent_end_date: date
-    status: str
 
     class Config:
         orm_mode = True
@@ -49,7 +49,6 @@ class RentResponse(BaseModel):
     rent_start_date: date
     rent_end_date: date
     total_price: float
-    status: str
 
     class Config:
         orm_mode = True

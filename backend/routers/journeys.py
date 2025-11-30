@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from backend.utils.database import get_db
 from backend.schemas.journey_schema import (
     JourneyCreate, JourneyResponse,
-    AddCar, AddPlane, AddAccommodation
+    AddCar, AddPlane, AddAccommodation, JourneyDetailResponse
 )
 from backend.crud import journey_crud
 
@@ -18,13 +18,13 @@ def create_journey(data: JourneyCreate, db: Session = Depends(get_db)):
 
 
 # ---- GET ALL ----
-@router.get("/", response_model=list[JourneyResponse])
+@router.get("/", response_model=list[JourneyDetailResponse])
 def all_journeys(db: Session = Depends(get_db)):
     return journey_crud.get_all_journeys(db)
 
 
 # ---- GET USER JOURNEYS ----
-@router.get("/user/{user_id}", response_model=list[JourneyResponse])
+@router.get("/user/{user_id}", response_model=list[JourneyDetailResponse])
 def user_journeys(user_id: int, db: Session = Depends(get_db)):
     return journey_crud.get_user_journeys(db, user_id)
 

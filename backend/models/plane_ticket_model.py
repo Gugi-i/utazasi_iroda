@@ -25,9 +25,11 @@ class PlaneTicketBooked(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     flight_id = Column(Integer, ForeignKey("PlaneTickets.id", ondelete="CASCADE"))
-    user_id = Column(Integer, ForeignKey("User.id", ondelete="CASCADE"))
+    user_id = Column(Integer, ForeignKey("Person.id", ondelete="CASCADE"))
     seat_number = Column(String(10))
     total_price = Column(Numeric(10,2))
 
     ticket = relationship("PlaneTicket", back_populates="bookings")
-    user = relationship("User", back_populates="plane_bookings")
+    person = relationship("Person", back_populates="plane_bookings")
+    
+    journey_links = relationship("JourneyPlane", back_populates="plane_ticket_booked")

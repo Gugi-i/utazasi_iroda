@@ -6,6 +6,7 @@ class Accommodation(Base):
     __tablename__ = "Accommodation"
 
     id = Column(Integer, primary_key=True)
+    image_url = Column(String(255))
     name = Column(String(255), nullable=False)
     location = Column(String(255), nullable=False)
     type = Column(String(50), nullable=False)  
@@ -33,11 +34,13 @@ class AccommodationBooking(Base):
     id = Column(Integer, primary_key=True)
     accommodation_id = Column(Integer, ForeignKey("Accommodation.id"), nullable=False)
     room_type_id = Column(Integer, ForeignKey("AccommodationRoomType.id"), nullable=False)
-    user_id = Column(Integer, ForeignKey("User.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("Person.id"), nullable=False)
     rooms_booked = Column(Integer, nullable=False)
     check_in_date = Column(Date, nullable=False)
     check_out_date = Column(Date, nullable=False)
     total_price = Column(Numeric(10,2))
-    status = Column(String(50), default="booked")
 
     room_type = relationship("AccommodationRoomType", back_populates="bookings")
+    person = relationship("Person", back_populates="accommodation_bookings")
+    
+    journey_links = relationship("JourneyAccommodation", back_populates="accommodation_booked")

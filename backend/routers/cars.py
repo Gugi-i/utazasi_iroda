@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from backend.utils.database import get_db
 from backend.schemas.car_schema import CarResponse, RentCreate, RentResponse
 from backend.crud import car_crud
+from backend.crud.car_crud import date_is_valid
 
 router = APIRouter(prefix="/cars", tags=["Cars"])
 
@@ -35,6 +36,10 @@ def list_cars(
 @router.post("/rent", response_model=RentResponse)
 def rent_car(data: RentCreate, db: Session = Depends(get_db)):
     rental = car_crud.rent_car(db, data)
+    
+    if not date_is_valid(data.rent_start_date, data.rent_end_date):
+        raise HTTPException(status_code=400, detail="Invalid rent start/end dates")
+    
     if not rental:
         raise HTTPException(status_code=400, detail="Car not available")
     return rental

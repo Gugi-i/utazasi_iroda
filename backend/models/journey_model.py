@@ -6,7 +6,7 @@ class Journey(Base):
     __tablename__ = "Journey"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("User.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("Person.id", ondelete="CASCADE"), nullable=False)
     total_price = Column(Numeric(10, 2), default=0)
     start_date = Column(Date)
     end_date = Column(Date)
@@ -25,6 +25,7 @@ class JourneyPlane(Base):
     plane_ticket_booked_id = Column(Integer, ForeignKey("PlaneTickets_booked.id", ondelete="CASCADE"))
 
     journey = relationship("Journey", back_populates="plane_tickets")
+    plane_ticket_booked = relationship("PlaneTicketBooked", back_populates="journey_links")
 
 
 class JourneyCar(Base):
@@ -35,6 +36,7 @@ class JourneyCar(Base):
     car_rented_id = Column(Integer, ForeignKey("Car_rented.id", ondelete="CASCADE"))
 
     journey = relationship("Journey", back_populates="cars")
+    car_rented = relationship("CarRented", back_populates="journey_links")
 
 
 class JourneyAccommodation(Base):
@@ -45,3 +47,4 @@ class JourneyAccommodation(Base):
     accommodation_booked_id = Column(Integer, ForeignKey("AccommodationBooking.id", ondelete="CASCADE"))
 
     journey = relationship("Journey", back_populates="accommodations")
+    accommodation_booked = relationship("AccommodationBooking", back_populates="journey_links")

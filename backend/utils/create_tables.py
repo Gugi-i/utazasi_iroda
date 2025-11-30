@@ -17,15 +17,28 @@ def create_all_tables():
     cur = conn.cursor()
 
     sql_commands = """
-    CREATE TABLE IF NOT EXISTS "User" (
+    CREATE TABLE IF NOT EXISTS "Person" (
         id SERIAL PRIMARY KEY,
+        role VARCHAR(50) NOT NULL CHECK (role IN ('user','worker'))
+    );
+
+    CREATE TABLE IF NOT EXISTS "User" (
+        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) UNIQUE NOT NULL
+        password_hash VARCHAR(255) NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS "Worker" (
+        id INT PRIMARY KEY REFERENCES "Person"(id) ON DELETE CASCADE,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL
     );
 
     CREATE TABLE IF NOT EXISTS "Car" (
         id SERIAL PRIMARY KEY,
+        image_url VARCHAR(255),
         make VARCHAR(100) NOT NULL,
         model VARCHAR(100) NOT NULL,
         year INT NOT NULL,
@@ -38,12 +51,10 @@ def create_all_tables():
     CREATE TABLE IF NOT EXISTS "Car_rented" (
         id SERIAL PRIMARY KEY,
         car_id INT NOT NULL REFERENCES "Car"(id) ON DELETE CASCADE,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         rent_start_date DATE NOT NULL,
         rent_end_date DATE NOT NULL,
-        total_price NUMERIC(10,2),
-        booking_date TIMESTAMP DEFAULT NOW(),
-        status VARCHAR(50) DEFAULT 'booked'
+        total_price NUMERIC(10,2)
     );
 
     CREATE TABLE IF NOT EXISTS "PlaneTickets" (
@@ -63,13 +74,14 @@ def create_all_tables():
     CREATE TABLE IF NOT EXISTS "PlaneTickets_booked" (
         id SERIAL PRIMARY KEY,
         flight_id INT NOT NULL REFERENCES "PlaneTickets"(id) ON DELETE CASCADE,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         seat_number VARCHAR(10),
         total_price NUMERIC(10,2)
     );
 
     CREATE TABLE IF NOT EXISTS "Accommodation" (
         id SERIAL PRIMARY KEY,
+        image_url VARCHAR(255),
         name VARCHAR(255) NOT NULL,
         location VARCHAR(255) NOT NULL,
         type VARCHAR(50) NOT NULL,     
@@ -88,17 +100,16 @@ def create_all_tables():
         id SERIAL PRIMARY KEY,
         accommodation_id INT NOT NULL REFERENCES "Accommodation"(id) ON DELETE CASCADE,
         room_type_id INT NOT NULL REFERENCES "AccommodationRoomType"(id) ON DELETE CASCADE,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         rooms_booked INT NOT NULL,               
         check_in_date DATE NOT NULL,
         check_out_date DATE NOT NULL,
-        total_price NUMERIC(10,2),
-        status VARCHAR(50) DEFAULT 'booked'
+        total_price NUMERIC(10,2)
     );
 
     CREATE TABLE IF NOT EXISTS "Journey" (
         id SERIAL PRIMARY KEY,
-        user_id INT NOT NULL REFERENCES "User"(id) ON DELETE CASCADE,
+        user_id INT NOT NULL REFERENCES "Person"(id) ON DELETE CASCADE,
         total_price NUMERIC(10,2),
         start_date DATE,
         end_date DATE,
@@ -129,4 +140,3 @@ def create_all_tables():
     conn.commit()
     cur.close()
     conn.close()
-
