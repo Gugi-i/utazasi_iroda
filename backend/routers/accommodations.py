@@ -8,6 +8,7 @@ from backend.schemas.accommodation_schema import (
     BookingCreate, BookingResponse
 )
 from backend.crud import accommodation_crud
+from backend.crud.accommodation_crud import roomtype_belongs_to_accommodation, date_is_valid
 
 router = APIRouter(prefix="/accommodations", tags=["Accommodations"])
 
@@ -22,6 +23,13 @@ def list_accommodations(location: str | None = None, max_price: float | None = N
 @router.post("/book", response_model=BookingResponse)
 def book_room(data: BookingCreate, db: Session = Depends(get_db)):
     booking = accommodation_crud.create_booking(db, data)
+    
+    if not date_is_valid(data.check_in_date, data.check_out_date):
+        raise HTTPException(status_code=400, detail="Invalid check-in/check-out dates")
+    
+    if not roomtype_belongs_to_accommodation(db, data.accommodation_id, data.room_type_id):
+        raise HTTPException(status_code=400, detail="Room type does not belong to this accommodation")
+
     if not booking:
         raise HTTPException(status_code=400, detail="Not enough rooms available")
     return booking

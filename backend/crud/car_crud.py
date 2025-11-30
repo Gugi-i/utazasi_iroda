@@ -3,6 +3,7 @@ from sqlalchemy import and_, or_
 from backend.models.car_model import Car, CarRented
 from backend.schemas.car_schema import RentCreate
 from sqlalchemy import and_, or_
+from datetime import date
 
 def get_all_cars(db: Session, filters: dict):
     query = db.query(Car)
@@ -62,7 +63,6 @@ def get_all_cars(db: Session, filters: dict):
         })
     return result
 
-
 def rent_car(db: Session, data: RentCreate):
     car = db.query(Car).filter(Car.id == data.car_id).first()
     if not car or car.status != "available":
@@ -98,7 +98,6 @@ def rent_car(db: Session, data: RentCreate):
     db.commit()
     db.refresh(rental)
     return rental
-
 
 def cancel_rent(db: Session, rent_id: int):
     rent = db.query(CarRented).filter(CarRented.id == rent_id).first()
@@ -136,3 +135,8 @@ def get_user_rentals(db: Session, user_id: int):
             "total_price": float(r.total_price)
         })
     return result
+
+def date_is_valid(rent_start_date: date, rent_end_date: date):
+    if (rent_start_date >= rent_end_date) or (rent_start_date < date.today()):
+        return False
+    return True

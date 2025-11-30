@@ -5,7 +5,6 @@ from backend.models.accommodation_model import Accommodation, AccommodationRoomT
 from backend.schemas.accommodation_schema import BookingCreate
 
 # --- Accommodations ---
-
 def get_all_accommodations(db: Session, location: str | None = None, max_price: float | None = None, check_in: date | None = None, check_out: date | None = None,):
     query = db.query(Accommodation)
 
@@ -104,3 +103,18 @@ def list_user_bookings(db: Session, user_id: int):
 
 def list_all_bookings(db: Session):
     return db.query(AccommodationBooking).all()
+
+def roomtype_belongs_to_accommodation(db: Session, accommodation_id: int, room_type_id: int) -> bool:
+    exists = db.query(AccommodationRoomType).filter(
+        AccommodationRoomType.id == room_type_id,
+        AccommodationRoomType.accommodation_id == accommodation_id
+    ).first()
+    
+    return exists is not None
+
+def date_is_valid(check_in: date, check_out: date) -> bool:
+    if check_in >= check_out:
+        return False
+    if check_in < date.today():
+        return False
+    return True
