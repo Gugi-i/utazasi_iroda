@@ -74,11 +74,11 @@ function Login({ onLoginSuccess, onShowSignUp }) {
                     </button>
                 </form>
 
-                <div className="login-help">
-                    <p>Don't have an account?
-                        <span onClick={onShowSignUp} className="link-text">Sign Up</span>
-                    </p>
-                </div>
+                {/*<div className="login-help">*/}
+                {/*    <p>Don't have an account?*/}
+                {/*        <span onClick={onShowSignUp} className="link-text">Sign Up</span>*/}
+                {/*    </p>*/}
+                {/*</div>*/}
             </div>
 
             {snackbar.show && (

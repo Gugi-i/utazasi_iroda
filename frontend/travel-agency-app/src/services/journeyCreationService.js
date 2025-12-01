@@ -68,7 +68,7 @@ export const bookJourney = async ({
     // 4. Add accommodations
     for (const a of accommodations) {
       console.log(a)
-      const response = await bookAccommodation(a.id, a.accommodationId, a.checkInDate, a.checkOutDate)
+      const response = await bookAccommodation(a.accommodationId, a.id, a.checkInDate, a.checkOutDate)
       await fetch(`https://localhost:8000/journeys/${journeyId}/add_accommodation`, {
         method: "POST",
         headers: {
