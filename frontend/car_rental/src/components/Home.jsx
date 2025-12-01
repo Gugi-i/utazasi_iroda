@@ -14,7 +14,7 @@ function Home() {
     const [searchError, setSearchError] = useState(null);
 
     const user = localStorage.getItem("user");
-    const username = user ? JSON.parse(user).name : "";
+    const userId = user ? JSON.parse(user).id : "";
     const [showLogin, setShowLogin] = useState(false);
 
     // Snackbar for critical errors
@@ -102,8 +102,12 @@ function Home() {
                 ) : (
                     <FeaturedVehicles
                         searchResults={searchResults}
-                        username={username}
-                        onRequestLogin={() => setShowLogin(true)}
+                        userId={userId}
+                        onRequestLogin={() => setSnackbar({
+                            show: true,
+                            message: "Please log in to rent a car.",
+                            type: 'error'
+                        })}
                         searchPickupDate={searchPickupDate}
                         searchReturnDate={searchReturnDate}
                         searchLocation={searchLocation}

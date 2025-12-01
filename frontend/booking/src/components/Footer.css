@@ -1,0 +1,15 @@
+.footer {
+    background: #1a1a1a;
+    padding: 25px 0;
+    color: white;
+    margin-top: 50px;
+}
+
+.footer .container {
+    text-align: center;
+}
+
+.footer-logo span {
+    font-size: 18px;
+    font-weight: bold;
+}

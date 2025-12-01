@@ -12,9 +12,9 @@ function Home() {
     const [searchResults, setSearchResults] = useState([]);
 
     const user = localStorage.getItem("user");
-    const username = user ? JSON.parse(user).name : "";
+    const userId = user ? JSON.parse(user).id : -1;
 
-    const [showLogin, setShowLogin] = useState(false);
+    // Removed [showLogin, setShowLogin] as it is no longer needed
 
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
@@ -59,10 +59,12 @@ function Home() {
     };
 
     const refreshTickets = () => {
+        // Note: Ensure departureCity, arrivalCity, and departureDate are defined in your state
+        // or passed as arguments if you want this to work, as they are currently undefined in this scope.
         handleSearch({
-            departure_city: departureCity,
-            arrival_city: arrivalCity,
-            departure_date: departureDate
+            departure_city: searchStartLocation, // Assuming these map to your state variables
+            arrival_city: searchDestination,
+            departure_date: searchDate
         });
     }
 
@@ -73,7 +75,7 @@ function Home() {
             <main className="main-content">
                 <HeroSection/>
                 <SearchBar onSearch={handleSearch}/>
-                 {noTicketsMessage ? (
+                {noTicketsMessage ? (
                     <div className="no-results-container">
                         <h3>No Tickets Found</h3>
                         <p>{noTicketsMessage}</p>
@@ -81,8 +83,12 @@ function Home() {
                 ) : (
                     <Tickets
                         searchResults={searchResults}
-                        username={username}
-                        onRequestLogin={() => setShowLogin(true)}
+                        userId={userId}
+                        onRequestLogin={() => setSnackbar({
+                            show: true,
+                            message: "Please log in to book a ticket.",
+                            type: 'error'
+                        })}
                         searchDate={searchDate}
                         searchStartLocation={searchStartLocation}
                         searchDestination={searchDestination}
@@ -100,7 +106,7 @@ function Home() {
                 />
             )}
         </div>
-        
+
     );
 }
 

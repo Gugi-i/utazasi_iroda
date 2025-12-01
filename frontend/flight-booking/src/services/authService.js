@@ -1,5 +1,5 @@
 export const signup = async (name, email, password) => {
-    const url = 'http://localhost:8000/auth/signup';
+    const url = 'https://localhost:8000/auth/signup/user';
 
     const userData = {
         name: name,
@@ -30,7 +30,7 @@ export const signup = async (name, email, password) => {
 };
 
 export const login = async (email, password) => {
-    const url = 'http://localhost:8000/auth/login';
+    const url = 'https://localhost:8000/auth/login';
 
     const credentials = {
         email: email,

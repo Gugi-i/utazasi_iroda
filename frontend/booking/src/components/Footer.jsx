@@ -1,5 +1,6 @@
+// components/Footer.js
 import React from 'react';
-import './Footer.css';
+import './Footer.css'; // CSS for the footer
 
 function Footer() {
     return (
@@ -7,7 +8,7 @@ function Footer() {
             <div className="container">
                 <div className="footer-content">
                     <div className="footer-logo">
-                        <span>Guardian Air</span>
+                        <span>STAY SURE</span>
                     </div>
                 </div>
             </div>

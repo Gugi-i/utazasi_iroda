@@ -41,12 +41,23 @@ export default function MainContent() {
   // 2. Add Snackbar State
   const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
+  const today = new Date().toISOString().split("T")[0];
+
   const openModal = (type) => {
     setTemp({});
     setModal(type);
   };
 
-  // 3. Handler to close the snackbar
+  const handleStartDateChange = (e) => {
+    const newStart = e.target.value;
+    setStartDate(newStart);
+
+    // If the new start date is AFTER the current end date, reset the end date
+    if (endDate && newStart > endDate) {
+      setEndDate("");
+    }
+  };
+
   const handleCloseSnackbar = () => {
     setSnackbar({ ...snackbar, show: false });
   };
@@ -115,7 +126,7 @@ export default function MainContent() {
                   className="home-input"
                   placeholder="Destination"
                   value={destinationLocation}
-                  onChange={(e) => setDestinationLocation(e.target.value)}
+                  onChange={handleStartDateChange}
               />
             </div>
 
@@ -125,6 +136,7 @@ export default function MainContent() {
                   className="home-input"
                   placeholder="e-mail"
                   value={email}
+                  min={today}
                   onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -132,21 +144,24 @@ export default function MainContent() {
 
           <div className="date-grid">
             <div className="date-field">
-              <label>Start date:</label>
+              <label>Departure Date</label>
               <input
                   type="date"
-                  className="home-input"
+                  className="home-input modern-date"
                   value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  min={today}
+                  onChange={handleStartDateChange}
               />
             </div>
 
             <div className="date-field">
-              <label>End date:</label>
+              <label>Return Date</label>
               <input
                   type="date"
-                  className="home-input"
+                  className="home-input modern-date"
                   value={endDate}
+                  min={startDate || today}
+                  disabled={!startDate}
                   onChange={(e) => setEndDate(e.target.value)}
               />
             </div>
@@ -174,7 +189,8 @@ export default function MainContent() {
                 <div key={i} className="item-card">
                   <div>
                     Flight {f.flight_number} — {f.airline}: {f.departure_city} → {f.arrival_city}
-                    ({new Date(f.departure_date).toLocaleString()}) — Tickets: {f.quantity} , Price: {f.price*f.quantity}$
+                    ({new Date(f.departure_date).toLocaleString()}) — Tickets: {f.quantity} ,
+                    Price: {f.price * f.quantity}$
                   </div>
                   <button
                       className="remove-button"

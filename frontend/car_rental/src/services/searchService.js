@@ -19,7 +19,9 @@ export async function searchCars(filters) {
         params.append("min_space", filters.min_space);
     }
     const url = `https://localhost:8000/cars/?${params.toString()}`;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        method: "GET"
+    });
 
     if (!response.ok) {
         throw new Error("Car search failed: " + response.status);
@@ -27,7 +29,7 @@ export async function searchCars(filters) {
 
     const data = await response.json();
     for (let i = 0; i < data.length; i++) {
-        data[i].imageUrl = 'src/assets/car' + ((data[i].id % 6) + 1) + '.jpg';
+        data[i].imageUrl = data[i].image_url;
     }
 
     return data;
