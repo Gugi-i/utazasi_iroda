@@ -5,7 +5,7 @@ from backend.models.car_model import CarRented
 from backend.models.plane_ticket_model import PlaneTicketBooked
 from backend.models.accommodation_model import AccommodationBooking
 
-import backend.crud.journey_helpers as help
+import backend.utils.journey_helpers as help
 
 def recalculate_journey_price(db: Session, journey_id: int):
     journey = db.query(Journey).filter(Journey.id == journey_id).first()
