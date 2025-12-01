@@ -104,6 +104,6 @@ def create_plane_booking(db: Session, data):
                 total_price=ticket.price
             )
         )
+        db.add_all(bookings)
     ticket.seats_available -= data.quantity
-    db.add_all(bookings)
     return bookings

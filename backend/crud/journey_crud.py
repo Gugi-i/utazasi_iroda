@@ -121,11 +121,12 @@ def create_complete_journey(db: Session, data: JourneyCreateComplete):
                 raise HTTPException(500, "Failed to create plane booking (no id)")
             for booking in bookings:
                 db.add(JourneyPlane(journey_id=journey.id, plane_ticket_booked_id=booking.id))
-                db.refresh(booking)
                 total_price += float(booking.total_price)
 
         journey.total_price = total_price
         db.commit()
+        for b in bookings:
+            db.refresh(b)
         db.refresh(journey)
         return journey
 
