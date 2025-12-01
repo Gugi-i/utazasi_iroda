@@ -103,7 +103,7 @@ export default function MainContent() {
       cars,
       accommodations
     });
-
+    console.log(result)
     if (result.success) {
       setSnackbar({
         show: true,

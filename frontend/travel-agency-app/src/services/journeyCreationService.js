@@ -37,7 +37,10 @@ export const bookJourney = async ({
     console.log(journeyId)
     // 2. Add flights
     for (const f of [...flightThere, ...flightBack]) {
-      const response = bookTicket(f.id, f.quantity)
+      console.log(f)
+      console.log(f.id)
+      console.log(f.quantity)
+      const response = await bookTicket(f.id, f.quantity)
       await fetch(`https://localhost:8000/journeys/${journeyId}/add_plane`, {
         method: "POST",
         headers: {
@@ -51,7 +54,8 @@ export const bookJourney = async ({
     // 3. Add cars
     for (const c of cars) {
       console.log(c)
-      const response = bookCar(c.id, c.startDate, c.endDate)
+      const response = await bookCar(c.id, c.startDate, c.endDate)
+      console.log(response)
       await fetch(`https://localhost:8000/journeys/${journeyId}/add-car`, {
         method: "POST",
         headers: {
@@ -61,10 +65,10 @@ export const bookJourney = async ({
         body: JSON.stringify({ car_rented_id: response.id })
       });
     }
-    /*
     // 4. Add accommodations
     for (const a of accommodations) {
-      const response = bookAccommodation
+      console.log(a)
+      const response = await bookAccommodation(a.id, a.accommodationId, a.checkInDate, a.checkOutDate)
       await fetch(`https://localhost:8000/journeys/${journeyId}/add_accommodation`, {
         method: "POST",
         headers: {
@@ -76,16 +80,17 @@ export const bookJourney = async ({
     }
 
     return { success: true, journeyId };
-    */
   } catch (err) {
     console.error("Journey creation error:", err);
     return { success: false, error: err };
   }
 };
 
-async function bookTicket({ flight_id, quantity }) {
-    const storedUser = localStorage.getItem("user");
-    const token = storedUser ? JSON.parse(storedUser).access_token : null;
+async function bookTicket( flight_id, quantity ) {
+    console.log(flight_id, quantity)
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    const userId = storedUser ? storedUser.id : null;
+    const token = storedUser ? storedUser.access_token : null;
     try {
         const res = await fetch("https://localhost:8000/plane/book", {
             method: "POST",
@@ -145,9 +150,11 @@ async function bookAccommodation(accommodationId, roomTypeId, checkInDate, check
 }
 
 async function bookCar(carId, pickupDate, returnDate) {
-    const storedUser = localStorage.getItem("user");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    console.log(storedUser)
     const userId = storedUser ? storedUser.id : null;
     const token = storedUser ? storedUser.access_token : null;
+    console.log(token)
 
     const response = await fetch("https://localhost:8000/cars/rent", {
         method: "POST",
