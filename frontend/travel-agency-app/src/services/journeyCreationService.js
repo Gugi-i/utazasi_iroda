@@ -49,7 +49,7 @@ export const bookJourney = async ({
 
     // 3. Add cars
     for (const c of cars) {
-      await fetch(`https://localhost:8000/journeys/${journeyId}/add_car`, {
+      await fetch(`https://localhost:8000/journeys/${journeyId}/add-car`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
