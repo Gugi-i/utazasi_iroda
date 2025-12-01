@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session, joinedload
 from backend.models.journey_model import Journey, JourneyCar, JourneyPlane, JourneyAccommodation
 from backend.models.car_model import CarRented
 from backend.models.plane_ticket_model import PlaneTicketBooked
-from backend.models.accommodation_model import AccommodationBooking
+from backend.models.accommodation_model import AccommodationBooking, AccommodationRoomType
 
 from backend.schemas.journey_schema import JourneyCreateComplete
 import backend.utils.journey_helpers as help
@@ -121,11 +121,12 @@ def create_complete_journey(db: Session, data: JourneyCreateComplete):
                 raise HTTPException(500, "Failed to create plane booking (no id)")
             for booking in bookings:
                 db.add(JourneyPlane(journey_id=journey.id, plane_ticket_booked_id=booking.id))
-                db.refresh(booking)
                 total_price += float(booking.total_price)
 
         journey.total_price = total_price
         db.commit()
+        for b in bookings:
+            db.refresh(b)
         db.refresh(journey)
         return journey
 
@@ -142,9 +143,9 @@ def get_all_journeys(db: Session):
     return (
         db.query(Journey)
         .options(
-            joinedload(Journey.cars),
-            joinedload(Journey.plane_tickets),
-            joinedload(Journey.accommodations)
+            joinedload(Journey.cars).joinedload(JourneyCar.car_rented).joinedload(CarRented.car),
+            joinedload(Journey.plane_tickets).joinedload(JourneyPlane.plane_ticket_booked),
+            joinedload(Journey.accommodations).joinedload(JourneyAccommodation.accommodation_booked).joinedload(AccommodationBooking.accommodation)
         )
         .all()
     )
@@ -155,9 +156,9 @@ def get_user_journeys(db: Session, user_id: int):
         db.query(Journey)
         .filter(Journey.user_id == user_id)
         .options(
-            joinedload(Journey.cars),
-            joinedload(Journey.plane_tickets),
-            joinedload(Journey.accommodations)
+            joinedload(Journey.cars).joinedload(JourneyCar.car_rented).joinedload(CarRented.car),
+            joinedload(Journey.plane_tickets).joinedload(JourneyPlane.plane_ticket_booked),
+            joinedload(Journey.accommodations).joinedload(JourneyAccommodation.accommodation_booked).joinedload(AccommodationBooking.accommodation)
         )
         .all()
     )
@@ -167,9 +168,9 @@ def get_journey_by_email(db: Session, email: str):
         db.query(Journey)
         .filter(Journey.email == email)
         .options(
-            joinedload(Journey.cars),
-            joinedload(Journey.plane_tickets),
-            joinedload(Journey.accommodations)
+            joinedload(Journey.cars).joinedload(JourneyCar.car_rented).joinedload(CarRented.car),
+            joinedload(Journey.plane_tickets).joinedload(JourneyPlane.plane_ticket_booked),
+            joinedload(Journey.accommodations).joinedload(JourneyAccommodation.accommodation_booked).joinedload(AccommodationBooking.accommodation)
         )
         .all()
     )

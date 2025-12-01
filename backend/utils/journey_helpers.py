@@ -67,6 +67,7 @@ def create_car_rental(db: Session, data):
         rent_end_date=data.rent_end_date,
         total_price=price
     )
+    rental.car = car
     db.add(rental)
     return rental
 
@@ -83,6 +84,8 @@ def create_accommodation_booking(db: Session, data):
         check_out_date=data.check_out,
         total_price=price
     )
+    booking.room_type = room_type
+    booking.accommodation = room_type.accommodation
     db.add(booking)
     return booking
 
@@ -90,8 +93,7 @@ def create_plane_booking(db: Session, data):
     ticket = db.query(PlaneTicket).filter_by(id=data.flight_id).first()
     bookings = []
     for _ in range(data.quantity):
-        bookings.append(
-            PlaneTicketBooked(
+        booking = PlaneTicketBooked(
                 flight_id=data.flight_id,
                 user_id=data.user_id,
                 flight_number=ticket.flight_number,
@@ -103,7 +105,8 @@ def create_plane_booking(db: Session, data):
                 seat_number=None,
                 total_price=ticket.price
             )
-        )
+        booking.plane_ticket = ticket
+        db.add(booking)
+        bookings.append(booking)
     ticket.seats_available -= data.quantity
-    db.add_all(bookings)
     return bookings

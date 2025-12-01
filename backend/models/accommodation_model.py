@@ -13,6 +13,7 @@ class Accommodation(Base):
     description = Column(String)
     
     room_types = relationship("AccommodationRoomType", back_populates="accommodation")
+    bookings = relationship("AccommodationBooking", back_populates="accommodation")
 
 
 class AccommodationRoomType(Base):
@@ -41,6 +42,7 @@ class AccommodationBooking(Base):
     total_price = Column(Numeric(10,2))
 
     room_type = relationship("AccommodationRoomType", back_populates="bookings")
+    accommodation = relationship("Accommodation", back_populates="bookings")
     person = relationship("Person", back_populates="accommodation_bookings")
     
     journey_links = relationship("JourneyAccommodation", back_populates="accommodation_booked")

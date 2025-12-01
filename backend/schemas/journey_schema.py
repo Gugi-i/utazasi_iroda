@@ -1,5 +1,8 @@
 from pydantic import BaseModel, EmailStr
 from datetime import date
+from backend.schemas.car_schema import CarResponse
+from backend.schemas.accommodation_schema import AccommodationResponse
+from backend.schemas.plane_ticket_schema import PlaneTicketResponse
 
 # ---------- COMPLETE CREATE ----------
 class JourneyCarCreate(BaseModel):
@@ -66,7 +69,7 @@ class AddPlane(BaseModel):
 class AddAccommodation(BaseModel):
     accommodation_booked_id: int
     
-
+# ---------- JOURNEY ELEMENT SCHEMAS ----------
 # ---------- CAR RENTALS ----------
 class CarRentedResponse(BaseModel):
     id: int
@@ -75,6 +78,8 @@ class CarRentedResponse(BaseModel):
     rent_start_date: date
     rent_end_date: date
     total_price: float
+
+    car: CarResponse
 
     class Config:
         orm_mode = True
@@ -118,6 +123,8 @@ class AccommodationBookingResponse(BaseModel):
     check_in_date: date
     check_out_date: date
     total_price: float
+
+    accommodation: AccommodationResponse
 
     class Config:
         orm_mode = True
