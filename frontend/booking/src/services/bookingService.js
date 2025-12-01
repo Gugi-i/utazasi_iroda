@@ -3,7 +3,7 @@ export async function bookAccommodation(accommodationId, roomTypeId, checkInDate
     const userId = storedUser ? storedUser.id : null;
     const token = storedUser ? storedUser.access_token : null;
 
-    const url = "https://localhost:8000/accommodations/book"; // Updated URL
+    const url = "https://localhost:8000/accommodations/book";
 
     const bookingData = {
         accommodation_id: accommodationId,
@@ -41,7 +41,7 @@ export async function getAccommodationsForUser() {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // This is the standard format
+            'Authorization': `Bearer ${token}`
         }
     });
 
@@ -62,7 +62,7 @@ export async function deleteAccommodation(bookingId) {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // This is the standard format
+            'Authorization': `Bearer ${token}`
         }
     });
 

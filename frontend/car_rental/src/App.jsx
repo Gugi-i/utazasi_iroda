@@ -1,4 +1,3 @@
-// ... all the imports
 import './App.css';
 import Home from './components/Home.jsx';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';

@@ -20,11 +20,10 @@ function Login({ onLoginSuccess, onShowSignUp }) {
 
         login(email, password)
             .then(user => {
-                // Simulate a small delay for better UX
                 setTimeout(() => {
                     localStorage.setItem('user', JSON.stringify(user));
                     setIsLoading(false);
-                    onLoginSuccess(user); // Pass full user object if needed
+                    onLoginSuccess(user);
                 }, 1000);
             })
             .catch(err => {
@@ -38,8 +37,6 @@ function Login({ onLoginSuccess, onShowSignUp }) {
     return (
         <div className="login-page-wrapper">
             <div className="login-container">
-                {/* Optional: Add Logo Here */}
-                {/* <img src="../../src/assets/logo.png" alt="Logo" className="login-logo" /> */}
 
                 <h2>Welcome Back</h2>
                 <p className="login-subtitle">Login to plan your next journey</p>

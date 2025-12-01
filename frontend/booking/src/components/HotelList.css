@@ -1,24 +1,16 @@
-/* HotelList.css */
-
 .hotel-list-container {
     padding: 20px;
-    /* Constrain the width slightly so single cards don't span excessively on huge monitors */
     max-width: 1000px;
     margin: 0 auto;
 }
 
-/* Grid Layout for Hotel Cards */
 .hotel-grid {
     display: grid;
-    /* Force a single column layout */
     grid-template-columns: 1fr;
     gap: 30px;
     width: 100%;
 }
 
-/* --- Booking Modal Specific Styles --- */
-
-/* Summary box inside the modal */
 .booking-summary {
     background-color: #f8f9fa;
     border: 1px solid #e9ecef;
@@ -37,7 +29,6 @@
     color: #212529;
 }
 
-/* Modal Input Fields */
 .modal-panel input[type="date"] {
     width: 100%;
     padding: 10px;
@@ -55,19 +46,17 @@
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
-/* Labels for inputs */
 .modal-panel label {
     font-weight: 600;
     font-size: 0.9rem;
     color: #495057;
-    display: block; /* Ensure labels are on their own line */
+    display: block;
     margin-bottom: 2px;
 }
 
-/* Specific style for the checkbox label container to keep it inline */
 .modal-panel label.terms-checkbox {
     display: flex;
-    align-items: flex-start; /* Align top if text wraps */
+    align-items: flex-start;
     gap: 10px;
     font-weight: 400;
     font-size: 0.85rem;
@@ -77,24 +66,21 @@
 }
 
 .modal-panel label.terms-checkbox input[type="checkbox"] {
-    margin-top: 3px; /* Align checkbox with the first line of text */
+    margin-top: 3px;
     transform: scale(1.1);
 }
 
-/* Modal Title Override */
 .modal-panel h2 {
     text-align: center;
-    color: #003580; /* Booking.com style blue */
+    color: #003580;
     margin-bottom: 20px;
     font-size: 1.5rem;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .hotel-grid {
-        /* On mobile, it remains 1 column, but gaps might be smaller */
         gap: 20px;
     }
 

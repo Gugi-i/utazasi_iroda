@@ -1,5 +1,3 @@
-/* src/components/FeaturedVehicles.css */
-
 .featured-vehicles-section {
     padding: 120px 0 60px 0;
     background-color: var(--light-bg);
@@ -7,52 +5,45 @@
 
 .featured-vehicles-section h2 {
     margin-bottom: 30px;
-    text-align: center; /* Center the section title */
+    text-align: center;
 }
 
 .car-list {
     display: grid;
-    /*
-       Using auto-fit will collapse empty columns.
-       Combined with justify-content: center, this centers the items
-       if they don't fill the full row.
-    */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 350px)); /* Max width prevents single item stretching too wide */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 350px));
     gap: 30px;
-    justify-content: center; /* This centers the grid tracks within the container */
+    justify-content: center;
     width: 100%;
 }
-
-/* Individual Car Card */
 .car-card {
     background: var(--white);
     border: 1px solid var(--border-color);
-    border-radius: 12px; /* Slightly rounder corners */
+    border-radius: 12px;
     box-shadow: var(--shadow-sm);
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
-    flex-direction: column; /* Ensures footer/button stays at bottom */
-    height: 100%; /* Makes all cards in a row the same height */
+    flex-direction: column;
+    height: 100%;
 }
 
 .car-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.12); /* Slightly stronger hover shadow */
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
 }
 
 .car-card img {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-bottom: 1px solid #f0f0f0; /* Subtle separation from text */
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .car-card-content {
     padding: 20px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Pushes the button to the bottom if content varies */
+    flex-grow: 1;
 }
 
 .car-card h3 {
@@ -72,11 +63,8 @@
     gap: 6px;
 }
 
-/* Optional: Add an icon before "people" if you want */
-/* .car-card h4::before { content: '👤'; } */
-
 .car-price {
-    margin: auto 0 20px 0; /* Auto margin top pushes price down if needed */
+    margin: auto 0 20px 0;
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--primary-color);
@@ -89,12 +77,12 @@
     background-color: var(--primary-color);
     color: var(--white);
     border: none;
-    border-radius: 8px; /* Matching inner radius style */
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     font-size: 1rem;
     transition: background-color 0.2s ease;
-    margin-top: auto; /* Ensures button is always at the bottom */
+    margin-top: auto;
 }
 
 .book-now-btn:hover {

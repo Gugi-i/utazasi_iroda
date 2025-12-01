@@ -1,33 +1,27 @@
-/* Login.css */
-
-/* Full Page Wrapper */
 .login-page-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh; /* Takes full viewport height */
+    min-height: 100vh;
     width: 100%;
-    background-color: #f4f7f6; /* Light grey background */
-    /* Optional: Add a subtle gradient */
+    background-color: #f4f7f6;
     background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* The Card Component */
 .login-container {
     background-color: #ffffff;
-    padding: 3rem; /* More breathing room */
+    padding: 3rem;
     border-radius: 16px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 420px;
     box-sizing: border-box;
     text-align: center;
-    margin: 20px; /* Prevents touching edges on mobile */
+    margin: 20px;
     animation: fadeIn 0.5s ease-out;
 }
 
-/* Typography */
 .login-container h2 {
     margin-top: 0;
     margin-bottom: 0.5rem;
@@ -42,7 +36,6 @@
     font-size: 0.95rem;
 }
 
-/* Form Layout */
 .login-form {
     display: flex;
     flex-direction: column;
@@ -79,7 +72,6 @@
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
 }
 
-/* Button Styling */
 .login-btn {
     background-color: #007bff;
     color: white;
@@ -107,7 +99,6 @@
     cursor: not-allowed;
 }
 
-/* Footer / Help Section */
 .login-help {
     text-align: center;
     font-size: 0.9rem;
@@ -130,7 +121,6 @@
     text-decoration: underline;
 }
 
-/* Simple Animation */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }

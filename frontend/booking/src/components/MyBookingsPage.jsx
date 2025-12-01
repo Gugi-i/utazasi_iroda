@@ -12,7 +12,6 @@ function MyBookingsPage({ onClose }) {
     const [error, setError] = useState(null);
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
-    // Close modal when clicking outside
     useEffect(() => {
         function handleClickOutside(event) {
             if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -34,7 +33,6 @@ function MyBookingsPage({ onClose }) {
                 console.log("API Data:", data);
 
                 const mappedBookings = data.map(booking => {
-                    // --- 1. Date Formatting Logic ---
                     const formatDate = (dateStr) => {
                         if (!dateStr) return "";
                         return dateStr.replace(/-/g, '.') + '.';
@@ -43,7 +41,6 @@ function MyBookingsPage({ onClose }) {
                     const formattedCheckIn = formatDate(booking.check_in_date);
                     const formattedCheckOut = formatDate(booking.check_out_date);
 
-                    // --- 2. Status Calculation Logic ---
                     const calculateStatus = (apiStatus, startStr, endStr) => {
                         if (apiStatus && apiStatus.toLowerCase() === 'cancelled') {
                             return 'Cancelled';
@@ -64,7 +61,6 @@ function MyBookingsPage({ onClose }) {
                         booking.check_out_date
                     );
 
-                    // --- 3. Room Name Logic ---
                     const getRoomName = (capacity) => {
                         if (!capacity) return "Standard Room";
                         if (capacity === 1) return "Single Room";
@@ -73,25 +69,22 @@ function MyBookingsPage({ onClose }) {
                         return "Standard Room";
                     };
 
-                    // Safely access capacity (handling potential null/undefined)
                     const capacity = booking.room_type ? booking.room_type.room_capacity : 0;
                     const roomName = getRoomName(capacity);
 
-                    // Safely access accommodation details
                     const acc = booking.room_type?.accommodation || {};
 
                     return {
                         id: booking.id,
                         name: acc.name || "Unknown Hotel",
                         location: acc.location || "Unknown Location",
-                        room: roomName, // Updated Room Name
+                        room: roomName,
 
                         check_in_date: formattedCheckIn,
                         check_out_date: formattedCheckOut,
                         total_price: booking.total_price,
                         status: computedStatus,
 
-                        // Handle Image: use image from accommodation or fallback
                         imageUrl: acc.image_url || booking.image_url || `src/assets/room${(booking.id % 5) + 1}.jpg`
                     };
                 });

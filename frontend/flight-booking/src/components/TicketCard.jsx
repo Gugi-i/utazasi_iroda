@@ -1,9 +1,8 @@
 import React from "react";
-import './TicketCard.css'; // We will create/update this file below
+import './TicketCard.css';
 
 function TicketCard({ ticket, onBook }) {
 
-    // --- Helpers for formatting ---
     const getTime = (dt) => {
         if (!dt) return "--:--";
         return new Date(dt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -24,7 +23,6 @@ function TicketCard({ ticket, onBook }) {
 
     return (
         <div className="ticket-card">
-            {/* 1. Header: Airline & Flight Info */}
             <div className="ticket-header">
                 <div className="airline-info">
                     <span className="airline-icon">✈</span>
@@ -33,16 +31,13 @@ function TicketCard({ ticket, onBook }) {
                 <span className="flight-number">{ticket.flight_number || "N/A"}</span>
             </div>
 
-            {/* 2. Body: Journey Timeline */}
             <div className="ticket-body">
-                {/* Departure */}
                 <div className="route-point">
                     <span className="time">{getTime(ticket.departure_date)}</span>
                     <span className="city-code">{ticket.departure_city || "DEP"}</span>
                     <span className="date">{getDate(ticket.departure_date)}</span>
                 </div>
 
-                {/* Visual Connector */}
                 <div className="route-connector">
                     <span className="duration">{calculateDuration(ticket.departure_date, ticket.arrival_date)}</span>
                     <div className="line-graphic">
@@ -54,7 +49,6 @@ function TicketCard({ ticket, onBook }) {
                     <span className="stop-info">Direct</span>
                 </div>
 
-                {/* Arrival */}
                 <div className="route-point">
                     <span className="time">{getTime(ticket.arrival_date)}</span>
                     <span className="city-code">{ticket.arrival_city || "ARR"}</span>
@@ -62,7 +56,6 @@ function TicketCard({ ticket, onBook }) {
                 </div>
             </div>
 
-            {/* 3. Footer: Price, Seats & Action */}
             <div className="ticket-footer">
                 <div className="booking-summary">
                     <div className="price-tag">
@@ -70,7 +63,6 @@ function TicketCard({ ticket, onBook }) {
                         <span className="amount">{ticket.price}</span>
                     </div>
 
-                    {/* Seat Availability Badge */}
                     <div className={`seats-info ${ticket.seats_available < 5 ? 'low-stock' : ''}`}>
                         <span className="seat-icon">💺</span>
                         <span>{ticket.seats_available} / {ticket.total_seats} left</span>

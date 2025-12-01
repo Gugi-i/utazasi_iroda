@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"; // Import useRef
+import { useState, useRef } from "react";
 import "./MainContent.css";
 import FlightModal from "./FlightModal";
 import RentalModal from "./RentalModal";
@@ -37,7 +37,6 @@ export default function MainContent() {
   const [email, setEmail] = useState("");
   const [temp, setTemp] = useState({});
 
-  // Create a ref for the email input to use browser validation
   const emailInputRef = useRef(null);
 
   const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
@@ -62,7 +61,6 @@ export default function MainContent() {
     setSnackbar({ ...snackbar, show: false });
   };
 
-  // Basic email regex for manual validation
   const validateEmail = (email) => {
     return String(email)
         .toLowerCase()
@@ -75,10 +73,8 @@ export default function MainContent() {
     console.log("startDate:", startDate);
     console.log("endDate:", endDate);
 
-    // 1. Validate Email
     if (!email) {
       setSnackbar({ show: true, message: "Please provide an email address.", type: 'error' });
-      // Focus the input to show the user where the error is
       if (emailInputRef.current) emailInputRef.current.focus();
       return;
     }
@@ -87,8 +83,6 @@ export default function MainContent() {
       setSnackbar({ show: true, message: "Please enter a valid email address.", type: 'error' });
       if (emailInputRef.current) {
         emailInputRef.current.focus();
-        // Optional: trigger browser's native validation message
-        // emailInputRef.current.reportValidity();
       }
       return;
     }
@@ -124,7 +118,6 @@ export default function MainContent() {
         <h1 className="home-title">Plan a Journey</h1>
 
         <div className="home-card">
-          {/* ... Inputs ... */}
           <div className="date-grid">
             <div className="date-field">
               <label>Start location:</label>
@@ -149,22 +142,19 @@ export default function MainContent() {
             <div className="date-field">
               <label>Email:</label>
               <input
-                  ref={emailInputRef} // Attach ref here
+                  ref={emailInputRef}
                   className="home-input"
                   placeholder="e-mail"
                   value={email}
-                  type="email" // Ensure type is email
-                  required     // Mark as required
-                  // Basic HTML5 validation pattern (optional but helpful)
+                  type="email"
+                  required
                   pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   onChange={(e) => setEmail(e.target.value)}
-                  // Optional: Clear custom validity message on change
                   onInput={(e) => e.target.setCustomValidity('')}
               />
             </div>
           </div>
 
-          {/* ... Rest of your component (Dates, Buttons, Lists, Modals) remains unchanged ... */}
           <div className="date-grid">
             <div className="date-field">
               <label>Departure Date</label>
@@ -274,7 +264,6 @@ export default function MainContent() {
           </button>
         </div>
 
-        {/* Modals */}
         <FlightModal
             open={modal === "flight-there"}
             onClose={() => setModal(null)}
