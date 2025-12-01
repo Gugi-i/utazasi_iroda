@@ -1,10 +1,11 @@
 from fastapi import HTTPException
-from pydantic import EmailStr
 from sqlalchemy.orm import Session, joinedload
 from backend.models.journey_model import Journey, JourneyCar, JourneyPlane, JourneyAccommodation
 from backend.models.car_model import CarRented
 from backend.models.plane_ticket_model import PlaneTicketBooked
 from backend.models.accommodation_model import AccommodationBooking
+
+import backend.crud.journey_helpers as help
 
 def recalculate_journey_price(db: Session, journey_id: int):
     journey = db.query(Journey).filter(Journey.id == journey_id).first()
@@ -51,6 +52,72 @@ def create_journey(db: Session, data):
         total_price=0
     )
     db.add(journey)
+    db.commit()
+    db.refresh(journey)
+    return journey
+
+def create_complete_journey(db: Session, data):
+# ---- VALIDATION PHASE ----
+    # CAR CHECKS
+    for car in data.cars:
+        if not help.car_exists(db, car.car_id):
+            raise HTTPException(400, f"Car does not exist")
+        if not help.valid_date_range(car.rent_start_date, car.rent_end_date):
+            raise HTTPException(400, "Invalid car rental date range")
+        if not help.car_is_available(db, car.car_id, car.rent_start_date, car.rent_end_date):
+            raise HTTPException(400, f"Car is already rented in this period")
+
+    # ACCOMMODATION CHECKS
+    for acc in data.accommodations:
+        if not help.accommodation_exists(db, acc.accommodation_id):
+            raise HTTPException(400, f"Accommodation does not exist")
+        if not help.roomtype_belongs_to_accommodation(db, acc.accommodation_id, acc.room_type_id):
+            raise HTTPException(400, "Room type does not belong to this accommodation")
+        if not help.valid_date_range(acc.check_in, acc.check_out):
+            raise HTTPException(400, "Invalid accommodation dates")
+        if not help.enough_rooms_available(db, acc.room_type_id, acc.check_in, acc.check_out, acc.number_of_rooms):
+            raise HTTPException(400, "Not enough rooms available")
+
+    # PLANE CHECKS
+    for plane in data.planes:
+        if not help.plane_ticket_exists(db, plane.ticket_id):
+            raise HTTPException(400, "Plane ticket does not exist")
+        if not help.enough_plane_seats(db, plane.ticket_id, plane.passengers):
+            raise HTTPException(400, "Not enough seats available")
+
+# ---- CREATION PHASE ----
+    journey = Journey(
+        user_id=data.user_id,
+        start_date=data.start_date,
+        end_date=data.end_date,
+        number_of_people=data.number_of_people,
+        email=data.email,
+        total_price=0
+    )
+    db.add(journey)
+    db.commit()
+    db.refresh(journey)
+    total_price = 0
+
+    # CREATE CAR RENTALS
+    for car in data.cars:
+        rental = help.create_car_rental(db, car, data.user_id)
+        db.add(JourneyCar(journey_id=journey.id, car_rented_id=rental.id))
+        total_price += float(rental.total_price)
+
+    # CREATE ACCOMMODATION BOOKINGS
+    for acc in data.accommodations:
+        booking = help.create_accommodation_booking(db, acc, data.user_id)
+        db.add(JourneyAccommodation(journey_id=journey.id, accommodation_booked_id=booking.id))
+        total_price += float(booking.total_price)
+
+    # CREATE PLANE BOOKINGS
+    for plane in data.planes:
+        booking = help.create_plane_booking(db, plane, data.user_id)
+        db.add(JourneyPlane(journey_id=journey.id, plane_ticket_booked_id=booking.id))
+        total_price += float(booking.total_price)
+        
+    journey.total_price = total_price
     db.commit()
     db.refresh(journey)
     return journey
