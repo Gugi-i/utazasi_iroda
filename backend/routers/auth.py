@@ -56,8 +56,12 @@ def login_worker(data: WorkerLogin, db: Session = Depends(get_db)):
     worker = authenticate_worker(db, data.email, data.password)
     if not worker:
         raise HTTPException(400, "Invalid email or password")
+    
+    token = create_access_token({"id": worker.id})
 
     return {
+        "access_token": token,
+        "token_type": "bearer",
         "id": worker.id,
         "name": worker.name,
         "email": worker.email,

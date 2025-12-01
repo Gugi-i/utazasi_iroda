@@ -14,7 +14,6 @@ from backend.crud.accommodation_crud import roomtype_belongs_to_accommodation, d
 router = APIRouter(prefix="/accommodations", tags=["Accommodations"])
 
 # --- Accommodation Endpoints ---
-
 @router.get("/", response_model=list[AccommodationResponse])
 def list_accommodations(location: str | None = None, max_price: float | None = None, check_in: date | None = None, check_out: date | None = None, db: Session = Depends(get_db)):
     return accommodation_crud.get_all_accommodations(db=db, location=location, max_price=max_price, check_in=check_in, check_out=check_out)

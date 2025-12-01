@@ -38,13 +38,13 @@ def insert_sample_data(conn):
     # CARS
     # -------------------------
     cars = [
-        ("img/toyota_corolla.jpg", "Toyota", "Corolla", 2020, 5, "London", 30.0, "available"),
-        ("img/honda_civic.jpg", "Honda", "Civic", 2019, 5, "Berlin", 28.0, "available"),
-        ("img/bmw_x3.jpg", "BMW", "X3", 2021, 7, "Paris", 50.0, "available"),
-        ("img/audi_a4.jpg", "Audi", "A4", 2020, 5, "Rome", 45.0, "available"),
-        ("img/ford_focus.jpg", "Ford", "Focus", 2018, 5, "New York", 40.0, "available"),
-        ("img/mercedes_c_class.jpg", "Mercedes", "C-Class", 2022, 5, "London", 55.0, "available"),
-        ("img/volvo_xc90.jpg", "Volvo", "XC90", 2021, 7, "Paris", 60.0, "available"),
+        ("https://media.istockphoto.com/id/2150902357/photo/a-white-toyota-corolla-cruising-near-herman-park-in-houston.jpg?s=612x612&w=0&k=20&c=VQmXv-7fOFxPNfkE9CPZphGmwOFrzB5PlDfCL8oOP1A%3D", "Toyota", "Corolla", 2020, 5, "London", 30.0, "available"),
+        ("https://www.shutterstock.com/image-photo/nonthaburithailandmarch-2021-honda-civic-18el-600nw-1948301173.jpg", "Honda", "Civic", 2019, 5, "Berlin", 28.0, "available"),
+        ("https://media.istockphoto.com/id/2168815142/photo/bmw-x3-m40i-display-at-a-dealership-bmw-offers-the-x3-with-a-382hp-3-0l-turbocharged-6.jpg?s=612x612&w=0&k=20&c=mFk9FGJalaWHt9t0o9stjH8paxZYqWLKuaeUgqZ4-mY%3D", "BMW", "X3", 2021, 7, "Paris", 50.0, "available"),
+        ("https://www.shutterstock.com/image-photo/st-petersburg-russia-september-19-600nw-2045174033.jpg", "Audi", "A4", 2020, 5, "Rome", 45.0, "available"),
+        ("https://images.pexels.com/photos/1007410/pexels-photo-1007410.jpeg?cs=srgb&dl=pexels-mikebirdy-1007410.jpg&fm=jpg", "Ford", "Focus", 2018, 5, "New York", 40.0, "available"),
+        ("https://media.istockphoto.com/id/503663884/photo/mercedes-c-class-stopped-on-the-road.jpg?s=612x612&w=0&k=20&c=EMEDWT042FPLGh6NcUZFPdiKzX3m6avGqE0hQI50im0%3D", "Mercedes", "C-Class", 2022, 5, "London", 55.0, "available"),
+        ("https://resource.digitaldealer.com.au/image/92682636768fc0bcd3177d658897426_600_400-c.jpg", "Volvo", "XC90", 2021, 7, "Paris", 60.0, "available"),
     ]
 
     for car in cars:
@@ -79,13 +79,13 @@ def insert_sample_data(conn):
     # ACCOMMODATIONS
     # -------------------------
     accommodations = [
-        ("img/london_central_hotel.jpg", "London Central Hotel", "London", "Hotel", "Central hotel in London"),
-        ("img/berlin_cozy_inn.jpg", "Berlin Cozy Inn", "Berlin", "Guesthouse", "Cozy guesthouse near city center"),
-        ("img/paris_apartments.jpg", "Paris Apartments", "Paris", "Apartment", "Modern apartments with kitchen"),
-        ("img/rome_hostel.jpg", "Rome Hostel", "Rome", "Hostel", "Budget-friendly hostel near Colosseum"),
-        ("img/nyc_luxury_suites.jpg", "NYC Luxury Suites", "New York", "Hotel", "Luxury suites in Manhattan"),
-        ("img/london_boutique.jpg", "London Boutique", "London", "Hotel", "Boutique hotel in London"),
-        ("img/paris_luxury.jpg", "Paris Luxury Suites", "Paris", "Hotel", "Luxury hotel near Eiffel Tower"),
+        ("https://media.istockphoto.com/id/1050564510/photo/3d-rendering-beautiful-luxury-bedroom-suite-in-hotel-with-tv.jpg?s=612x612&w=0&k=20&c=ZYEso7dgPl889aYddhY2Fj3GOyuwqliHkbbT8pjl_iM%3D", "London Central Hotel", "London", "Hotel", "Central hotel in London"),
+        ("https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3Vlc3QlMjBob3VzZXxlbnwwfHwwfHx8MA%3D%3D", "Berlin Cozy Inn", "Berlin", "Guesthouse", "Cozy guesthouse near city center"),
+        ("https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80", "Paris Apartments", "Paris", "Apartment", "Modern apartments with kitchen"),
+        ("https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=800&q=80", "Rome Hostel", "Rome", "Hostel", "Budget-friendly hostel near Colosseum"),
+        ("https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80", "NYC Luxury Suites", "New York", "Hotel", "Luxury suites in Manhattan"),
+        ("https://images.unsplash.com/photo-1631049307264-da0ec9d70304?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aG90ZWwlMjByb29tfGVufDB8fDB8fHww", "London Boutique", "London", "Hotel", "Boutique hotel in London"),
+        ("https://images.unsplash.com/photo-1590381105924-c72589b9ef3f?auto=format&fit=crop&w=800&q=80", "Paris Luxury Suites", "Paris", "Hotel", "Luxury hotel near Eiffel Tower"),
     ]
 
     for acc in accommodations:
