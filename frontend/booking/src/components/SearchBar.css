@@ -1,16 +1,15 @@
-/* src/components/SearchBar.css */
 
 .search-bar-section {
     position: relative;
     z-index: 10;
-    margin-top: -80px; /* Pulls it up into the hero section */
+    margin-top: -80px;
 }
 
 .search-form {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto; /* 3 inputs, 1 button */
-    gap: 15px; /* Space between grid items */
-    align-items: flex-end; /* IMPORTANT: Aligns button with input fields at the bottom */
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: flex-end;
 
     background: var(--white);
     padding: 25px;
@@ -20,14 +19,14 @@
 
 .input-group {
     display: flex;
-    flex-direction: column; /* Stack label and input vertically */
+    flex-direction: column;
 }
 
 .input-group label {
     font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 5px;
-    color: var(--dark-text); /* Changed to dark text for contrast */
+    color: var(--dark-text);
 }
 
 .input-group input {
@@ -36,21 +35,21 @@
     padding: 12px;
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
-    background-color: var(--white); /* Ensure white background */
-    color: var(--dark-text); /* Ensure dark text color */
-    width: 100%; /* Make inputs fill their grid column */
+    background-color: var(--white);
+    color: var(--dark-text);
+    width: 100%;
 }
 
 .search-buttons {
     display: flex;
     flex-direction: column;
-    gap: 5px; /* spacing between buttons */
+    gap: 5px;
     margin-top: 10px;
 }
 
 .advanced-options {
     display: flex;
-    gap: 10px; /* spacing between optional fields */
+    gap: 10px;
     margin-top: 10px;
 }
 

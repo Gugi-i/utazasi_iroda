@@ -1,5 +1,5 @@
 import React from "react";
-import './FeaturedVehicles.css'; // Ensure this import is correct
+import './FeaturedVehicles.css';
 
 function CarCard({ car, onBook }) {
     return (

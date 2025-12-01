@@ -1,4 +1,3 @@
-// components/Header.js
 import React, {useState} from 'react';
 import './Header.css';
 import Snackbar from '@mui/material/Snackbar';
@@ -117,7 +116,7 @@ function Header() {
                 <MuiAlert
                     elevation={6}
                     variant="filled"
-                    severity="success" // gives green color
+                    severity="success"
                     onClose={() => setOpen(false)}
                 >
                     Successful login! Welcome!

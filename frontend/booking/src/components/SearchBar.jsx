@@ -1,6 +1,5 @@
-// components/SearchBar.js
 import React, { useState } from 'react';
-import './SearchBar.css'; // CSS for the search bar
+import './SearchBar.css';
 
 function SearchBar({ onSearch }) {
     const [location, setLocation] = useState('');
@@ -31,7 +30,6 @@ function SearchBar({ onSearch }) {
             <div className="container">
                 <form className="search-form" onSubmit={handleSearch}>
 
-                    {/* Required fields */}
                     <div className="input-group">
                         <label htmlFor="pickup-location">Location</label>
                         <input
@@ -63,7 +61,6 @@ function SearchBar({ onSearch }) {
                         />
                     </div>
 
-                    {/* Buttons stacked vertically */}
                     <div className="search-buttons" style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '10px' }}>
                         <button type="submit" className="primary-btn">
                             Search Accommodations

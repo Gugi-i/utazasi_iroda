@@ -1,6 +1,3 @@
-/* =========================================
-   1. Main Container & Page Title
-   ========================================= */
 .view-journey-container {
     max-width: 1100px;
     margin: 0 auto;
@@ -17,9 +14,6 @@
     letter-spacing: -0.5px;
 }
 
-/* =========================================
-   2. Search Section (Fixed Alignment)
-   ========================================= */
 .search-section {
     background: #fff;
     padding: 2rem;
@@ -31,16 +25,16 @@
 
 .search-form-row {
     display: flex;
-    align-items: flex-end; /* Aligns the bottom of input and button */
-    gap: 20px; /* Space between input and button */
+    align-items: flex-end;
+    gap: 20px;
     width: 100%;
 }
 
 .input-group {
-    flex-grow: 1; /* Forces input to take all available empty space */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    min-width: 0; /* CSS Grid/Flex fix for nested overflow */
+    min-width: 0;
 }
 
 .input-group label {
@@ -48,18 +42,18 @@
     margin-bottom: 8px;
     color: #333;
     font-size: 0.95rem;
-    white-space: nowrap; /* CRITICAL: Prevents label from breaking into multiple lines */
+    white-space: nowrap;
 }
 
 .home-input {
-    width: 100%; /* Ensures input fills the group container */
+    width: 100%;
     padding: 12px 16px;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
-    box-sizing: border-box; /* Keeps padding inside the width calculation */
+    box-sizing: border-box;
     transition: border-color 0.2s, box-shadow 0.2s;
-    height: 48px; /* Fixed height for consistency */
+    height: 48px;
 }
 
 .home-input:focus {
@@ -69,7 +63,7 @@
 }
 
 .search-btn {
-    height: 48px; /* Matches input height perfectly */
+    height: 48px;
     padding: 0 40px;
     background-color: #007bff;
     color: white;
@@ -79,38 +73,34 @@
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.2s;
-    white-space: nowrap; /* Keeps button text on one line */
-    flex-shrink: 0; /* Prevents button from getting squashed */
-    width: auto; /* Let content define width */
+    white-space: nowrap;
+    flex-shrink: 0;
+    width: auto;
 }
 
 .search-btn:hover {
     background-color: #0056b3;
 }
 
-/* Mobile Responsive Adjustments */
 @media (max-width: 600px) {
     .search-form-row {
-        flex-direction: column; /* Stack vertically on small screens */
+        flex-direction: column;
         align-items: stretch;
     }
 
     .search-btn {
-        width: 100%; /* Full width button on mobile */
+        width: 100%;
         margin-top: 10px;
     }
 }
 
-/* =========================================
-   3. Journey Cards (The Grid)
-   ========================================= */
 .results-section {
     min-height: 200px;
 }
 
 .journey-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); /* Responsive Grid */
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 25px;
 }
 
@@ -134,7 +124,6 @@
     border-color: #d0d0d0;
 }
 
-/* Card Header */
 .journey-header {
     display: flex;
     justify-content: space-between;
@@ -157,7 +146,6 @@
     border-radius: 4px;
 }
 
-/* Card Summary Stats */
 .journey-summary {
     display: flex;
     justify-content: space-between;
@@ -190,7 +178,6 @@
     color: #28a745;
 }
 
-/* Badges */
 .inventory-badges {
     display: flex;
     gap: 8px;
@@ -201,7 +188,7 @@
 .badge {
     font-size: 0.75rem;
     padding: 5px 10px;
-    border-radius: 20px; /* Pill shape */
+    border-radius: 20px;
     font-weight: 600;
 }
 
@@ -209,11 +196,10 @@
 .badge.car { background: #fff3e0; color: #e65100; border: 1px solid #ffe0b2; }
 .badge.hotel { background: #f3e5f5; color: #4a148c; border: 1px solid #e1bee7; }
 
-/* Card Actions (Buttons) */
 .card-actions {
     display: flex;
     gap: 10px;
-    margin-top: auto; /* Pushes buttons to bottom */
+    margin-top: auto;
     padding-top: 10px;
 }
 
@@ -250,7 +236,6 @@
     color: white;
 }
 
-/* Loading / Empty States */
 .no-results, .loading-spinner {
     text-align: center;
     padding: 3rem;
@@ -261,17 +246,14 @@
     border: 1px dashed #ccc;
 }
 
-/* =========================================
-   4. Modal Overlay & Panel
-   ========================================= */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
-    backdrop-filter: blur(4px); /* Blur background effect */
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -331,7 +313,6 @@
     overflow-y: auto;
 }
 
-/* Modal Content Sections */
 .detail-section { margin-bottom: 2rem; }
 
 .detail-section h3 {
@@ -354,7 +335,7 @@
     border-bottom: 1px solid #f4f4f4;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start; /* Align top for multiline addresses */
+    align-items: flex-start;
 }
 
 .detail-list li:last-child { border-bottom: none; }
@@ -377,7 +358,7 @@
     font-weight: 700;
     color: #28a745;
     font-size: 1rem;
-    white-space: nowrap; /* Prevent price wrapping */
+    white-space: nowrap;
     margin-left: 10px;
 }
 
@@ -426,9 +407,6 @@
     color: white;
 }
 
-/* =========================================
-   5. Mobile Responsiveness
-   ========================================= */
 @media (max-width: 600px) {
     .search-form-row { flex-direction: column; gap: 10px; }
     .search-btn { width: 100%; }
@@ -436,7 +414,7 @@
 }
 
 .journey-user-row {
-    background-color: #f0f8ff; /* Light AliceBlue background */
+    background-color: #f0f8ff;
     border: 1px solid #dbeafe;
     padding: 8px 12px;
     border-radius: 6px;
@@ -455,7 +433,7 @@
 }
 
 .user-email-text {
-    color: #007bff; /* Primary brand color */
+    color: #007bff;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;

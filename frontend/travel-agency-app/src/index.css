@@ -1,20 +1,13 @@
 /* src/index.css */
 
-/*
-  This file is for GLOBAL setup.
-  All our site-specific styling (fonts, colors, backgrounds, .container)
-  is handled in App.css.
-*/
 
 body {
-  /* Just reset the margin and ensure it's full width */
   margin: 0;
   padding: 0;
   width: 100%;
 }
 
 #root {
-  /* Ensure our React app container is also full width */
   width: 100%;
 }
 

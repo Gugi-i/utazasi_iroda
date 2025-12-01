@@ -1,26 +1,20 @@
 import React, { useState } from 'react';
 import HotelCard from './HotelCard';
-// Ensure you have these or equivalent CSS files available for layout/modal styling
 import './HotelList.css';
-// You might need to adjust the path to your common App.css or similar
 import '../App.css';
 import Snackbar from "./Snackbar.jsx";
-import {bookAccommodation} from "../services/bookingService.js"; // Import Snackbar
-// import { bookAccommodation } from "../services/bookingService"; // Import your booking service
+import {bookAccommodation} from "../services/bookingService.js";
+// import { bookAccommodation } from "../services/bookingService";
 
-// Dummy data fallback is removed or kept as comment if preferred, using props
 const dummyHotels = [];
 
 function HotelList({ searchResults, userId, onRequestLogin, searchCheckInDate, searchCheckOutDate }) {
     const [selectedHotel, setSelectedHotel] = useState(null);
     const [selectedRoom, setSelectedRoom] = useState(null);
 
-    // Booking Form States
     const [checkInDate, setCheckInDate] = useState(searchCheckInDate);
     const [checkOutDate, setCheckOutDate] = useState(searchCheckOutDate);
     const [termsChecked, setTermsChecked] = useState(false);
-
-    // Snackbar State
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
     const handleCloseSnackbar = () => {
@@ -37,7 +31,6 @@ function HotelList({ searchResults, userId, onRequestLogin, searchCheckInDate, s
 
     const closeBookingModal = () => {
         resetStates();
-        // Add onRefresh callback if needed later
     };
 
     const onBookClick = (hotel, room) => {
@@ -86,7 +79,6 @@ function HotelList({ searchResults, userId, onRequestLogin, searchCheckInDate, s
 
         } catch (error) {
             console.info(error);
-            // Extract error message if available, or fallback
             const errorMsg = error.message || "Error processing booking.";
             setSnackbar({ show: true, message: errorMsg, type: 'error' });
         }
@@ -103,7 +95,6 @@ function HotelList({ searchResults, userId, onRequestLogin, searchCheckInDate, s
                 ))}
             </div>
 
-            {/* Booking Modal */}
             {selectedRoom && selectedHotel && (
                 <div className="modal-overlay">
                     <div className="modal-panel">
@@ -161,7 +152,6 @@ function HotelList({ searchResults, userId, onRequestLogin, searchCheckInDate, s
                 </div>
             )}
 
-            {/* Render Snackbar */}
             {snackbar.show && (
                 <Snackbar
                     message={snackbar.message}

@@ -1,6 +1,6 @@
 .delete-btn {
     display: block;
-    width: calc(100% - 40px); /* Full width minus padding */
+    width: calc(100% - 40px);
     margin: 0 20px 20px 20px;
     padding: 12px;
     background-color: #ff4b4b;
@@ -23,8 +23,8 @@
     padding-left: 10px;
     margin: 0 0 10px 10px;
     /*.rental-dates {*/
-    /*    margin: 4px 0 12px 0;   !* Same left margin as h3 *!*/
-    /*    padding: 0;             !* Remove padding so it aligns exactly *!*/
+    /*    margin: 4px 0 12px 0;*/
+    /*    padding: 0;*/
     /*    color: #555;*/
     /*    font-size: 14px;*/
     /*    font-weight: 500;*/
@@ -32,9 +32,9 @@
 }
 
 .rental-card {
-    display: flex;           /* Align items in a row */
-    align-items: center;     /* Center vertically */
-    gap: 15px;               /* Space between elements */
+    display: flex;
+    align-items: center;
+    gap: 15px;
     background-color: #ffffff;
     padding: 12px;
     border: 1px solid #eee;
@@ -47,22 +47,20 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* Fix the Image Size */
 .rental-card-img {
-    width: 100px !important;            /* Fixed width */
-    height: 70px;            /* Fixed height */
-    object-fit: cover;       /* Crop image nicely to fit */
+    width: 100px !important;
+    height: 70px;
+    object-fit: cover;
     border-radius: 8px;
-    flex-shrink: 0;          /* Prevent image from shrinking */
+    flex-shrink: 0;
 }
 
-/* Middle Text Section */
 .rental-card-info {
-    flex-grow: 1;            /* Take up remaining space */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    text-align: left;        /* Ensure text aligns left */
+    text-align: left;
 }
 
 .rental-card-info h3 {
@@ -78,7 +76,6 @@
     color: #777;
 }
 
-/* Status Badges */
 .status-badge {
     display: inline-block;
     font-size: 0.75rem;
@@ -103,7 +100,6 @@
     color: #856404;
 }
 
-/* Cancel Button (Small red button) */
 .cancel-btn {
     padding: 8px 12px;
     font-size: 0.85rem;
@@ -114,7 +110,7 @@
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.2s;
-    flex-shrink: 0; /* Don't squash the button */
+    flex-shrink: 0;
 }
 
 .cancel-btn:hover {

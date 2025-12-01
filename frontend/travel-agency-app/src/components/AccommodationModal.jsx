@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { searchAccommodations } from "../services/accommodationSearchService.js";
-import './AccommodationModal.css'; // Import the new CSS
+import './AccommodationModal.css';
 
 export default function AccommodationModal({
                                              open,

@@ -1,6 +1,5 @@
-// components/HeroSection.js
 import React from 'react';
-import './HeroSection.css'; // CSS for the hero section
+import './HeroSection.css';
 
 function HeroSection() {
     return (
@@ -10,7 +9,6 @@ function HeroSection() {
                     <h1>Unlock Your Next Adventure</h1>
                     <p>Find the perfect car for your journey.</p>
                 </div>
-                {/* The car image will likely be a background image in CSS */}
                 <div className="hero-image"></div>
             </div>
         </section>

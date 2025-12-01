@@ -1,10 +1,9 @@
-// components/FeaturedVehicles.js
 import React, { useState } from 'react';
 import './FeaturedVehicles.css';
-import { bookCar } from "../services/bookingService"; // Removed checkCarAvailability
+import { bookCar } from "../services/bookingService";
 import CarCard from "./CarCard.jsx";
 import '../App.css';
-import Snackbar from "./Snackbar.jsx"; // Import Snackbar
+import Snackbar from "./Snackbar.jsx";
 
 function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupDate, searchReturnDate, searchLocation, onRefreshCars }) {
 
@@ -14,7 +13,6 @@ function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupD
     const [termsChecked, setTermsChecked] = useState(false);
     const [location, setLocation] = useState("");
 
-    // State for Snackbar
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
     const handleCloseSnackbar = () => {
@@ -37,7 +35,6 @@ function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupD
     const handleBooking = async () => {
         console.log("Handling booking...");
 
-        // Basic Validation
         if (!pickupDate || !returnDate || !location) {
             setSnackbar({ show: true, message: "Please fill out all fields.", type: 'error' });
             return;
@@ -69,7 +66,6 @@ function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupD
 
         } catch (error) {
             console.info(error);
-            // Extract error message if available, or fallback
             const errorMsg = error.message || "Error processing booking.";
             setSnackbar({ show: true, message: errorMsg, type: 'error' });
         }
@@ -97,7 +93,6 @@ function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupD
                     ))}
                 </div>
 
-                {/* Booking Modal */}
                 {selectedCar && (
                     <div className="modal-overlay">
                         <div className="modal-panel">
@@ -135,7 +130,6 @@ function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupD
                                 depending on timing.
                             </label>
 
-                            {/* Removed the separate Availability Check row/button */}
 
                             <div className="button-row">
                                 <button
@@ -157,7 +151,6 @@ function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupD
                 )}
             </div>
 
-            {/* Render Snackbar globally for this component */}
             {snackbar.show && (
                 <Snackbar
                     message={snackbar.message}

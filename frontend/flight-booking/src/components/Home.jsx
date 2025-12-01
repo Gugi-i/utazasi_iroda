@@ -14,8 +14,6 @@ function Home() {
     const user = localStorage.getItem("user");
     const userId = user ? JSON.parse(user).id : -1;
 
-    // Removed [showLogin, setShowLogin] as it is no longer needed
-
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
     const [noTicketsMessage, setNoTicketsMessage] = useState("");
@@ -59,10 +57,8 @@ function Home() {
     };
 
     const refreshTickets = () => {
-        // Note: Ensure departureCity, arrivalCity, and departureDate are defined in your state
-        // or passed as arguments if you want this to work, as they are currently undefined in this scope.
         handleSearch({
-            departure_city: searchStartLocation, // Assuming these map to your state variables
+            departure_city: searchStartLocation,
             arrival_city: searchDestination,
             departure_date: searchDate
         });
