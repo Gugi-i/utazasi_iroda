@@ -302,71 +302,101 @@ function ViewJourney() {
                         <div className="modal-header">
                             <div>
                                 <h2>Journey Details #{selectedJourney.id}</h2>
-                                {/* --- NEW: Email Display in Modal Header --- */}
                                 <div style={{ fontSize: '0.9rem', color: '#555', marginTop: '5px' }}>
-                                    Booked by: <strong>{selectedJourney.email}</strong>
+                                    User Email: <strong>{selectedJourney.email}</strong>
+                                </div>
+                                <div style={{ fontSize: '0.85rem', color: '#777' }}>
+                                    {selectedJourney.start_date} — {selectedJourney.end_date}
                                 </div>
                             </div>
                             <button className="close-icon" onClick={() => setSelectedJourney(null)}>×</button>
                         </div>
 
                         <div className="modal-scroll-content">
-                            {/* Flights */}
+
+                            {/* --- Flights Section --- */}
                             <div className="detail-section">
                                 <h3>✈️ Flights ({selectedJourney.plane_tickets ? selectedJourney.plane_tickets.length : 0})</h3>
-                                {(!selectedJourney.plane_tickets || selectedJourney.plane_tickets.length === 0) ? <p className="empty-text">No flights booked.</p> : (
+                                {(!selectedJourney.plane_tickets || selectedJourney.plane_tickets.length === 0) ? (
+                                    <p className="empty-text">No flights booked.</p>
+                                ) : (
                                     <ul className="detail-list">
-                                        {selectedJourney.plane_tickets.map((t, i) => (
-                                            <li key={i}>
-                                                <div className="item-info">
-                                                    <span className="item-name">{t.airline} ({t.flight_number})</span>
-                                                    <span className="item-details">{t.origin} ➝ {t.destination}</span>
-                                                </div>
-                                                <span className="item-price">${t.price}</span>
-                                            </li>
-                                        ))}
+                                        {selectedJourney.plane_tickets.map((item, i) => {
+                                            // Access the nested object
+                                            const ticket = item.plane_ticket_booked;
+                                            return (
+                                                <li key={item.id || i}>
+                                                    <div className="item-info">
+                                                        {/* We only have flight_id, not airline/number */}
+                                                        <span className="item-name">Flight ID: #{ticket.flight_id}</span>
+                                                        <span className="item-details">
+                                                Seat: {ticket.seat_number || "Any"}
+                                            </span>
+                                                    </div>
+                                                    <span className="item-price">${ticket.total_price}</span>
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
                                 )}
                             </div>
 
-                            {/* Cars */}
+                            {/* --- Cars Section --- */}
                             <div className="detail-section">
                                 <h3>🚗 Car Rentals ({selectedJourney.cars ? selectedJourney.cars.length : 0})</h3>
-                                {(!selectedJourney.cars || selectedJourney.cars.length === 0) ? <p className="empty-text">No cars rented.</p> : (
+                                {(!selectedJourney.cars || selectedJourney.cars.length === 0) ? (
+                                    <p className="empty-text">No cars rented.</p>
+                                ) : (
                                     <ul className="detail-list">
-                                        {selectedJourney.cars.map((c, i) => (
-                                            <li key={i}>
-                                                <div className="item-info">
-                                                    <span className="item-name">{c.model}</span>
-                                                    <span className="item-details">{c.company}</span>
-                                                </div>
-                                                <span className="item-price">${c.price}</span>
-                                            </li>
-                                        ))}
+                                        {selectedJourney.cars.map((item, i) => {
+                                            // Access the nested object
+                                            const car = item.car_rented;
+                                            return (
+                                                <li key={item.id || i}>
+                                                    <div className="item-info">
+                                                        <span className="item-name">Car Rental (ID: {car.car_id})</span>
+                                                        <span className="item-details">
+                                                {car.rent_start_date} — {car.rent_end_date}
+                                            </span>
+                                                    </div>
+                                                    <span className="item-price">${car.total_price}</span>
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
                                 )}
                             </div>
 
-                            {/* Accommodations */}
+                            {/* --- Accommodations Section --- */}
                             <div className="detail-section">
                                 <h3>🏨 Accommodations ({selectedJourney.accommodations ? selectedJourney.accommodations.length : 0})</h3>
-                                {(!selectedJourney.accommodations || selectedJourney.accommodations.length === 0) ? <p className="empty-text">No hotels booked.</p> : (
+                                {(!selectedJourney.accommodations || selectedJourney.accommodations.length === 0) ? (
+                                    <p className="empty-text">No hotels booked.</p>
+                                ) : (
                                     <ul className="detail-list">
-                                        {selectedJourney.accommodations.map((a, i) => (
-                                            <li key={i}>
-                                                <div className="item-info">
-                                                    <span className="item-name">{a.name}</span>
-                                                    <span className="item-details">{a.address}</span>
-                                                </div>
-                                                <span className="item-price">${a.price}</span>
-                                            </li>
-                                        ))}
+                                        {selectedJourney.accommodations.map((item, i) => {
+                                            // Access the nested object
+                                            const booking = item.accommodation_booked;
+                                            return (
+                                                <li key={item.id || i}>
+                                                    <div className="item-info">
+                                                        <span className="item-name">Accommodation ID: #{booking.accommodation_id}</span>
+                                                        <span className="item-details">
+                                                {booking.check_in_date} — {booking.check_out_date} <br/>
+                                                <span style={{fontSize:'0.8em'}}>({booking.rooms_booked} room(s), Type ID: {booking.room_type_id})</span>
+                                            </span>
+                                                    </div>
+                                                    <span className="item-price">${booking.total_price}</span>
+                                                </li>
+                                            );
+                                        })}
                                     </ul>
                                 )}
                             </div>
 
+                            {/* Footer with Total Price */}
                             <div className="total-footer">
-                                <span>Total Price:</span>
+                                <span>Total Journey Price:</span>
                                 <span className="total-amount">${selectedJourney.total_price}</span>
                             </div>
                         </div>
