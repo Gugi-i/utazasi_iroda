@@ -18,7 +18,7 @@ export async function bookAccommodation(accommodationId, roomTypeId, checkInDate
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // This is the standard format
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(bookingData)
     });

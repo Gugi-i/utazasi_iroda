@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react"; // Import useRef
 import "./MainContent.css";
 import FlightModal from "./FlightModal";
 import RentalModal from "./RentalModal";
 import AccommodationModal from "./AccommodationModal";
 import { bookJourney } from "../services/journeyCreationService.js";
 import Header from "./Header.jsx";
-// 1. Import Snackbar
 import Snackbar from "../components/Snackbar.jsx";
 
 function Modal({ open, title, onClose, children }) {
@@ -38,7 +37,9 @@ export default function MainContent() {
   const [email, setEmail] = useState("");
   const [temp, setTemp] = useState({});
 
-  // 2. Add Snackbar State
+  // Create a ref for the email input to use browser validation
+  const emailInputRef = useRef(null);
+
   const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
   const today = new Date().toISOString().split("T")[0];
@@ -52,7 +53,6 @@ export default function MainContent() {
     const newStart = e.target.value;
     setStartDate(newStart);
 
-    // If the new start date is AFTER the current end date, reset the end date
     if (endDate && newStart > endDate) {
       setEndDate("");
     }
@@ -62,13 +62,34 @@ export default function MainContent() {
     setSnackbar({ ...snackbar, show: false });
   };
 
+  // Basic email regex for manual validation
+  const validateEmail = (email) => {
+    return String(email)
+        .toLowerCase()
+        .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+  };
+
   const handleBookJourney = async () => {
     console.log("startDate:", startDate);
     console.log("endDate:", endDate);
 
-    // Optional: Basic validation before sending
-    if(!email) {
+    // 1. Validate Email
+    if (!email) {
       setSnackbar({ show: true, message: "Please provide an email address.", type: 'error' });
+      // Focus the input to show the user where the error is
+      if (emailInputRef.current) emailInputRef.current.focus();
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setSnackbar({ show: true, message: "Please enter a valid email address.", type: 'error' });
+      if (emailInputRef.current) {
+        emailInputRef.current.focus();
+        // Optional: trigger browser's native validation message
+        // emailInputRef.current.reportValidity();
+      }
       return;
     }
 
@@ -84,17 +105,12 @@ export default function MainContent() {
     });
 
     if (result.success) {
-      // 4. Show Success Snackbar
       setSnackbar({
         show: true,
         message: `Journey booked successfully! ID: ${result.journeyId}`,
         type: 'success'
       });
-
-      // Optional: Clear form here if you want
-      // setFlightThere([]); setCars([]); etc...
     } else {
-      // 4. Show Error Snackbar
       setSnackbar({
         show: true,
         message: `Booking failed: ${result.error}`,
@@ -126,22 +142,29 @@ export default function MainContent() {
                   className="home-input"
                   placeholder="Destination"
                   value={destinationLocation}
-                  onChange={handleStartDateChange}
+                  onChange={(e) => setDestinationLocation(e.target.value)}
               />
             </div>
 
             <div className="date-field">
               <label>Email:</label>
               <input
+                  ref={emailInputRef} // Attach ref here
                   className="home-input"
                   placeholder="e-mail"
                   value={email}
-                  min={today}
+                  type="email" // Ensure type is email
+                  required     // Mark as required
+                  // Basic HTML5 validation pattern (optional but helpful)
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                   onChange={(e) => setEmail(e.target.value)}
+                  // Optional: Clear custom validity message on change
+                  onInput={(e) => e.target.setCustomValidity('')}
               />
             </div>
           </div>
 
+          {/* ... Rest of your component (Dates, Buttons, Lists, Modals) remains unchanged ... */}
           <div className="date-grid">
             <div className="date-field">
               <label>Departure Date</label>
@@ -183,7 +206,6 @@ export default function MainContent() {
           </div>
 
           <div className="item-list">
-            {/* ... Item lists logic (unchanged) ... */}
             <label>Flights to destination: </label>
             {flightThere.map((f, i) => (
                 <div key={i} className="item-card">
@@ -231,19 +253,19 @@ export default function MainContent() {
             ))}
             <label>Accommodations: </label>
             {accommodations.map((a, i) => (
-              <div key={i} className="item-card">
-                <div>
-                  Hotel: {a.selectedHotel.name} — Room Capacity: {a.room_capacity} person(s)
-                  ({a.startDate} – {a.endDate}) — Total Price:
-                  {a.price_per_night * Math.floor((new Date(a.endDate) - new Date(a.startDate)) / (1000*60*60*24) + 1)}$
+                <div key={i} className="item-card">
+                  <div>
+                    Hotel: {a.selectedHotel.name} — Room Capacity: {a.room_capacity} person(s)
+                    ({a.startDate} – {a.endDate}) — Total Price:
+                    {a.price_per_night * Math.floor((new Date(a.endDate) - new Date(a.startDate)) / (1000*60*60*24) + 1)}$
+                  </div>
+                  <button
+                      className="remove-button"
+                      onClick={() => setAccommodations(prev => prev.filter((_, idx) => idx !== i))}
+                  >
+                    Remove
+                  </button>
                 </div>
-                <button
-                  className="remove-button"
-                  onClick={() => setAccommodations(prev => prev.filter((_, idx) => idx !== i))}
-                >
-                  Remove
-                </button>
-              </div>
             ))}
           </div>
 
@@ -291,7 +313,6 @@ export default function MainContent() {
             initialEndDate={endDate}
         />
 
-        {/* 5. Render Snackbar at the bottom */}
         {snackbar.show && (
             <Snackbar
                 message={snackbar.message}
