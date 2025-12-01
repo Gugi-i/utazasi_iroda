@@ -13,7 +13,7 @@ class PersonResponseWithEmail(BaseModel):
     id: int
     role: str
     name: str
-    email: str
+    email: EmailStr
     password_hash: str
 
     class Config:

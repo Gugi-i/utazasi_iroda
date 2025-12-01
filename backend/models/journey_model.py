@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Numeric, Date, ForeignKey
+from sqlalchemy import Column, Integer, Numeric, Date, ForeignKey, String
 from sqlalchemy.orm import relationship
 from backend.utils.database import Base
 
@@ -11,6 +11,7 @@ class Journey(Base):
     start_date = Column(Date)
     end_date = Column(Date)
     number_of_people = Column(Integer)
+    email = Column(String(255), nullable=False)
 
     plane_tickets = relationship("JourneyPlane", back_populates="journey", cascade="all, delete")
     cars = relationship("JourneyCar", back_populates="journey", cascade="all, delete")

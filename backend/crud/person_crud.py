@@ -1,3 +1,4 @@
+from pydantic import EmailStr
 from sqlalchemy.orm import Session
 from backend.models.person_model import Person, User, Worker
 import hashlib
