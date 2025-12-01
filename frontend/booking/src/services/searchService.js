@@ -16,8 +16,13 @@ export async function searchAccommodations(filters) {
     const response = await fetch(url);
 
     if (!response.ok) {
-        throw new Error("Car search failed: " + response.status);
+        throw new Error("Accommodation search failed: " + response.status);
     }
 
-    return await response.json();
+    const data = await response.json();
+    for (const accommodation of data) {
+        accommodation.imageUrl = accommodation.image_url
+    }
+
+    return data
 }

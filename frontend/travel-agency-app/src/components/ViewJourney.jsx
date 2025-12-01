@@ -254,7 +254,7 @@ function ViewJourney() {
                             <div className="journey-header">
                                 <span className="journey-id">Journey #{journey.id}</span>
                                 <span className="journey-dates">
-                                    {new Date(journey.start_date).toLocaleDateString()} — {new Date(journey.end_date).toLocaleDateString()}
+                                    {new Date(journey.start_date).toLocaleDateString()} - {new Date(journey.end_date).toLocaleDateString()}
                                 </span>
                             </div>
 
@@ -306,7 +306,8 @@ function ViewJourney() {
                                     User Email: <strong>{selectedJourney.email}</strong>
                                 </div>
                                 <div style={{ fontSize: '0.85rem', color: '#777' }}>
-                                    {selectedJourney.start_date} — {selectedJourney.end_date}
+                                    {/* Format the main journey dates */}
+                                    {selectedJourney.start_date.replace(/-/g, '.')} - {selectedJourney.end_date.replace(/-/g, '.')}
                                 </div>
                             </div>
                             <button className="close-icon" onClick={() => setSelectedJourney(null)}>×</button>
@@ -321,16 +322,14 @@ function ViewJourney() {
                                     <p className="empty-text">No flights booked.</p>
                                 ) : (
                                     <ul className="detail-list">
-                                        {selectedJourney.plane_tickets.map((item, i) => {
-                                            // Access the nested object
-                                            const ticket = item.plane_ticket_booked;
+                                        {selectedJourney.plane_tickets.map((wrapper, i) => {
+                                            const ticket = wrapper.plane_ticket_booked;
                                             return (
-                                                <li key={item.id || i}>
+                                                <li key={wrapper.id || i}>
                                                     <div className="item-info">
-                                                        {/* We only have flight_id, not airline/number */}
-                                                        <span className="item-name">Flight ID: #{ticket.flight_id}</span>
+                                                        <span className="item-name">Flight Booking #{ticket.id}</span>
                                                         <span className="item-details">
-                                                Seat: {ticket.seat_number || "Any"}
+                                                Flight ID: {ticket.flight_id}
                                             </span>
                                                     </div>
                                                     <span className="item-price">${ticket.total_price}</span>
@@ -348,18 +347,23 @@ function ViewJourney() {
                                     <p className="empty-text">No cars rented.</p>
                                 ) : (
                                     <ul className="detail-list">
-                                        {selectedJourney.cars.map((item, i) => {
-                                            // Access the nested object
-                                            const car = item.car_rented;
+                                        {selectedJourney.cars.map((wrapper, i) => {
+                                            const booking = wrapper.car_rented;
+                                            const carDetails = booking.car;
+
                                             return (
-                                                <li key={item.id || i}>
+                                                <li key={wrapper.id || i}>
                                                     <div className="item-info">
-                                                        <span className="item-name">Car Rental (ID: {car.car_id})</span>
+                                            <span className="item-name">
+                                                {carDetails.make} {carDetails.model} ({carDetails.year})
+                                            </span>
                                                         <span className="item-details">
-                                                {car.rent_start_date} — {car.rent_end_date}
+                                                {/* Format Car Rental Dates */}
+                                                            {booking.rent_start_date.replace(/-/g, '.')} - {booking.rent_end_date.replace(/-/g, '.')} <br/>
+                                                Pickup: {carDetails.city}
                                             </span>
                                                     </div>
-                                                    <span className="item-price">${car.total_price}</span>
+                                                    <span className="item-price">${booking.total_price}</span>
                                                 </li>
                                             );
                                         })}
@@ -374,16 +378,18 @@ function ViewJourney() {
                                     <p className="empty-text">No hotels booked.</p>
                                 ) : (
                                     <ul className="detail-list">
-                                        {selectedJourney.accommodations.map((item, i) => {
-                                            // Access the nested object
-                                            const booking = item.accommodation_booked;
+                                        {selectedJourney.accommodations.map((wrapper, i) => {
+                                            const booking = wrapper.accommodation_booked;
+                                            const hotelDetails = booking.accommodation;
+
                                             return (
-                                                <li key={item.id || i}>
+                                                <li key={wrapper.id || i}>
                                                     <div className="item-info">
-                                                        <span className="item-name">Accommodation ID: #{booking.accommodation_id}</span>
+                                                        <span className="item-name">{hotelDetails.name}</span>
                                                         <span className="item-details">
-                                                {booking.check_in_date} — {booking.check_out_date} <br/>
-                                                <span style={{fontSize:'0.8em'}}>({booking.rooms_booked} room(s), Type ID: {booking.room_type_id})</span>
+                                                {/* Format Accommodation Dates */}
+                                                            {booking.check_in_date.replace(/-/g, '.')} - {booking.check_out_date.replace(/-/g, '.')} <br/>
+                                                            {hotelDetails.location} (Room Type: {booking.room_type_id})
                                             </span>
                                                     </div>
                                                     <span className="item-price">${booking.total_price}</span>
