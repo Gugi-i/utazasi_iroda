@@ -18,9 +18,8 @@ router = APIRouter(prefix="/journeys", tags=["Journeys"])
 def create_journey(data: JourneyCreate, db: Session = Depends(get_db), user=Depends(get_current_user)):
     return journey_crud.create_journey(db, data)
 
-@router.post("/complete", response_model=JourneyResponse)
+@router.post("/complete", response_model=JourneyDetailResponse)
 def create_complete_journey(data: JourneyCreateComplete, db: Session = Depends(get_db), user=Depends(get_current_user)):
-    print("incoming payload:", data.dict())
     return journey_crud.create_complete_journey(db, data)
 
 
