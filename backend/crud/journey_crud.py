@@ -1,10 +1,12 @@
 from fastapi import HTTPException
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, joinedload
 from backend.models.journey_model import Journey, JourneyCar, JourneyPlane, JourneyAccommodation
 from backend.models.car_model import CarRented
 from backend.models.plane_ticket_model import PlaneTicketBooked
 from backend.models.accommodation_model import AccommodationBooking
 
+from backend.schemas.journey_schema import JourneyCreateComplete
 import backend.utils.journey_helpers as help
 
 def recalculate_journey_price(db: Session, journey_id: int):
@@ -56,71 +58,84 @@ def create_journey(db: Session, data):
     db.refresh(journey)
     return journey
 
-def create_complete_journey(db: Session, data):
-# ---- VALIDATION PHASE ----
-    # CAR CHECKS
+def create_complete_journey(db: Session, data: JourneyCreateComplete):
+    # ---- VALIDATIONS ----
     for car in data.cars:
-        if not help.car_exists(db, car.car_id):
-            raise HTTPException(400, f"Car does not exist")
         if not help.valid_date_range(car.rent_start_date, car.rent_end_date):
             raise HTTPException(400, "Invalid car rental date range")
+        if not help.car_exists(db, car.car_id):
+            raise HTTPException(400, f"Car {car.car_id} does not exist")
         if not help.car_is_available(db, car.car_id, car.rent_start_date, car.rent_end_date):
-            raise HTTPException(400, f"Car is already rented in this period")
+            raise HTTPException(400, f"Car {car.car_id} not available")
 
-    # ACCOMMODATION CHECKS
     for acc in data.accommodations:
         if not help.accommodation_exists(db, acc.accommodation_id):
-            raise HTTPException(400, f"Accommodation does not exist")
+            raise HTTPException(400, f"Accommodation {acc.accommodation_id} does not exist")
         if not help.roomtype_belongs_to_accommodation(db, acc.accommodation_id, acc.room_type_id):
             raise HTTPException(400, "Room type does not belong to this accommodation")
         if not help.valid_date_range(acc.check_in, acc.check_out):
-            raise HTTPException(400, "Invalid accommodation dates")
-        if not help.enough_rooms_available(db, acc.room_type_id, acc.check_in, acc.check_out, acc.number_of_rooms):
+            raise HTTPException(400, "Invalid accommodation date range")
+        if not help.enough_rooms_available(db, acc.room_type_id, acc.check_in, acc.check_out, acc.rooms_booked):
             raise HTTPException(400, "Not enough rooms available")
 
-    # PLANE CHECKS
     for plane in data.planes:
-        if not help.plane_ticket_exists(db, plane.ticket_id):
-            raise HTTPException(400, "Plane ticket does not exist")
-        if not help.enough_plane_seats(db, plane.ticket_id, plane.passengers):
+        if not help.plane_ticket_exists(db, plane.flight_id):
+            raise HTTPException(400, f"Plane ticket {plane.flight_id} does not exist")
+        if not help.enough_plane_seats(db, plane.flight_id, plane.quantity):
             raise HTTPException(400, "Not enough seats available")
 
-# ---- CREATION PHASE ----
-    journey = Journey(
-        user_id=data.user_id,
-        start_date=data.start_date,
-        end_date=data.end_date,
-        number_of_people=data.number_of_people,
-        email=data.email,
-        total_price=0
-    )
-    db.add(journey)
-    db.commit()
-    db.refresh(journey)
-    total_price = 0
+    # ---- CREATION PHASE ----
+    try:
+        journey = Journey(
+            user_id=data.user_id,
+            start_date=data.start_date,
+            end_date=data.end_date,
+            number_of_people=data.number_of_people,
+            email=data.email,
+            total_price=0
+        )
+        db.add(journey)
 
-    # CREATE CAR RENTALS
-    for car in data.cars:
-        rental = help.create_car_rental(db, car, data.user_id)
-        db.add(JourneyCar(journey_id=journey.id, car_rented_id=rental.id))
-        total_price += float(rental.total_price)
+        total_price = 0
 
-    # CREATE ACCOMMODATION BOOKINGS
-    for acc in data.accommodations:
-        booking = help.create_accommodation_booking(db, acc, data.user_id)
-        db.add(JourneyAccommodation(journey_id=journey.id, accommodation_booked_id=booking.id))
-        total_price += float(booking.total_price)
+        for car in data.cars:
+            rental = help.create_car_rental(db, car)
+            db.flush()
+            if not getattr(rental, "id", None):
+                raise HTTPException(500, "Failed to create rental (no id)")
+            db.add(JourneyCar(journey_id=journey.id, car_rented_id=rental.id))
+            total_price += float(rental.total_price)
 
-    # CREATE PLANE BOOKINGS
-    for plane in data.planes:
-        booking = help.create_plane_booking(db, plane, data.user_id)
-        db.add(JourneyPlane(journey_id=journey.id, plane_ticket_booked_id=booking.id))
-        total_price += float(booking.total_price)
-        
-    journey.total_price = total_price
-    db.commit()
-    db.refresh(journey)
-    return journey
+        for acc in data.accommodations:
+            booking = help.create_accommodation_booking(db, acc)
+            db.flush()
+            if not getattr(booking, "id", None):
+                raise HTTPException(500, "Failed to create accommodation booking (no id)")
+            db.add(JourneyAccommodation(journey_id=journey.id, accommodation_booked_id=booking.id))
+            total_price += float(booking.total_price)
+
+        for plane in data.planes:
+            bookings = help.create_plane_booking(db, plane)
+            db.flush()
+            if not all(getattr(booking, "id", None) for booking in bookings):
+                raise HTTPException(500, "Failed to create plane booking (no id)")
+            for booking in bookings:
+                db.add(JourneyPlane(journey_id=journey.id, plane_ticket_booked_id=booking.id))
+                db.refresh(booking)
+                total_price += float(booking.total_price)
+
+        journey.total_price = total_price
+        db.commit()
+        db.refresh(journey)
+        return journey
+
+    except HTTPException:
+        db.rollback()
+        raise
+    except SQLAlchemyError as e:
+        db.rollback()
+        print("DB ERROR:", str(e))
+        raise HTTPException(500, "Database error during journey creation")
 
 
 def get_all_journeys(db: Session):

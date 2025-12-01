@@ -4,17 +4,21 @@ from datetime import date
 # ---------- COMPLETE CREATE ----------
 class JourneyCarCreate(BaseModel):
     car_id: int
+    user_id: int
     rent_start_date: date
     rent_end_date: date
 
 class JourneyAccommodationCreate(BaseModel):
+    accommodation_id: int
     room_type_id: int
     rooms_booked: int
-    check_in_date: date
-    check_out_date: date
+    user_id: int
+    check_in: date
+    check_out: date
 
 class JourneyPlaneCreate(BaseModel):
     flight_id: int
+    user_id: int
     quantity: int
 
 class JourneyCreateComplete(BaseModel):
