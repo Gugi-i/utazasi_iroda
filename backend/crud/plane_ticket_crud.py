@@ -41,7 +41,7 @@ def book_ticket(db: Session, data):
         .all()
     )
 
-    occupied = {int(s[0]) for s in existing_seats}
+    occupied = {int(s[0]) for s in existing_seats if s[0] is not None}
 
     all_seats = list(range(1, ticket.total_seats + 1))
     free_seats = [s for s in all_seats if s not in occupied]
