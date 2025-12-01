@@ -56,51 +56,54 @@ def enough_plane_seats(db: Session, ticket_id: int, passengers: int):
     return ticket.seats_available >= passengers
 
 # ---- CREATION HELPERS ----
-def create_car_rental(db: Session, data, user_id: int):
+def create_car_rental(db: Session, data):
     days = (data.rent_end_date - data.rent_start_date).days
     car = db.query(Car).filter_by(id=data.car_id).first()
     price = float(car.price_per_day) * days
     rental = CarRented(
         car_id=data.car_id,
-        user_id=user_id,
+        user_id=data.user_id,
         rent_start_date=data.rent_start_date,
         rent_end_date=data.rent_end_date,
         total_price=price
     )
     db.add(rental)
-    db.commit()
-    db.refresh(rental)
     return rental
 
-def create_accommodation_booking(db: Session, data, user_id: int):
+def create_accommodation_booking(db: Session, data):
     nights = (data.check_out - data.check_in).days
     room_type = db.query(AccommodationRoomType).filter_by(id=data.room_type_id).first()
-    price = float(room_type.price_per_night) * nights * data.number_of_rooms
+    price = float(room_type.price_per_night) * nights * data.rooms_booked
     booking = AccommodationBooking(
         accommodation_id=data.accommodation_id,
         room_type_id=data.room_type_id,
-        user_id=user_id,
-        rooms_booked=data.number_of_rooms,
+        user_id=data.user_id,
+        rooms_booked=data.rooms_booked,
         check_in_date=data.check_in,
         check_out_date=data.check_out,
         total_price=price
     )
     db.add(booking)
-    db.commit()
-    db.refresh(booking)
     return booking
 
-def create_plane_booking(db: Session, data, user_id: int):
-    ticket = db.query(PlaneTicket).filter_by(id=data.ticket_id).first()
-    price = float(ticket.price) * data.passengers
-    booking = PlaneTicketBooked(
-        flight_id=data.ticket_id,
-        user_id=user_id,
-        seat_number=None,
-        total_price=price
-    )
-    ticket.seats_available -= data.passengers
-    db.add(booking)
-    db.commit()
-    db.refresh(booking)
-    return booking
+def create_plane_booking(db: Session, data):
+    ticket = db.query(PlaneTicket).filter_by(id=data.flight_id).first()
+    bookings = []
+    for _ in range(data.quantity):
+        bookings.append(
+            PlaneTicketBooked(
+                flight_id=data.flight_id,
+                user_id=data.user_id,
+                flight_number=ticket.flight_number,
+                airline=ticket.airline,
+                departure_city=ticket.departure_city,
+                arrival_city=ticket.arrival_city,
+                departure_date=ticket.departure_date,
+                arrival_date=ticket.arrival_date,
+                seat_number=None,
+                total_price=ticket.price
+            )
+        )
+    ticket.seats_available -= data.quantity
+    db.add_all(bookings)
+    return bookings
