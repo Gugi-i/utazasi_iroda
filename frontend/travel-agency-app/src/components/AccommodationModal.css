@@ -1,0 +1,123 @@
+/* Container for the entire modal content to make it scrollable */
+.accommodation-modal-content {
+    max-height: 70vh; /* Limits height to 70% of the viewport */
+    overflow-y: auto; /* Enables vertical scrolling */
+    padding: 5px;     /* Spacing for the scrollbar */
+}
+
+/* Custom Scrollbar Styling */
+.accommodation-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.accommodation-modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+.accommodation-modal-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+.accommodation-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+/* Grid for Search Inputs */
+.search-form-grid {
+    display: grid;
+    /* Creates columns that are at least 130px wide, auto-fitting the row */
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+
+/* Results List */
+.accommodation-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* Result Card Styling */
+.result-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-color: #d1d5db;
+}
+
+.result-card.selected {
+    border: 2px solid #3b82f6; /* Primary Blue */
+    background-color: #eff6ff; /* Light Blue */
+}
+
+.hotel-header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #111827;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hotel-location {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.room-divider {
+    border: 0;
+    border-top: 1px solid #f0f0f0;
+    margin: 5px 0;
+}
+
+.room-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.room-capacity {
+    color: #4b5563;
+}
+
+.room-price {
+    color: #007bff;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Error Message Box */
+.error-box {
+    color: #dc2626;
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #fef2f2;
+    border-radius: 6px;
+    border: 1px solid #fee2e2;
+    font-size: 0.9rem;
+}
