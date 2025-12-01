@@ -1,0 +1,209 @@
+/* ViewJourney.css */
+
+.view-journey-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* --- Card Styles --- */
+.journey-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.journey-card-item {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.2s;
+}
+
+.journey-card-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+}
+
+.journey-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.journey-id {
+    font-weight: 700;
+    color: #007bff;
+}
+
+.journey-dates {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.journey-summary {
+    display: flex;
+    justify-content: space-between;
+}
+
+.summary-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-stat .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #999;
+}
+
+.summary-stat .value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.summary-stat .value.price {
+    color: #28a745; /* Green for money */
+}
+
+/* Badges */
+.inventory-badges {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #f5f5f5;
+    color: #555;
+}
+
+.badge.flight { background: #e3f2fd; color: #0d47a1; }
+.badge.car { background: #fff3e0; color: #e65100; }
+.badge.hotel { background: #f3e5f5; color: #4a148c; }
+
+/* Buttons */
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.details-btn {
+    flex: 1;
+    padding: 8px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    flex: 1;
+    padding: 8px;
+    background: white;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.cancel-btn:hover { background: #dc3545; color: white; }
+
+/* --- Modal Specific Styles --- */
+.journey-modal {
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important; /* Reset padding to handle scroll area */
+    overflow: hidden;
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+}
+
+.modal-header h2 { margin: 0; font-size: 1.25rem; }
+
+.close-icon {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-scroll-content {
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.detail-section {
+    margin-bottom: 1.5rem;
+}
+
+.detail-section h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #444;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+.detail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.detail-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-price {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.empty-text { font-style: italic; color: #999; font-size: 0.9rem; }
+
+.total-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #ddd;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.modal-actions {
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    text-align: right;
+    background: #fff;
+}
