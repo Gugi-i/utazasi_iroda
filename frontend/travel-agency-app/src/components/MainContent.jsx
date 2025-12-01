@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./MainContent.css";
 import FlightModal from "./FlightModal";
 import RentalModal from "./RentalModal";
-//import AccommodationModal from "./AccommodationModal";
+import AccommodationModal from "./AccommodationModal";
 import { bookJourney } from "../services/journeyCreationService.js";
 import Header from "./Header.jsx";
 // 1. Import Snackbar
@@ -213,11 +213,21 @@ export default function MainContent() {
                   </button>
                 </div>
             ))}
-            <label>Accomodations: </label>
+            <label>Accommodations: </label>
             {accommodations.map((a, i) => (
-                <div key={i} className="item-card">
-                  Accomodation: {a.name} ({a.from}–{a.to})
+              <div key={i} className="item-card">
+                <div>
+                  Hotel: {a.selectedHotel.name} — Room Capacity: {a.room_capacity} person(s)
+                  ({a.startDate} – {a.endDate}) — Total Price:
+                  {a.price_per_night * Math.floor((new Date(a.endDate) - new Date(a.startDate)) / (1000*60*60*24) + 1)}$
                 </div>
+                <button
+                  className="remove-button"
+                  onClick={() => setAccommodations(prev => prev.filter((_, idx) => idx !== i))}
+                >
+                  Remove
+                </button>
+              </div>
             ))}
           </div>
 
@@ -251,6 +261,15 @@ export default function MainContent() {
             open={modal === "car"}
             onClose={() => setModal(null)}
             onAddCar={(car) => setCars((prev) => [...prev, car])}
+            initialCity={destinationLocation}
+            initialStartDate={startDate}
+            initialEndDate={endDate}
+        />
+
+        <AccommodationModal
+            open={modal === "accommodation"}
+            onClose={() => setModal(null)}
+            onAddAccommodation={(accommodations) => setAccommodations((prev) => [...prev, accommodations])}
             initialCity={destinationLocation}
             initialStartDate={startDate}
             initialEndDate={endDate}

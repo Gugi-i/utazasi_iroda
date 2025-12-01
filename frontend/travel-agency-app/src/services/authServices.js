@@ -30,7 +30,7 @@ export const signup = async (name, email, password) => {
 };
 
 export const login = async (email, password) => {
-    const url = 'https://localhost:8000/auth/login';
+    const url = 'https://localhost:8000/auth/login/worker';
 
     const credentials = {
         email: email,
