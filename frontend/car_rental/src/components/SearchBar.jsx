@@ -10,6 +10,15 @@ function SearchBar({ onSearch }) {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [minSpace, setMinSpace] = useState('');
+    const today = new Date().toISOString().split("T")[0];
+
+    const handleStartDateChange = (e) => {
+        const newStart = e.target.value;
+        setPickupDate(newStart);
+        if (returnDate && newStart > returnDate) {
+            setReturnDate("");
+        }
+    };
 
     const handleSearch = (e) => {
             e.preventDefault();
@@ -54,6 +63,7 @@ function SearchBar({ onSearch }) {
                     type="date"
                     id="pickup-date"
                     value={pickupDate}
+                    min={today}
                     onChange={(e) => setPickupDate(e.target.value)}
                 />
                 </div>
@@ -64,6 +74,8 @@ function SearchBar({ onSearch }) {
                     type="date"
                     id="return-date"
                     value={returnDate}
+                    min={pickupDate || today}
+                    disabled={!pickupDate}
                     onChange={(e) => setReturnDate(e.target.value)}
                 />
                 </div>

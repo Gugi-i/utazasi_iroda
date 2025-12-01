@@ -6,7 +6,7 @@ import '../App.css';
 import Snackbar from "./Snackbar.jsx";
 
 
-function Tickets({ searchResults, username, onRequestLogin, searchDate, searchStartLocation, searchDestination }) {
+function Tickets({ searchResults, userId, onRequestLogin, searchDate, searchStartLocation, searchDestination }) {
 
     const [selectedTicket, setSelectedTicket] = useState(null);
     const [quantity, setQuantity] = useState(1);
@@ -72,7 +72,8 @@ function Tickets({ searchResults, username, onRequestLogin, searchDate, searchSt
                 <div className="ticket-list">
                     {tickets.map(ticket => (
                         <TicketCard key={ticket.id} ticket={ticket}  onBook={() => {
-                                if (!username) {
+                            console.log(userId)
+                                if (userId === -1) {
                                     onRequestLogin();
                                     return;
                                 }

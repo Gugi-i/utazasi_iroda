@@ -14,7 +14,7 @@ export async function searchTickets(filters) {
         params.append("max_price", filters.max_price);
     }
 
-    const url = `http://localhost:8000/plane?${params.toString()}`;
+    const url = `https://localhost:8000/plane?${params.toString()}`;
 
     try {
         const response = await fetch(url);

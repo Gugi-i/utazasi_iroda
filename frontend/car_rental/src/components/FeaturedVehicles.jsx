@@ -6,7 +6,7 @@ import CarCard from "./CarCard.jsx";
 import '../App.css';
 import Snackbar from "./Snackbar.jsx"; // Import Snackbar
 
-function FeaturedVehicles({ searchResults, username, onRequestLogin, searchPickupDate, searchReturnDate, searchLocation, onRefreshCars }) {
+function FeaturedVehicles({ searchResults, userId, onRequestLogin, searchPickupDate, searchReturnDate, searchLocation, onRefreshCars }) {
 
     const [selectedCar, setSelectedCar] = useState(null);
     const [pickupDate, setPickupDate] = useState("");
@@ -84,7 +84,7 @@ function FeaturedVehicles({ searchResults, username, onRequestLogin, searchPicku
                 <div className="car-list">
                     {cars.map(car => (
                         <CarCard key={car.id} car={car} onBook={() => {
-                            if (!username) {
+                            if (!userId) {
                                 onRequestLogin();
                                 return;
                             }

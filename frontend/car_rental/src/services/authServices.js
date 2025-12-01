@@ -1,5 +1,5 @@
 export const signup = async (name, email, password) => {
-    const url = 'https://localhost:8000/auth/signup';
+    const url = 'https://localhost:8000/auth/signup/user';
 
     const userData = {
         name: name,

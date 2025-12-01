@@ -40,7 +40,13 @@ function MyTicketsPage({ onClose }) {
                 id: ticket.id,
                 flight_id: ticket.flight_id,
                 seat_number: ticket.seat_number,
-                price: ticket.total_price
+                price: ticket.total_price,
+               airline: ticket.airline,
+               flight_number: ticket.flight_number,
+                departure_city: ticket.departure_city,
+                arrival_city: ticket.arrival_city,
+                departure_date: ticket.departure_date,
+                arrival_date: ticket.arrival_date
             }));
 
             setTickets(mappedTickets);

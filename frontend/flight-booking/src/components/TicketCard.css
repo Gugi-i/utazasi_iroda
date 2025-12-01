@@ -4,7 +4,6 @@
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     margin: 15px 0;
-    padding: 0;
     overflow: hidden;
     border: 1px solid #eef0f5;
     transition: transform 0.2s, box-shadow 0.2s;
@@ -13,11 +12,12 @@
 }
 
 .ticket-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-color: #dbeafe; /* Subtle blue highlight on hover */
 }
 
-/* --- Header Section --- */
+/* --- Header --- */
 .ticket-header {
     background-color: #f8f9fa;
     padding: 12px 20px;
@@ -52,7 +52,7 @@
     font-weight: 500;
 }
 
-/* --- Body Section (Route) --- */
+/* --- Body (Timeline) --- */
 .ticket-body {
     padding: 20px;
     display: flex;
@@ -67,7 +67,7 @@
 }
 
 .route-point:last-child {
-    text-align: right; /* Right align arrival details */
+    text-align: right;
     align-items: flex-end;
 }
 
@@ -90,7 +90,7 @@
     color: #a0aec0;
 }
 
-/* Visual Connector (The line in the middle) */
+/* Connector Line */
 .route-connector {
     flex: 1;
     display: flex;
@@ -139,11 +139,11 @@
 
 .stop-info {
     font-size: 0.75rem;
-    color: #22c55e; /* Green for success/direct */
+    color: #22c55e;
     margin-top: 4px;
 }
 
-/* --- Footer Section --- */
+/* --- Footer --- */
 .ticket-footer {
     padding: 15px 20px;
     display: flex;
@@ -153,10 +153,17 @@
     border-top: 1px solid #f0f0f0;
 }
 
+.booking-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .price-tag {
     color: #2d3748;
-    font-weight: 700;
-    font-size: 1.25rem;
+    font-weight: 800;
+    font-size: 1.4rem; /* Larger price for booking */
+    line-height: 1;
 }
 
 .currency {
@@ -165,26 +172,40 @@
     margin-right: 2px;
 }
 
-.cancel-btn {
-    background-color: #fff;
-    color: #e53e3e;
-    border: 1px solid #fed7d7;
+/* Seats Info Styles */
+.seats-info {
+    font-size: 0.85rem;
+    color: #718096;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.seat-icon { font-size: 0.9rem; }
+
+/* Highlight red if low stock */
+.seats-info.low-stock {
+    color: #e53e3e; /* Red warning color */
+    font-weight: 600;
+}
+
+/* Action Button */
+.book-btn {
+    background-color: #3b82f6; /* Primary Blue */
+    color: white;
+    border: none;
     border-radius: 8px;
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    padding: 10px 24px;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(59, 130, 246, 0.3);
 }
 
-.cancel-btn:hover {
-    background-color: #fff5f5;
-    border-color: #e53e3e;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 480px) {
-    .time { font-size: 1.2rem; }
-    .city-code { font-size: 1rem; }
-    .route-connector { min-width: 60px; }
+.book-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
 }

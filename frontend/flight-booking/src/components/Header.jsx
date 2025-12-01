@@ -6,22 +6,22 @@ import Signup from "../authentication/signup/Signup.jsx";
 import MyTicketsPage from "./MyTicketsPage.jsx";
 import MuiAlert from '@mui/material/Alert';
 
-function checkLoggedInUsername() {
+function checkLoggedInUser() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    const storedUsername = storedUser ? storedUser.name : null;
-    return storedUsername ? storedUsername : "";
+    const storedUserId = storedUser ? storedUser.id : null;
+    return storedUserId ? storedUserId : -1;
 }
 
 function Header() {
-    const [username, setUsername] = useState(checkLoggedInUsername());
+    const [userId, setUserId] = useState(checkLoggedInUser());
     const [showLogin, setShowLogin] = React.useState(false);
     const [showSignUp, setShowSignUp] = React.useState(false);
     const [open, setOpen] = useState(false);
     const [showMyTickets, setShowMyTickets] = useState(false);
 
-    const handleLogin = (loggedInUsername) => {
-        console.log("App received logged in username:", loggedInUsername);
-        setUsername(loggedInUsername);
+    const handleLogin = (loggedInUser) => {
+        console.log("App received logged in usern:", loggedInUser);
+        setUserId(loggedInUser);
         setShowLogin(false);
         setOpen(true);
     };
@@ -65,11 +65,11 @@ function Header() {
         <header className="header">
             <div className="container">
                 <div className="logo">
-                    <span>Speedy Airlines</span>
+                    <span>Guardian Air</span>
                 </div>
                 <nav className="nav-menu">
                     <ul>
-                        {username === "" ? (
+                        {userId === -1 ? (
                             <li>
                                 <button className="sign-up-btn" id="login" onClick={showLoginPage}>Login</button>
                             </li>
@@ -78,7 +78,7 @@ function Header() {
                                 <a onClick={showTicketsPage} style={{cursor: "pointer"}}>My Tickets</a>
                             </li>
                         )}
-                        {username !== "" ?
+                        {userId !== -1 ?
                             (
                                 <li>
                                     <button className="sign-up-btn" id="logout" onClick={() => {
@@ -104,7 +104,7 @@ function Header() {
             </div>
             <div>
                 {
-                    showMyTickets && <MyTicketsPage username={username} onClose={closeTicketsPage} />
+                    showMyTickets && <MyTicketsPage onClose={closeTicketsPage} />
                 }
             </div>
             <Snackbar
@@ -119,7 +119,7 @@ function Header() {
                 severity="success"
                 onClose={() => setOpen(false)}
             >
-                Successful login! Welcome, {username}!
+                Successful login! Welcome!
             </MuiAlert>
             </Snackbar>
             </>

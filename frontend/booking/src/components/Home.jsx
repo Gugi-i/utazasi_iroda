@@ -10,6 +10,7 @@ import HotelList from "./HotelList.jsx";
 import Snackbar from "../components/Snackbar.jsx";
 import {searchAccommodations} from "../services/searchService.js";
 import './Home.css';
+import Footer from "./Footer.jsx";
 
 function Home() {
 
@@ -85,7 +86,11 @@ function Home() {
                 ) : (
                     <HotelList
                     searchResults={searchResults}
-                    onRequestLogin={() => setShowLogin(true)}
+                    onRequestLogin={() => setSnackbar({
+                        show: true,
+                        message: "Please log in to book an accomodation.",
+                        type: 'error'
+                    })}
                     userId={userId}
                     searchCheckInDate={searchCheckInDate}
                     searchCheckOutDate={searchCheckOutDate}
@@ -95,7 +100,7 @@ function Home() {
                 {/*<HowItWorks/>*/}
             </main>
 
-            {/*<Footer/>*/}
+            <Footer/>
             {snackbar.show && (
                 <Snackbar
                     message={snackbar.message}
