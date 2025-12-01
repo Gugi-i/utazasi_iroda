@@ -11,7 +11,16 @@ export const bookJourney = async ({
   accommodations = []
 }) => {
   try {
-    // 1. Create the journey
+    console.log(JSON.stringify({
+        user_id: userId,
+        email: email,
+        start_date: startDate,
+        end_date: endDate,
+        number_of_people: 1,
+        cars: cars,
+        accommodations: accommodations,
+        planes: [...flightThere, ...flightBack]
+      }))
     console.log(startDate)
     console.log(endDate)
     const storedUser = localStorage.getItem("user");
@@ -27,15 +36,23 @@ export const bookJourney = async ({
         email: email,
         start_date: startDate,
         end_date: endDate,
-        number_of_people: 1
+        number_of_people: 1,
+        cars: cars,
+        accommodations: accommodations,
+        planes: [...flightThere, ...flightBack]
       })
     });
 
+  }catch (err) {
+    console.error("Journey creation error:", err);
+    return { success: false, error: err };
+  }
+} 
+/*
     const journey = await journeyRes.json();
     console.log(journey)
     const journeyId = journey.id;
     console.log(journeyId)
-    // 2. Add flights
     for (const f of [...flightThere, ...flightBack]) {
       console.log(f)
       console.log(f.id)
@@ -51,7 +68,6 @@ export const bookJourney = async ({
       });
     }
 
-    // 3. Add cars
     for (const c of cars) {
       console.log(c)
       const response = await bookCar(c.id, c.startDate, c.endDate)
@@ -65,7 +81,6 @@ export const bookJourney = async ({
         body: JSON.stringify({ car_rented_id: response.id })
       });
     }
-    // 4. Add accommodations
     for (const a of accommodations) {
       console.log(a)
       const response = await bookAccommodation(a.accommodationId, a.id, a.checkInDate, a.checkOutDate)
@@ -120,7 +135,7 @@ async function bookAccommodation(accommodationId, roomTypeId, checkInDate, check
     const userId = storedUser ? storedUser.id : null;
     const token = storedUser ? storedUser.access_token : null;
 
-    const url = "https://localhost:8000/accommodations/book"; // Updated URL
+    const url = "https://localhost:8000/accommodations/book";
 
     const bookingData = {
         accommodation_id: accommodationId,
@@ -174,4 +189,4 @@ async function bookCar(carId, pickupDate, returnDate) {
     }
 
     return response.json();
-}
+}*/

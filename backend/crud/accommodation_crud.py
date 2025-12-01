@@ -123,7 +123,6 @@ def roomtype_belongs_to_accommodation(db: Session, accommodation_id: int, room_t
         AccommodationRoomType.id == room_type_id,
         AccommodationRoomType.accommodation_id == accommodation_id
     ).first()
-    
     return exists is not None
 
 def date_is_valid(check_in: date, check_out: date) -> bool:
