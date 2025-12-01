@@ -1,0 +1,86 @@
+
+.rental-modal-content {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.rental-modal-content::-webkit-scrollbar {
+    width: 8px;
+}
+.rental-modal-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+.rental-modal-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+.rental-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+.search-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.input-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.car-results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.result-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-color: #d1d5db;
+}
+
+.result-card.selected {
+    border: 2px solid #3b82f6;
+    background-color: #eff6ff;
+}
+
+.card-header {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #111827;
+}
+
+.card-details {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+.price-tag {
+    color: #007bff;
+    font-weight: 700;
+}

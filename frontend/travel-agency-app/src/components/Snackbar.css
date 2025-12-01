@@ -1,0 +1,40 @@
+.snackbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+    z-index: 10001;
+
+    animation: slideUpCenter 0.3s ease-out;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 300px;
+    justify-content: center;
+}
+
+.snackbar.success {
+    background-color: #28a745;
+}
+
+.snackbar.error {
+    background-color: #dc3545;
+}
+
+@keyframes slideUpCenter {
+    from {
+        transform: translate(-50%, 100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}

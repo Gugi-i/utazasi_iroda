@@ -1,0 +1,26 @@
+.hero-section {
+    padding: 100px 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/images/hero-plane.png') center/cover no-repeat;
+    color: white;
+    text-align: center;
+
+    min-height: 400px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.hero-content h1 {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+}
+
+.hero-content p {
+    margin-top: 10px;
+    font-size: 20px;
+    opacity: 0.9;
+}

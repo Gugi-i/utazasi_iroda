@@ -1,0 +1,144 @@
+.hotel-card {
+    display: flex;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 20px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 280px;
+}
+
+.hotel-card-image-wrapper {
+    width: 35%;
+    position: relative;
+    overflow: hidden;
+}
+
+.hotel-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hotel-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #003580;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.hotel-card-content {
+    padding: 16px;
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+}
+
+.hotel-header {
+    margin-bottom: 8px;
+}
+
+.hotel-name {
+    margin: 0;
+    color: #003580;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.hotel-location {
+    margin: 4px 0 0 0;
+    font-size: 0.875rem;
+    color: #6b6b6b;
+}
+
+.hotel-description {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 8px 0 15px 0;
+    line-height: 1.4;
+}
+
+.room-types-list {
+    margin-top: auto;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+}
+
+.room-types-title {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.room-type-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+}
+
+.room-info {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.room-action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.room-price {
+    font-weight: 700;
+    color: #333;
+    font-size: 1rem;
+}
+
+.book-room-btn {
+    background-color: #0077ff;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.book-room-btn:hover {
+    background-color: #005fcc;
+}
+
+.no-rooms {
+    font-style: italic;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+    .hotel-card {
+        flex-direction: column;
+    }
+    .hotel-card-image-wrapper, .hotel-card-content {
+        width: 100%;
+    }
+    .hotel-card-image-wrapper {
+        height: 200px;
+    }
+}

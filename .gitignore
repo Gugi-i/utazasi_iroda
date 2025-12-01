@@ -107,3 +107,7 @@ Desktop.ini
 
 # Test coverage
 coverage/
+
+# Certs
+certs/
+*.pem

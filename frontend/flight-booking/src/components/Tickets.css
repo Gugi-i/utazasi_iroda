@@ -1,0 +1,132 @@
+.featured-tickets-section {
+    padding: 80px 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.ticket-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 1600px;
+    padding: 0 10px;
+}
+
+.ticket-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ticket-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.ticket-card h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.ticket-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0077ff;
+    margin-bottom: 15px;
+}
+
+.book-now-btn,
+.primary-btn,
+.close-btn {
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.book-now-btn,
+.primary-btn {
+    background: #0077ff;
+    color: white;
+}
+
+.book-now-btn:hover,
+.primary-btn:hover {
+    background: #005fcc;
+}
+
+.close-btn {
+    background: #e63946;
+    color: white;
+}
+
+.close-btn:hover {
+    background: #c92e3c;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-panel {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-panel input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    margin: 10px 0 15px 0;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.booking-error {
+    color: #e63946;
+    font-weight: 500;
+    margin: 10px 0;
+}

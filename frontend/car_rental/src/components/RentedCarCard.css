@@ -1,0 +1,118 @@
+.delete-btn {
+    display: block;
+    width: calc(100% - 40px);
+    margin: 0 20px 20px 20px;
+    padding: 12px;
+    background-color: #ff4b4b;
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c93535;
+}
+
+.rental-dates {
+    font-size: 15px;
+    font-weight: 500;
+    color: #555;
+    padding-left: 10px;
+    margin: 0 0 10px 10px;
+    /*.rental-dates {*/
+    /*    margin: 4px 0 12px 0;*/
+    /*    padding: 0;*/
+    /*    color: #555;*/
+    /*    font-size: 14px;*/
+    /*    font-weight: 500;*/
+    /*}*/
+}
+
+.rental-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #ffffff;
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rental-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.rental-card-img {
+    width: 100px !important;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.rental-card-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+}
+
+.rental-card-info h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.rental-dates {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.status-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.status-badge.completed {
+    background-color: #e2e6ea;
+    color: #6c757d;
+}
+
+.status-badge.ongoing {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-badge.upcoming {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.cancel-btn {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #ff4b4b;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.cancel-btn:hover {
+    background-color: #d93636;
+}
