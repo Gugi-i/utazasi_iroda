@@ -1,14 +1,44 @@
 from pydantic import BaseModel, EmailStr
 from datetime import date
 
-class JourneyCreate(BaseModel):
+# ---------- COMPLETE CREATE ----------
+class JourneyCarCreate(BaseModel):
+    car_id: int
+    rent_start_date: date
+    rent_end_date: date
+
+class JourneyAccommodationCreate(BaseModel):
+    room_type_id: int
+    rooms_booked: int
+    check_in_date: date
+    check_out_date: date
+
+class JourneyPlaneCreate(BaseModel):
+    flight_id: int
+    quantity: int
+
+class JourneyCreateComplete(BaseModel):
     user_id: int
     start_date: date
     end_date: date
     number_of_people: int
     email: EmailStr
 
+    cars: list[JourneyCarCreate] = []
+    accommodations: list[JourneyAccommodationCreate] = []
+    planes: list[JourneyPlaneCreate] = []
 
+    class Config:
+        orm_mode = True
+
+# ---------- JOURNEY ----------
+class JourneyCreate(BaseModel):
+    user_id: int
+    start_date: date
+    end_date: date
+    number_of_people: int
+    email: EmailStr
+    
 class JourneyResponse(BaseModel):
     id: int
     user_id: int
@@ -20,7 +50,7 @@ class JourneyResponse(BaseModel):
     class Config:
         orm_mode = True
 
-
+# ---------- ADD SCHEMAS ----------
 class AddCar(BaseModel):
     car_rented_id: int
 
@@ -95,7 +125,8 @@ class JourneyAccommodationResponse(BaseModel):
 
     class Config:
         orm_mode = True
-        
+
+# ---------- JOURNEY DETAIL ----------
 class JourneyDetailResponse(JourneyResponse):
     id: int
     user_id: int
