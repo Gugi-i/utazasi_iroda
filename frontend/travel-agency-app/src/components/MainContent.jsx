@@ -82,7 +82,7 @@ export default function MainContent() {
       cars,
       accommodations
     });
-
+    console.log(result)
     if (result.success) {
       // 4. Show Success Snackbar
       setSnackbar({
@@ -126,7 +126,7 @@ export default function MainContent() {
                   className="home-input"
                   placeholder="Destination"
                   value={destinationLocation}
-                  onChange={handleStartDateChange}
+                  onChange={(e) => setDestinationLocation(e.target.value)}
               />
             </div>
 
@@ -183,7 +183,6 @@ export default function MainContent() {
           </div>
 
           <div className="item-list">
-            {/* ... Item lists logic (unchanged) ... */}
             <label>Flights to destination: </label>
             {flightThere.map((f, i) => (
                 <div key={i} className="item-card">
