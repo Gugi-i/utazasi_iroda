@@ -10,7 +10,6 @@ function BookedAccommodationCard({ booking, onDelete }) {
 
     const handleConfirmCancel = async () => {
         try {
-            // Call your API delete function here if needed, e.g., await cancelBookingApi(booking.id);
             if (onDelete) {
                 onDelete(booking.id);
             }
@@ -21,20 +20,18 @@ function BookedAccommodationCard({ booking, onDelete }) {
         }
     };
 
-    // Safely access properties or provide defaults
     const bookingStatus = booking.status || 'Confirmed';
     const hotelName = booking.name || `Booking #${booking.id}`;
     const location = booking.location || 'Unknown Location';
     const roomName = booking.room || `Room Type ${booking.room_type_id}`;
     const imageUrl = booking.imageUrl;
-    // Ensure dates are strings before slicing/formatting if they come as full timestamps
+
     const checkIn = booking.check_in_date ? booking.check_in_date.toString().split('T')[0] : 'N/A';
     const checkOut = booking.check_out_date ? booking.check_out_date.toString().split('T')[0] : 'N/A';
 
     return (
         <>
             <div className="booking-card">
-                {/* Image Section */}
                 <div className="booking-card-img-wrapper">
                     {imageUrl ? (
                         <img src={imageUrl} alt={hotelName} className="booking-card-img" />
@@ -45,7 +42,6 @@ function BookedAccommodationCard({ booking, onDelete }) {
                     )}
                 </div>
 
-                {/* Info Section */}
                 <div className="booking-card-info">
                     <div className="booking-header">
                         <h3 className="hotel-name">{hotelName}</h3>
@@ -74,7 +70,6 @@ function BookedAccommodationCard({ booking, onDelete }) {
                     </div>
                 </div>
 
-                {/* Action Section */}
                 <div className="booking-card-actions">
                     {bookingStatus === 'Confirmed' && (
                         <button

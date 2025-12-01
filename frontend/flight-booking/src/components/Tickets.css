@@ -1,11 +1,9 @@
-/* Featured Tickets Section */
 .featured-tickets-section {
     padding: 80px 20px;
     background-color: #f8f9fa;
     min-height: 100vh;
 }
 
-/* Ticket List Grid */
 .ticket-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
@@ -15,7 +13,6 @@
     padding: 0 10px;
 }
 
-/* Ticket Card */
 .ticket-card {
     background: white;
     border-radius: 12px;
@@ -43,7 +40,6 @@
     margin-bottom: 15px;
 }
 
-/* Buttons */
 .book-now-btn,
 .primary-btn,
 .close-btn {
@@ -55,7 +51,6 @@
     transition: background 0.2s;
 }
 
-/* Book Now Button */
 .book-now-btn,
 .primary-btn {
     background: #0077ff;
@@ -67,7 +62,6 @@
     background: #005fcc;
 }
 
-/* Close Button */
 .close-btn {
     background: #e63946;
     color: white;
@@ -77,7 +71,6 @@
     background: #c92e3c;
 }
 
-/* Modal */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -99,7 +92,6 @@
     animation: slideIn 0.3s ease-out;
 }
 
-/* Animation for modal */
 @keyframes slideIn {
     from {
         transform: translateY(-30px);
@@ -111,7 +103,6 @@
     }
 }
 
-/* Form inputs in modal */
 .modal-panel input[type="number"] {
     width: 100%;
     padding: 8px 12px;

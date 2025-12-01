@@ -1,5 +1,5 @@
 .search-bar-section {
-    margin-top: -80px; /* pulls it up into the hero section */
+    margin-top: -80px;
     display: flex;
     justify-content: center;
 }

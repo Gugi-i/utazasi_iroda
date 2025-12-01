@@ -5,7 +5,6 @@ import {deleteJourney, searchAllJourneys, searchJourneysForUser} from "../servic
 import ConfirmationModal from '../components/ConfirmationModal.jsx';
 
 function ViewJourney() {
-    // --- State Management ---
     const [email, setEmail] = useState('');
     const [journeys, setJourneys] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,18 +16,14 @@ function ViewJourney() {
         setJourneyToDelete(journeyId);
     };
 
-    // 2. ACTION: User clicks "Confirm" inside the Modal
-    // We perform the actual API call here
     const handleConfirmDelete = async () => {
         if (!journeyToDelete) return;
 
         try {
             await deleteJourney(journeyToDelete);
 
-            // Update UI: Remove item from list
             setJourneys(prev => prev.filter(j => j.id !== journeyToDelete));
 
-            // Close the Details modal if it was open for this specific item
             if (selectedJourney && selectedJourney.id === journeyToDelete) {
                 setSelectedJourney(null);
             }
@@ -47,22 +42,18 @@ function ViewJourney() {
                 type: 'error'
             });
         } finally {
-            // Close the Confirmation Modal
             setJourneyToDelete(null);
         }
     };
 
-    // Helper to close modal without deleting
     const handleCloseDeleteModal = () => {
         setJourneyToDelete(null);
     };
 
-    // --- 1. Load All Journeys on Component Mount ---
     useEffect(() => {
         fetchAllJourneys();
     }, []);
 
-    // --- API Handlers ---
 
     const fetchAllJourneys = async () => {
         setIsLoading(true);
@@ -71,8 +62,7 @@ function ViewJourney() {
             setJourneys(data);
         } catch (error) {
             console.error("API Error:", error);
-            // Fallback to mock data so you can see the UI changes
-            setJourneys(getMockData());
+            setJourneys([]);
             setSnackbar({
                 show: true,
                 message: 'Error loading API. Showing mock data.',
@@ -86,7 +76,6 @@ function ViewJourney() {
     const handleSearch = async (e) => {
         e.preventDefault();
 
-        // 1. If input is empty, revert to showing ALL journeys
         if (!email.trim()) {
             fetchAllJourneys();
             return;
@@ -125,26 +114,21 @@ function ViewJourney() {
     };
 
     const handleCancelJourney = async (journeyId) => {
-        // Keep the confirmation dialog
         if (!window.confirm("Are you sure? This will delete the journey and all associated bookings.")) {
             return;
         }
 
         try {
-            // 2. Call the Real API
             await deleteJourney(journeyId);
 
-            // 3. Update Local State (Remove the item from the grid)
             setJourneys(prev => prev.filter(j => j.id !== journeyId));
 
-            // 4. Show Success Message
             setSnackbar({
                 show: true,
                 message: `Journey #${journeyId} cancelled successfully.`,
                 type: 'success'
             });
 
-            // 5. Close Modal if it was open for this item
             if (selectedJourney && selectedJourney.id === journeyId) {
                 setSelectedJourney(null);
             }
@@ -161,53 +145,11 @@ function ViewJourney() {
 
     const handleCloseSnackbar = () => { setSnackbar({ ...snackbar, show: false }); };
 
-    // --- UPDATED MOCK DATA ---
-    const getMockData = () => {
-        return [
-            {
-                id: 101,
-                email: 'john.doe@example.com', // <--- Added Email
-                total_price: 2450.00,
-                start_date: '2024-06-15',
-                end_date: '2024-06-25',
-                number_of_people: 2,
-                plane_tickets: [
-                    { id: 1, airline: 'Delta', flight_number: 'DL123', origin: 'JFK', destination: 'LHR', price: 800 },
-                    { id: 2, airline: 'Delta', flight_number: 'DL124', origin: 'LHR', destination: 'JFK', price: 800 }
-                ],
-                cars: [{ id: 5, model: 'Toyota Camry', company: 'Hertz', price: 300 }],
-                accommodations: [{ id: 9, name: 'Hilton London', address: '22 Park Lane', price: 550 }]
-            },
-            {
-                id: 102,
-                email: 'jane.smith@test.com', // <--- Added Email
-                total_price: 150.00,
-                start_date: '2024-08-01',
-                end_date: '2024-08-03',
-                number_of_people: 1,
-                plane_tickets: [],
-                cars: [{ id: 6, model: 'Ford Fiesta', company: 'Enterprise', price: 150 }],
-                accommodations: []
-            },
-            {
-                id: 103,
-                email: 'mike.wilson@demo.net', // <--- Added Email
-                total_price: 890.00,
-                start_date: '2024-09-10',
-                end_date: '2024-09-15',
-                number_of_people: 2,
-                plane_tickets: [],
-                cars: [],
-                accommodations: [{ id: 12, name: 'Marriott Downtown', address: '100 Main St', price: 890 }]
-            }
-        ];
-    };
 
     return (
         <div className="view-journey-container">
             <h1 className="page-title">All Journeys</h1>
 
-            {/* --- Search Section --- */}
             <div className="search-section">
                 <form onSubmit={handleSearch} className="search-form-row">
                     <div className="input-group">
@@ -238,7 +180,6 @@ function ViewJourney() {
                 </form>
             </div>
 
-            {/* --- Results Grid --- */}
             <div className="results-section">
                 {isLoading && <div className="loading-spinner">Loading records...</div>}
 
@@ -258,7 +199,6 @@ function ViewJourney() {
                                 </span>
                             </div>
 
-                            {/* --- NEW: Email Display in Card --- */}
                             <div className="journey-user-row">
                                 <span className="user-label">User:</span>
                                 <span className="user-email-text">{journey.email || 'Unknown'}</span>
@@ -275,7 +215,6 @@ function ViewJourney() {
                                 </div>
                             </div>
 
-                            {/* Inventory Badges */}
                             <div className="inventory-badges">
                                 {journey.plane_tickets && journey.plane_tickets.length > 0 && <span className="badge flight">✈️ {journey.plane_tickets.length} Flights</span>}
                                 {journey.cars && journey.cars.length > 0 && <span className="badge car">🚗 {journey.cars.length} Car</span>}
@@ -295,7 +234,6 @@ function ViewJourney() {
                 </div>
             </div>
 
-            {/* --- Details Modal --- */}
             {selectedJourney && (
                 <div className="modal-overlay" onClick={() => setSelectedJourney(null)}>
                     <div className="modal-panel journey-modal" onClick={e => e.stopPropagation()}>
@@ -306,7 +244,6 @@ function ViewJourney() {
                                     User Email: <strong>{selectedJourney.email}</strong>
                                 </div>
                                 <div style={{ fontSize: '0.85rem', color: '#777' }}>
-                                    {/* Format the main journey dates */}
                                     {selectedJourney.start_date.replace(/-/g, '.')} - {selectedJourney.end_date.replace(/-/g, '.')}
                                 </div>
                             </div>
@@ -315,7 +252,6 @@ function ViewJourney() {
 
                         <div className="modal-scroll-content">
 
-                            {/* --- Flights Section --- */}
                             <div className="detail-section">
                                 <h3>✈️ Flights ({selectedJourney.plane_tickets ? selectedJourney.plane_tickets.length : 0})</h3>
                                 {(!selectedJourney.plane_tickets || selectedJourney.plane_tickets.length === 0) ? (
@@ -340,7 +276,6 @@ function ViewJourney() {
                                 )}
                             </div>
 
-                            {/* --- Cars Section --- */}
                             <div className="detail-section">
                                 <h3>🚗 Car Rentals ({selectedJourney.cars ? selectedJourney.cars.length : 0})</h3>
                                 {(!selectedJourney.cars || selectedJourney.cars.length === 0) ? (
@@ -358,7 +293,6 @@ function ViewJourney() {
                                                 {carDetails.make} {carDetails.model} ({carDetails.year})
                                             </span>
                                                         <span className="item-details">
-                                                {/* Format Car Rental Dates */}
                                                             {booking.rent_start_date.replace(/-/g, '.')} - {booking.rent_end_date.replace(/-/g, '.')} <br/>
                                                 Pickup: {carDetails.city}
                                             </span>
@@ -371,7 +305,6 @@ function ViewJourney() {
                                 )}
                             </div>
 
-                            {/* --- Accommodations Section --- */}
                             <div className="detail-section">
                                 <h3>🏨 Accommodations ({selectedJourney.accommodations ? selectedJourney.accommodations.length : 0})</h3>
                                 {(!selectedJourney.accommodations || selectedJourney.accommodations.length === 0) ? (
@@ -387,7 +320,6 @@ function ViewJourney() {
                                                     <div className="item-info">
                                                         <span className="item-name">{hotelDetails.name}</span>
                                                         <span className="item-details">
-                                                {/* Format Accommodation Dates */}
                                                             {booking.check_in_date.replace(/-/g, '.')} - {booking.check_out_date.replace(/-/g, '.')} <br/>
                                                             {hotelDetails.location} (Room Type: {booking.room_type_id})
                                             </span>
@@ -400,7 +332,6 @@ function ViewJourney() {
                                 )}
                             </div>
 
-                            {/* Footer with Total Price */}
                             <div className="total-footer">
                                 <span>Total Journey Price:</span>
                                 <span className="total-amount">${selectedJourney.total_price}</span>

@@ -1,4 +1,4 @@
-/* Card Container */
+
 .ticket-card {
     background: #ffffff;
     border-radius: 16px;
@@ -17,7 +17,6 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Header Section --- */
 .ticket-header {
     background-color: #f8f9fa;
     padding: 12px 20px;
@@ -52,7 +51,6 @@
     font-weight: 500;
 }
 
-/* --- Body Section (Route) --- */
 .ticket-body {
     padding: 20px;
     display: flex;
@@ -67,7 +65,7 @@
 }
 
 .route-point:last-child {
-    text-align: right; /* Right align arrival details */
+    text-align: right;
     align-items: flex-end;
 }
 
@@ -90,7 +88,6 @@
     color: #a0aec0;
 }
 
-/* Visual Connector (The line in the middle) */
 .route-connector {
     flex: 1;
     display: flex;
@@ -139,11 +136,10 @@
 
 .stop-info {
     font-size: 0.75rem;
-    color: #22c55e; /* Green for success/direct */
+    color: #22c55e;
     margin-top: 4px;
 }
 
-/* --- Footer Section --- */
 .ticket-footer {
     padding: 15px 20px;
     display: flex;
@@ -182,7 +178,6 @@
     border-color: #e53e3e;
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 480px) {
     .time { font-size: 1.2rem; }
     .city-code { font-size: 1rem; }

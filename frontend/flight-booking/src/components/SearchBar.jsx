@@ -1,4 +1,3 @@
-// components/PlaneSearchBar.js
 import React, { useState } from 'react';
 import './SearchBar.css';
 

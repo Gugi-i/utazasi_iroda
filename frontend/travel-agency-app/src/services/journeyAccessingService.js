@@ -22,7 +22,7 @@ export async function deleteJourney(journeyId) {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // This is the standard format
+            'Authorization': `Bearer ${token}`
         }
     });
 

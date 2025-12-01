@@ -50,7 +50,6 @@ function Header({ activeTab, onNavigate }) {
         setShowLogin(true);
     }
 
-    // Updated: These now call the parent's navigation handler
     const handlePlanClick = () => {
         if (onNavigate) onNavigate('plan');
     }
@@ -59,7 +58,6 @@ function Header({ activeTab, onNavigate }) {
         if (onNavigate) onNavigate('view');
     }
 
-    // Kept for backward compatibility if you use the old modal logic
     const showBookingsPage = () => {
         setShowMyBookings(true);
     }

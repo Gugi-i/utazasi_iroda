@@ -1,25 +1,22 @@
 // journeyCreationService.js
 
 export const bookJourney = async ({
-                                    userId,
-                                    email,
-                                    startDate,
-                                    endDate,
-                                    flightThere = [],
-                                    flightBack = [],
-                                    cars = [],
-                                    accommodations = []
-                                  }) => {
+              userId,
+              email,
+              startDate,
+              endDate,
+              flightThere = [],
+              flightBack = [],
+              cars = [],
+              accommodations = []
+            }) => {
   try {
-    // 1. Map Planes
-    // FIX: Changed 'seats_booked' to 'quantity' to match backend requirement
     const allFlights = [...flightThere, ...flightBack].map(flight => ({
       flight_id: flight.id,
       user_id: userId,
       quantity: flight.quantity || 1
     }));
 
-    // 2. Map Cars
     const mappedCars = cars.map(car => ({
       car_id: car.id,
       user_id: userId,
@@ -27,13 +24,11 @@ export const bookJourney = async ({
       rent_end_date: car.endDate
     }));
 
-    // 3. Map Accommodations
     const mappedAccommodations = accommodations.map(acc => ({
       room_type_id: acc.id,
       accommodation_id: acc.accommodation_id,
       user_id: userId,
       check_in_date: acc.startDate,
-      // Backend requested check_in/check_out in previous errors, keeping them to be safe
       check_in: acc.startDate,
       check_out: acc.endDate,
       rooms_booked: 1
@@ -70,7 +65,6 @@ export const bookJourney = async ({
       throw new Error(errorData.detail ? JSON.stringify(errorData.detail) : "Booking failed");
     }
 
-    // Return the actual response data (which likely contains the journey ID)
     const data = await journeyRes.json();
     return { success: true, journeyId: data.id || "Confirmed" };
 
@@ -181,7 +175,7 @@ async function bookAccommodation(accommodationId, roomTypeId, checkInDate, check
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // This is the standard format
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(bookingData)
     });

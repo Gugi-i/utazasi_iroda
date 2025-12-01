@@ -3,7 +3,6 @@ import './BookedTicketCard.css';
 
 function BookedTicketCard({ ticket, onDelete }) {
 
-    // Helpers to split date and time for better layout
     const getTime = (dt) => {
         if (!dt) return "--:--";
         return new Date(dt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -24,25 +23,21 @@ function BookedTicketCard({ ticket, onDelete }) {
 
     return (
         <div className="ticket-card">
-            {/* 1. Header: Airline & Flight Number */}
             <div className="ticket-header">
                 <div className="airline-info">
-                    <span className="airline-icon">✈</span> {/* Placeholder for logo */}
+                    <span className="airline-icon">✈</span>
                     <span className="airline-name">{ticket.airline || "Unknown Airline"}</span>
                 </div>
                 <span className="flight-number">{ticket.flight_number || "N/A"}</span>
             </div>
 
-            {/* 2. Body: The Journey Timeline */}
             <div className="ticket-body">
-                {/* Departure */}
                 <div className="route-point">
                     <span className="time">{getTime(ticket.departure_date)}</span>
                     <span className="city-code">{ticket.departure_city || "DEP"}</span>
                     <span className="date">{getDate(ticket.departure_date)}</span>
                 </div>
 
-                {/* Visual Connector */}
                 <div className="route-connector">
                     <span className="duration">{calculateDuration(ticket.departure_date, ticket.arrival_date)}</span>
                     <div className="line-graphic">
@@ -54,7 +49,6 @@ function BookedTicketCard({ ticket, onDelete }) {
                     <span className="stop-info">Direct</span>
                 </div>
 
-                {/* Arrival */}
                 <div className="route-point">
                     <span className="time">{getTime(ticket.arrival_date)}</span>
                     <span className="city-code">{ticket.arrival_city || "ARR"}</span>
@@ -62,7 +56,6 @@ function BookedTicketCard({ ticket, onDelete }) {
                 </div>
             </div>
 
-            {/* 3. Footer: Price & Action */}
             <div className="ticket-footer">
                 <div className="price-tag">
                     <span className="currency">€</span>

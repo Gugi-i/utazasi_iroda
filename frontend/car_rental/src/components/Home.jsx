@@ -17,10 +17,8 @@ function Home() {
     const userId = user ? JSON.parse(user).id : "";
     const [showLogin, setShowLogin] = useState(false);
 
-    // Snackbar for critical errors
     const [snackbar, setSnackbar] = useState({ show: false, message: '', type: '' });
 
-    // State for "No Results" message displayed in-page
     const [noCarsMessage, setNoCarsMessage] = useState("");
 
     const [searchPickupDate, setSearchPickupDate] = useState("");
@@ -42,7 +40,6 @@ function Home() {
         setSearchMaxPrice(filters.max_price || "");
         setSearchMinSpace(filters.min_space || "");
 
-        // Reset previous states
         setNoCarsMessage("");
         setSearchResults([]);
 
@@ -58,7 +55,6 @@ function Home() {
             const results = await searchCars(filters);
 
             if (results.length === 0) {
-                // Set the in-page message instead of opening a snackbar
                 setNoCarsMessage("No cars found for the given search criteria. Please try different dates or filters.");
             } else {
                 setSearchResults(results);
@@ -119,7 +115,6 @@ function Home() {
 
             <Footer/>
 
-            {/* Only critical errors show here now */}
             {snackbar.show && (
                 <Snackbar
                     message={snackbar.message}

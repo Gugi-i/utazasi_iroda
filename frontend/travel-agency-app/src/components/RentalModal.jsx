@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { searchCars } from "../services/carSearchService.js";
-import './RentalModal.css'; // Import the CSS
+import './RentalModal.css';
 
 export default function RentalModal({ open, onClose, onAddCar, initialCity = "", initialStartDate = "", initialEndDate = ""}) {
   const [city, setCity] = useState(initialCity);
@@ -73,12 +73,10 @@ export default function RentalModal({ open, onClose, onAddCar, initialCity = "",
   return (
       <Modal open={open} title="Search Rental Cars" onClose={onClose}>
 
-        {/* Wrapper div that makes the whole content scrollable */}
         <div className="rental-modal-content">
 
           {error && <div style={{ color: "#dc2626", marginBottom: "10px", padding: "8px", backgroundColor: "#fef2f2", borderRadius: "6px" }}>{error}</div>}
 
-          {/* Input Grid */}
           <div className="search-form-grid">
             <div className="input-group">
               <label>City:</label>
@@ -116,7 +114,6 @@ export default function RentalModal({ open, onClose, onAddCar, initialCity = "",
             </button>
           </div>
 
-          {/* Results List */}
           {cars.length > 0 && (
               <div className="car-results-list">
                 {cars.map((c) => (

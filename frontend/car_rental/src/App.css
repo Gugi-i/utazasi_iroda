@@ -45,16 +45,14 @@
 
 /* src/App.css */
 
-/* --- FONT IMPORT --- */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-/* --- CSS VARIABLES (YOUR SITE'S THEME) --- */
 :root {
-  --primary-color: #007bff;     /* The main blue */
-  --primary-hover: #0056b3;    /* A darker blue for hover */
-  --secondary-color: #6c757d;  /* Grey for subtext */
-  --light-bg: #f8f9fa;         /* Light grey page background */
-  --dark-text: #343a40;        /* Main text color */
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --secondary-color: #6c757d;
+  --light-bg: #f8f9fa;
+  --dark-text: #343a40;
   --white: #ffffff;
   --border-color: #dee2e6;
   --container-width: 1200px;
@@ -63,19 +61,17 @@
   --border-radius: 8px;
 }
 
-/* --- GLOBAL RESET --- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* --- BASE STYLES --- */
 body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.6;
   color: var(--dark-text);
-  background-color: var(--white); /* White bg for most of the page */
+  background-color: var(--white);
 }
 
 .container {
@@ -108,7 +104,6 @@ h1 { font-size: 2.5rem; }
 h2 { font-size: 2rem; text-align: center; }
 h3 { font-size: 1.25rem; }
 
-/* --- GLOBAL BUTTON STYLE --- */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -130,16 +125,14 @@ h3 { font-size: 1.25rem; }
   background-color: var(--primary-hover);
 }
 
-/* 1. Turn the whole app into a flex column */
 .booking-app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Make the app at least as tall as the browser window */
+  min-height: 100vh;
 }
 
-/* 2. Tell the main content to 'grow' and take all the extra space */
 .main-content {
-  flex-grow: 1; /* This is the secret sauce. */
+  flex-grow: 1;
 }
 
 .modal-overlay {
@@ -153,13 +146,12 @@ h3 { font-size: 1.25rem; }
   justify-content: center;
   align-items: center;
 
-  background: rgba(0, 0, 0, 0.6); /* dim background */
-  backdrop-filter: blur(3px);    /* nice blur effect */
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
 
   z-index: 9999;
 }
 
-/* Main box */
 .modal-panel {
   background: #ffffff;
   border-radius: 12px;
@@ -175,24 +167,21 @@ h3 { font-size: 1.25rem; }
   gap: 15px;
   position: relative;
 
-  max-height: 90vh;        /* Never taller than 90% of screen */
-  overflow-y: auto;        /* Scroll if content is too long */
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-/* Fade-in animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to   { opacity: 1; transform: scale(1); }
 }
 
-/* Booking image */
 .modal-panel img {
   width: 100%;
   border-radius: 8px;
   object-fit: cover;
 }
 
-/* Inputs */
 .modal-panel input[type="date"] {
   width: 100%;
   padding: 10px;
@@ -207,7 +196,6 @@ h3 { font-size: 1.25rem; }
   margin-right: 8px;
 }
 
-/* Close / Book button */
 .modal-panel .book-now-btn {
   margin-top: 10px;
   padding: 12px;
@@ -235,8 +223,8 @@ h3 { font-size: 1.25rem; }
 }
 
 .primary-btn {
-  flex: 2;            /* takes twice the space in a row */
-  padding: 14px;      /* bigger padding */
+  flex: 2;
+  padding: 14px;
   font-size: 1.1rem;
   background: #0077ff;
   color: white;
@@ -250,9 +238,8 @@ h3 { font-size: 1.25rem; }
   background: #005fcc;
 }
 
-/* Smaller secondary buttons (Check Availability, Close) */
 .secondary-btn, .close-btn {
-  flex: 1;             /* smaller than Book Now */
+  flex: 1;
   padding: 10px;
   font-size: 1rem;
   border-radius: 8px;
@@ -287,7 +274,7 @@ h3 { font-size: 1.25rem; }
 
 .availability-row {
   display: flex;
-  justify-content: flex-end; /* push to the right */
+  justify-content: flex-end;
   align-items: center;
   gap: 12px;
   margin-bottom: 15px;
@@ -295,7 +282,7 @@ h3 { font-size: 1.25rem; }
 
 .availability-message {
   font-weight: bold;
-  color: #007700; /* green for available, can change dynamically */
+  color: #007700;
   white-space: nowrap;
   margin-top: 8px;
 }

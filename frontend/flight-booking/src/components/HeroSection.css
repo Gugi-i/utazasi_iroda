@@ -1,6 +1,5 @@
 .hero-section {
     padding: 100px 0;
-    /* Added a semi-transparent black gradient overlay before the image */
     background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url('/images/hero-plane.png') center/cover no-repeat;
     color: white;

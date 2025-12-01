@@ -41,7 +41,6 @@ function Home() {
         setSearchLocation(filters.location);
         setSearchMaxPrice(filters.max_price || "");
 
-        // Reset previous states
         setNoAccommodationsMessage("");
         setSearchResults([]);
 
@@ -97,7 +96,6 @@ function Home() {
                     />
                 )}
                 {/*<FeaturedVehicles searchResults={searchResults} searchError={searchError} />*/}
-                {/*<HowItWorks/>*/}
             </main>
 
             <Footer/>
